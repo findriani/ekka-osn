@@ -228,19 +228,23 @@ Local D1 is a file under `.wrangler/`, entirely separate from production.
 
 ## Deploy
 
-```bash
-npx wrangler d1 create osn-ai-quiz      # paste the printed id into wrangler.toml
-npm run db:remote                       # create the table in production
-npx wrangler pages secret put TEACHER_TOKEN
-npm run banks && npm run deploy
-```
+Connect the repository to Cloudflare Pages with **root directory** `quiz`,
+**build command** `npm ci && npm run banks`, and **build output directory**
+`public`. Every push to the production branch is then deployed automatically.
 
-The first three are one-time. After that `npm run banks && npm run deploy` is
-the whole release.
+The student quiz works without a database. To turn on the teacher's attempt
+log after the first Pages deployment:
 
-Connecting the repo to Pages in the dashboard also works: set **root directory**
-to `quiz`, **build command** to `npm run banks`, and **build output directory**
-to `public`.
+1. In the Cloudflare dashboard, create a D1 database named `osn-ai-quiz`.
+2. Open the Pages project, then **Settings → Bindings → Add → D1 database**.
+   Select that database and set the variable name to `DB`.
+3. In the D1 database's **Console**, run the SQL in `schema.sql`.
+4. In the Pages project, add a secret named `TEACHER_TOKEN` under
+   **Settings → Variables and Secrets**.
+5. Redeploy the Pages project.
+
+The database identifier is configured in the dashboard, not committed to this
+repository. This prevents an example identifier from blocking the first deploy.
 
 ---
 
