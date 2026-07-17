@@ -232,19 +232,18 @@ Connect the repository to Cloudflare Pages with **root directory** `quiz`,
 **build command** `npm ci && npm run banks`, and **build output directory**
 `public`. Every push to the production branch is then deployed automatically.
 
-The student quiz works without a database. To turn on the teacher's attempt
-log after the first Pages deployment:
+The student quiz works without a database. The production D1 binding is kept
+in `wrangler.toml` and is named `DB`. To turn on the teacher's attempt log:
 
-1. In the Cloudflare dashboard, create a D1 database named `osn-ai-quiz`.
-2. Open the Pages project, then **Settings → Bindings → Add → D1 database**.
-   Select that database and set the variable name to `DB`.
-3. In the D1 database's **Console**, run the SQL in `schema.sql`.
-4. In the Pages project, add a secret named `TEACHER_TOKEN` under
+1. Create a D1 database named `osn-ai-quiz`, then put its Database ID in
+   `wrangler.toml`. Push the change so Pages deploys the binding.
+2. In the D1 database's **Console**, run the SQL in `schema.sql`.
+3. In the Pages project, add a secret named `TEACHER_TOKEN` under
    **Settings → Variables and Secrets**.
-5. Redeploy the Pages project.
+4. Redeploy the Pages project after adding the secret.
 
-The database identifier is configured in the dashboard, not committed to this
-repository. This prevents an example identifier from blocking the first deploy.
+The database identifier is not a password; it identifies which D1 database the
+site should use. Never put `TEACHER_TOKEN` in this file or commit it.
 
 ---
 

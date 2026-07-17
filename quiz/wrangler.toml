@@ -2,8 +2,11 @@ name = "osn-ai-quiz"
 compatibility_date = "2026-01-01"
 pages_build_output_dir = "public"
 
-# The D1 database is deliberately bound in the Cloudflare Pages dashboard,
-# after the first deployment. Its binding must be named DB.
-#
+[[d1_databases]]
+# This name is used by the Functions as context.env.DB.
+binding = "DB"
+database_name = "osn-ai-quiz"
+database_id = "fb7431eb-e151-4fc4-bdf6-28d52b0511df"
+
 # TEACHER_TOKEN is a secret, not a var. Set it in Pages > Settings > Variables
 # and Secrets. For local development only, put it in .dev.vars (gitignored).
