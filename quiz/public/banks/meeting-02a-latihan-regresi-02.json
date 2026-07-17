@@ -1,0 +1,103 @@
+{
+  "id": "meeting-02a-latihan-regresi-02",
+  "group": "Pertemuan 2",
+  "title": "Regresi 02",
+  "summary": "Fokus set ini: tabel suara \\((x_i-\\bar x)(y_i-\\bar y)\\), rumus kuadrat terkecil, dan membandingkan dua garis kandidat. Struktur yang **belum** muncul di Latihan 01.",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Untuk soal pilihan ganda, pilih tombol jawaban yang benar.\n\nKerjakan dengan pecahan sejauh mungkin. Bulatkan hanya jika soal memintanya.",
+  "formulas": "\\[\n\\beta=\\frac{\\sum_i(x_i-\\bar x)(y_i-\\bar y)}{\\sum_i(x_i-\\bar x)^2},\n\\qquad \\alpha=\\bar y-\\beta\\bar x.\n\\]\n\n\\[\n\\hat y=\\alpha+\\beta x,\\qquad \\operatorname{MSE}=\\frac{1}{n}\\sum_i(y_i-\\hat y_i)^2.\n\\]\n\nGaris dengan MSE lebih kecil adalah yang lebih baik.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Pupuk dan panen jagung",
+      "type": "fill",
+      "prompt": "Seorang penyuluh pertanian mencatat tiga petak sawah percobaan:\n\n| Pupuk \\(x\\) (karung) | Hasil panen \\(y\\) (kuintal) |\n|---:|---:|\n| 2 | 10 |\n| 4 | 14 |\n| 6 | 21 |\n\nHitunglah nilai \\(\\beta\\) (kemiringan) yang menghasilkan MSE terkecil.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 2 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2.75,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\bar x = \\frac{2+4+6}{3} = 4,\n\\qquad\n\\bar y = \\frac{10+14+21}{3} = 15.\n\\]\n\n| \\(x_i\\) | \\(y_i\\) | \\(x_i-\\bar x\\) | \\(y_i-\\bar y\\) | Hasil kali | \\((x_i-\\bar x)^2\\) |\n|---:|---:|---:|---:|---:|---:|\n| 2 | 10 | \\(-2\\) | \\(-5\\) | \\(+10\\) | 4 |\n| 4 | 14 | \\(0\\) | \\(-1\\) | \\(0\\) | 0 |\n| 6 | 21 | \\(+2\\) | \\(+6\\) | \\(+12\\) | 4 |\n| **Jumlah** | | | | **22** | **8** |\n\n\\[\n\\beta = \\frac{22}{8} = 2.75.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Pupuk dan panen jagung (lanjutan)",
+      "type": "fill",
+      "prompt": "Gunakan data dan nilai \\(\\beta\\) dari Soal 1.\n\nHitunglah intersep \\(\\alpha\\).",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\alpha = \\bar y - \\beta\\bar x = 15 - (2.75)(4) = 15 - 11 = 4.\n\\]\n\nGaris terbaiknya adalah \\(\\hat y = 4 + 2.75x\\)."
+    },
+    {
+      "id": "S3",
+      "name": "Kios pulsa",
+      "type": "mc",
+      "prompt": "Sebuah kios pulsa mencatat tiga hari penjualan:\n\n| Jumlah spanduk \\(x\\) | Transaksi \\(y\\) |\n|---:|---:|\n| 1 | 20 |\n| 3 | 27 |\n| 5 | 43 |\n\nDalam tabel suara, setiap titik menyumbang hasil kali \\((x_i-\\bar x)(y_i-\\bar y)\\).\n\nTitik manakah yang menyumbang hasil kali **tepat nol**, sehingga sama sekali tidak ikut menentukan kemiringan garis?",
+      "choices": [
+        "Titik \\((1,20)\\)",
+        "Titik \\((3,27)\\)",
+        "Titik \\((5,43)\\)",
+        "Tidak ada; ketiga titik menyumbang hasil kali bukan nol."
+      ],
+      "answer": 1,
+      "solution": "\\[\n\\bar x = \\frac{1+3+5}{3} = 3.\n\\]\n\nTitik \\((3,27)\\) memiliki \\(x_i-\\bar x = 3-3 = 0\\), sehingga hasil kalinya \\(0 \\times (27-30) = 0\\).\n\nTitik itu duduk tepat pada garis vertikal \\(x=\\bar x\\), jadi ia tidak punya pendapat mengenai **kemiringan** garis. Perhatikan bahwa titik tersebut tetap ikut menentukan \\(\\bar y\\), jadi ia bukan tidak berguna — ia hanya tidak ikut memilih arah tilt."
+    },
+    {
+      "id": "S4",
+      "name": "Batik tulis",
+      "type": "fill",
+      "prompt": "Seorang pembatik mencatat waktu pengerjaan tiga helai kain:\n\n| Jumlah motif \\(x\\) | Waktu \\(y\\) (jam) |\n|---:|---:|\n| 1 | 4 |\n| 2 | 9 |\n| 3 | 11 |\n\nDua garis kandidat diajukan:\n\n\\[\n\\text{Garis A}: \\hat y = 1 + 3.5x,\n\\qquad\n\\text{Garis B}: \\hat y = 2 + 3x.\n\\]\n\nHitunglah MSE dari garis yang **lebih baik** di antara keduanya.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\text{Garis A}: \\quad \\hat y = 4.5,\\; 8,\\; 11.5\n\\quad\\Rightarrow\\quad r = -0.5,\\; +1,\\; -0.5\n\\]\n\n\\[\n\\operatorname{MSE}_A = \\frac{0.25 + 1 + 0.25}{3} = \\frac{1.5}{3} = 0.5.\n\\]\n\n\\[\n\\text{Garis B}: \\quad \\hat y = 5,\\; 8,\\; 11\n\\quad\\Rightarrow\\quad r = -1,\\; +1,\\; 0\n\\]\n\n\\[\n\\operatorname{MSE}_B = \\frac{1 + 1 + 0}{3} = \\frac{2}{3} \\approx 0.667.\n\\]\n\nGaris A lebih baik, dengan MSE **0.5**.\n\nBukan kebetulan: Garis A **adalah** garis kuadrat terkecil untuk data ini.\n\n\\[\n\\bar x = 2,\\quad \\bar y = 8,\\quad\n\\beta = \\frac{(-1)(-4) + (0)(1) + (1)(3)}{1+0+1} = \\frac{7}{2} = 3.5,\n\\]\n\n\\[\n\\alpha = 8 - (3.5)(2) = 1.\n\\]\n\nTidak ada garis lurus lain yang MSE-nya di bawah 0.5 pada data ini."
+    },
+    {
+      "id": "S5",
+      "name": "Motor bekas",
+      "type": "fill",
+      "prompt": "Sebuah showroom mencatat harga jual tiga motor bekas dengan tipe yang sama:\n\n| Usia \\(x\\) (tahun) | Harga \\(y\\) (juta rupiah) |\n|---:|---:|\n| 1 | 16 |\n| 2 | 11 |\n| 3 | 9 |\n\nHitunglah nilai \\(\\beta\\) (kemiringan) yang menghasilkan MSE terkecil.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma. Sertakan tanda minus jika ada.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": -3.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\bar x = 2, \\qquad \\bar y = \\frac{16+11+9}{3} = 12.\n\\]\n\n| \\(x_i\\) | \\(y_i\\) | \\(x_i-\\bar x\\) | \\(y_i-\\bar y\\) | Hasil kali | \\((x_i-\\bar x)^2\\) |\n|---:|---:|---:|---:|---:|---:|\n| 1 | 16 | \\(-1\\) | \\(+4\\) | \\(-4\\) | 1 |\n| 2 | 11 | \\(0\\) | \\(-1\\) | \\(0\\) | 0 |\n| 3 | 9 | \\(+1\\) | \\(-3\\) | \\(-3\\) | 1 |\n| **Jumlah** | | | | **\\(-7\\)** | **2** |\n\n\\[\n\\beta = \\frac{-7}{2} = -3.5.\n\\]\n\nJumlah suara negatif, jadi garisnya **turun** — masuk akal, karena motor makin tua makin murah. Satuan \\(\\beta\\) di sini adalah juta rupiah per tahun.\n\n(Intersepnya \\(\\alpha = 12 - (-3.5)(2) = 19\\) juta, yaitu taksiran harga motor berusia nol tahun.)"
+    },
+    {
+      "id": "S6",
+      "name": "Takaran gula kopi",
+      "type": "mc",
+      "prompt": "Sebuah kedai kopi ingin memodelkan skor rasa berdasarkan takaran gula. Ia mencatat lima gelas:\n\n| Takaran gula \\(x\\) (sendok) | Skor rasa \\(y\\) |\n|---:|---:|\n| 2 | 7 |\n| 2 | 9 |\n| 2 | 6 |\n| 2 | 8 |\n| 2 | 10 |\n\nApa yang terjadi ketika rumus kuadrat terkecil diterapkan pada data ini?",
+      "choices": [
+        "\\(\\beta = 0\\), karena semua takaran gula bernilai sama.",
+        "\\(\\beta = 8\\), yaitu rata-rata skor rasa.",
+        "\\(\\beta\\) tidak dapat dihitung, karena penyebut \\(\\sum(x_i-\\bar x)^2\\) bernilai nol.",
+        "\\(\\beta = 4\\), yaitu rata-rata skor dibagi takaran gula."
+      ],
+      "answer": 2,
+      "solution": "\\[\n\\bar x = 2, \\qquad x_i - \\bar x = 0 \\text{ untuk kelima gelas},\n\\]\n\n\\[\n\\sum (x_i-\\bar x)^2 = 0.\n\\]\n\nPenyebutnya nol, sehingga \\(\\beta\\) tidak terdefinisi. Pembagian dengan nol tidak menghasilkan 0 — ia tidak menghasilkan apa pun.\n\nSecara makna: seluruh data hanya memakai takaran gula 2 sendok. Data ini **tidak memuat sebaran mendatar sama sekali**, jadi tidak ada bukti apa pun tentang apa yang terjadi bila takaran gula diubah. Rumusnya menolak menjawab, dan penolakan itu benar."
+    }
+  ],
+  "number": 8
+}

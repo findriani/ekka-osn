@@ -1,0 +1,99 @@
+{
+  "id": "python-02b-list-tulis-02",
+  "group": "Latihan Python",
+  "title": "List & Penyalinan — Tulis Kode 02 (Sedang)",
+  "summary": "Topik 2, menulis kode, tingkat **sedang**. Inilah inti topik ini. Setiap fungsi di sini harus mengembalikan list **baru** dan meninggalkan list yang diberikan kepadanya **utuh**.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nPerhatikan uji yang berpasangan seperti ini:\n\n<pre class=\"code\">salin_lalu_tambah(_a := [1, 2, 3], 9) == [1, 2, 3, 9]\n_a == [1, 2, 3]</pre>\n\nTanda `:=` adalah cara singkat Python untuk **memberi nama sambil memakainya**. Baris pertama memanggil fungsimu dengan sebuah list yang diberi nama `_a`, lalu baris kedua memeriksa apakah `_a` **masih utuh** sesudahnya. Kalau fungsimu mengubah list yang diberikan kepadanya, baris pertama lolos tetapi baris kedua gagal — dan itulah yang sedang diuji.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `data[:]` dan `list(data)` sama-sama membuat **list baru** berisi hal yang sama.\n- `b = data` **tidak** menyalin — ia cuma nama kedua.\n- `sorted(data)` → list baru · `data.sort()` → mengubah aslinya, mengembalikan `None`\n- `a + b` → list baru · `a.extend(b)` dan `a += b` → mengubah `a`\n- Membangun list baru dari yang lama: `[n for n in data if syarat]`",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Titipan belanja",
+      "type": "code",
+      "prompt": "Budi mau menitip satu barang di daftar Ani, tetapi daftar Ani sendiri **tidak boleh berubah**.\n\nTulis `salin_lalu_tambah(data, x)` yang mengembalikan **list baru** berisi isi `data` ditambah `x` di akhir, tanpa mengubah `data`.",
+      "starter": "def salin_lalu_tambah(data, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "salin_lalu_tambah([1, 2, 3], 4) == [1, 2, 3, 4]",
+        "salin_lalu_tambah([], 5) == [5]",
+        "salin_lalu_tambah(_a := [1, 2, 3], 9) == [1, 2, 3, 9]",
+        "_a == [1, 2, 3]"
+      ],
+      "solution": "<pre class=\"kunci\">def salin_lalu_tambah(data, x):\n    baru = data[:]\n    baru.append(x)\n    return baru</pre>\n\n`data[:]` adalah irisan yang mengambil **semuanya** — dan karena setiap irisan menghasilkan list baru, itulah cara menyalin. `list(data)` sama saja.\n\nYang salah, dan kenapa:\n\n<pre class=\"code\">def salin_lalu_tambah(data, x):\n    data.append(x)\n    return data</pre>\n\nIni **lolos 3 dari 4 uji** — nilainya 75. Hasilnya memang selalu `[1, 2, 3, 4]`. Yang rusak adalah list milik pemanggil, dan **satu-satunya** uji yang menangkapnya adalah `_a == [1, 2, 3]`.\n\nRenungkan itu sebentar. Kalau ujinya cuma memeriksa nilai kembalian, kode yang diam-diam merusak data orang lain akan lolos dengan nilai **sempurna**. Bug seperti ini bisa hidup berbulan-bulan tanpa ada yang tahu.\n\nYang juga salah: `baru = data` lalu `baru.append(x)`. `baru` cuma nama kedua — persis Baca Kode 01 Soal 5. Tanda `[:]`-nya kecil dan gampang terlupa, dan justru itulah seluruh isi soal ini.\n\nVersi satu baris: `return data + [x]`, karena `+` pada list menghasilkan list baru."
+    },
+    {
+      "id": "S2",
+      "name": "Menyaring yang ganjil",
+      "type": "code",
+      "prompt": "Mesin sortir menyisihkan semua nomor ganjil, tetapi rekaman aslinya harus tetap tersimpan apa adanya.\n\nTulis `tanpa_ganjil(data)` yang mengembalikan **list baru** berisi hanya bilangan genap dari `data`, dengan urutan yang sama.",
+      "starter": "def tanpa_ganjil(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tanpa_ganjil([1, 2, 3, 4]) == [2, 4]",
+        "tanpa_ganjil([1, 3]) == []",
+        "tanpa_ganjil([]) == []",
+        "tanpa_ganjil(_b := [1, 2, 3]) == [2]",
+        "_b == [1, 2, 3]"
+      ],
+      "solution": "<pre class=\"kunci\">def tanpa_ganjil(data):\n    return [n for n in data if n % 2 == 0]</pre>\n\nIni **list comprehension**, dan artinya persis seperti bacaannya: \"ambil tiap `n` dari `data`, simpan kalau genap\". Hasilnya list baru; `data` tidak tersentuh.\n\nBentuk panjangnya sama benarnya:\n\n<pre class=\"code\">baru = []\nfor n in data:\n    if n % 2 == 0:\n        baru.append(n)\nreturn baru</pre>\n\nPerhatikan ini **pola akumulasi yang sama** dari Topik 1 — hanya wadahnya `[]` alih-alih `0`, dan diisi dengan `.append` alih-alih `+=`. Menjumlah, menghitung, menyaring: satu pola, tiga wadah.\n\nYang salah dan berbahaya:\n\n<pre class=\"code\">for n in data:\n    if n % 2 == 1:\n        data.remove(n)\nreturn data</pre>\n\nIni kode dari Baca Kode 02 Soal 4. Ia merusak `data` **dan** melewatkan isi, karena membuang sesuatu dari list yang sedang diulang akan menggeser sisanya. Jangan ubah — **bangun yang baru**."
+    },
+    {
+      "id": "S3",
+      "name": "Papan skor menurun",
+      "type": "code",
+      "prompt": "Papan skor menampilkan nilai dari besar ke kecil. Rekaman nilai aslinya, yang tersusun menurut nomor peserta, **tidak boleh diacak**.\n\nTulis `urut_menurun(data)` yang mengembalikan **list baru** berisi isi `data` terurut dari besar ke kecil.",
+      "starter": "def urut_menurun(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "urut_menurun([3, 1, 2]) == [3, 2, 1]",
+        "urut_menurun([5]) == [5]",
+        "urut_menurun([]) == []",
+        "urut_menurun(_c := [3, 1, 2]) == [3, 2, 1]",
+        "_c == [3, 1, 2]"
+      ],
+      "solution": "<pre class=\"kunci\">def urut_menurun(data):\n    return sorted(data, reverse=True)</pre>\n\n`sorted` mengembalikan list baru. Tambahkan `reverse=True` untuk urutan besar-ke-kecil.\n\nYang menggoda: `data.sort(reverse=True)` lalu `return data`. Itu **mengubah** list pemanggil, dan uji `_c == [3, 1, 2]` menangkapnya. Kalau kamu hanya menulis `return data.sort(reverse=True)`, hasilnya `None` dan semuanya gagal — pelajaran `None` untuk ketiga kalinya di topik ini.\n\nCara lain: `sorted(data)[::-1]` — urutkan naik, lalu balik. Sama benarnya, dua langkah, tetapi kalau kamu menemukannya sendiri berarti kamu menggabung dua alat yang berbeda. Bagus."
+    },
+    {
+      "id": "S4",
+      "name": "Tanpa nama kembar",
+      "type": "code",
+      "prompt": "Buku tamu punya nama yang tercatat dua kali. Panitia ingin daftar unik, tetapi **urutan kedatangan harus dipertahankan**.\n\nTulis `buang_kembar(data)` yang mengembalikan **list baru** tanpa isi kembar, mempertahankan urutan kemunculan **pertama**.",
+      "starter": "def buang_kembar(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "buang_kembar([1, 2, 1, 3, 2]) == [1, 2, 3]",
+        "buang_kembar([5, 5, 5]) == [5]",
+        "buang_kembar([3, 1, 2]) == [3, 1, 2]",
+        "buang_kembar([]) == []"
+      ],
+      "solution": "<pre class=\"kunci\">def buang_kembar(data):\n    baru = []\n    for n in data:\n        if n not in baru:\n            baru.append(n)\n    return baru</pre>\n\nPola akumulasi lagi, dengan syarat yang melihat ke **wadahnya sendiri**: simpan `n` hanya kalau ia belum ada di `baru`. Karena kita menelusuri `data` dari depan, yang tersimpan selalu kemunculan **pertama** — persis yang diminta.\n\nGodaan besarnya: `return list(set(data))`. Itu memang membuang yang kembar, dan **lolos 3 dari 4 uji**. Yang gagal hanya uji **ketiga**: `buang_kembar([3, 1, 2])` harus tetap `[3, 1, 2]`, tetapi `set` tidak punya urutan, dan `list(set([3, 1, 2]))` memberi `[1, 2, 3]`.\n\nPerhatikan kenapa tiga uji lainnya lolos. `[1, 2, 1, 3, 2]` kebetulan sudah menghasilkan `[1, 2, 3]` yang memang terurut; `[5, 5, 5]` cuma satu isi; `[]` kosong. Hanya `[3, 1, 2]` — yang **sengaja tidak terurut** — yang bisa membedakan.\n\nItu pelajaran pentingnya: **`set` membuang urutan**. Kalau soalnya bilang \"pertahankan urutan\", `set` tidak bisa dipakai sendirian. Uji ketiga ada khusus untuk itu, dan tanpanya `list(set(data))` akan mendapat nilai sempurna."
+    },
+    {
+      "id": "S5",
+      "name": "Menggabung dua kelas",
+      "type": "code",
+      "prompt": "Dua kelas digabung untuk satu kegiatan, tetapi daftar masing-masing kelas tetap dipakai untuk absen.\n\nTulis `gabung(a, b)` yang mengembalikan **list baru** berisi isi `a` diikuti isi `b`, tanpa mengubah `a` maupun `b`.",
+      "starter": "def gabung(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "gabung([1, 2], [3]) == [1, 2, 3]",
+        "gabung([], []) == []",
+        "gabung(_d := [1, 2], _e := [3]) == [1, 2, 3]",
+        "_d == [1, 2]",
+        "_e == [3]"
+      ],
+      "solution": "<pre class=\"kunci\">def gabung(a, b):\n    return a + b</pre>\n\n`+` pada dua list menghasilkan list **baru**. Kedua list asal tidak tersentuh — jadi soal ini gratis, asalkan kamu memakai alat yang benar.\n\nYang salah: `a.extend(b); return a`, atau `a += b; return a`. Keduanya menempelkan isi `b` ke dalam `a` **di tempat**, jadi list pemanggil ikut memanjang. Uji `_d == [1, 2]` menangkapnya.\n\nPerhatikan pasangan yang membingungkan ini:\n\n| yang kamu tulis | membuat list baru? |\n|---|---|\n| `c = a + b` | **ya** |\n| `a += b` | **tidak** — mengubah `a` |\n\nUntuk angka, `x = x + 1` dan `x += 1` sama persis. Untuk list, **tidak**. Ini salah satu sudut Python yang paling tajam."
+    },
+    {
+      "id": "S6",
+      "name": "Giliran bergeser",
+      "type": "code",
+      "prompt": "Setiap hari jadwal piket bergeser: yang kemarin paling akhir jadi paling awal, sisanya mundur satu.\n\nTulis `geser_kanan(data)` yang mengembalikan **list baru** dengan isi terakhir dipindah ke depan.",
+      "starter": "def geser_kanan(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "geser_kanan([1, 2, 3]) == [3, 1, 2]",
+        "geser_kanan([7]) == [7]",
+        "geser_kanan([]) == []",
+        "geser_kanan(_f := [1, 2, 3]) == [3, 1, 2]",
+        "_f == [1, 2, 3]"
+      ],
+      "solution": "<pre class=\"kunci\">def geser_kanan(data):\n    return data[-1:] + data[:-1]</pre>\n\nDipecah:\n\n- `data[-1:]` = isi terakhir, **sebagai list** → `[3]`\n- `data[:-1]` = semuanya kecuali yang terakhir → `[1, 2]`\n- disambung → `[3, 1, 2]`\n\nKenapa `data[-1:]` dan bukan `data[-1]`? Karena `data[-1]` memberi **angka** `3`, dan `3 + [1, 2]` adalah error. Irisan memberi list, dan list bisa disambung dengan list.\n\nSekarang bagian terbaiknya: uji `geser_kanan([])`. Cara yang \"kelihatan wajar\" —\n\n<pre class=\"code\">baru = data[:]\nakhir = baru.pop()\nbaru.insert(0, akhir)\nreturn baru</pre>\n\n— melempar `IndexError` pada list kosong, karena tidak ada yang bisa di-`pop`. Versi irisan **tidak**: `[][-1:]` adalah `[]`, `[][:-1]` adalah `[]`, dan `[] + []` adalah `[]`. Benar dengan sendirinya.\n\nIni pelajaran yang sama dengan `tiga_awal` di set mudah, dalam bentuk yang lebih besar: **indeks tunggal galak, irisan pemaaf**. Pilih alat yang benar dan kasus tepinya lenyap sendiri."
+    }
+  ],
+  "number": 20
+}

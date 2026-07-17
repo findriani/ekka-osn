@@ -1,0 +1,93 @@
+{
+  "id": "python-03b-fungsi-tulis-01",
+  "group": "Latihan Python",
+  "title": "Fungsi & Rumus — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 3, menulis kode, tingkat **mudah**. Semua jawabannya **satu baris**, dan tidak ada satu pun perulangan. Yang dilatih cuma satu hal: memindahkan rumus dari kertas ke dalam `return`.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nPakai `return`, **bukan** `print`. Kalau kamu menulis `print`, jawabannya akan terlihat benar di layar dan semua ujimu tetap gagal — persis seperti Baca Kode 01 Soal 3.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `n ** 2` kuadrat · `abs(x)` jarak dari nol, tandanya dibuang\n- `sum(data)` jumlah semua isi · `len(data)` banyaknya isi\n- Rata-rata: `sum(data) / len(data)` — **selalu `/`, jangan `//`**\n- Garis lurus: \\(\\hat y = a + b\\,x\\)\n- Sebuah rumus adalah **nilai**. Nilai bisa langsung dikembalikan; tidak perlu ditampung dulu.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Luas ubin",
+      "type": "code",
+      "prompt": "Tukang menghitung luas satu ubin persegi panjang.\n\nTulis `luas_persegi_panjang(p, l)` yang mengembalikan luasnya.",
+      "starter": "def luas_persegi_panjang(p, l):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "luas_persegi_panjang(3, 4) == 12",
+        "luas_persegi_panjang(5, 1) == 5",
+        "luas_persegi_panjang(0, 9) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def luas_persegi_panjang(p, l):\n    return p * l</pre>\n\nRumusnya sudah kamu tahu sejak SD. Yang baru cuma tempatnya: rumus itu diletakkan sesudah kata `return`.\n\nPerhatikan kamu **tidak perlu** menampung dulu:\n\n<pre class=\"code\">hasil = p * l\nreturn hasil</pre>\n\nItu benar, tetapi `p * l` sudah **berupa nilai** — ia tidak perlu diberi nama untuk bisa dikembalikan. Beri nama hanya kalau namanya menjelaskan sesuatu, atau kalau nilainya dipakai lebih dari sekali."
+    },
+    {
+      "id": "S2",
+      "name": "Kuadrat",
+      "type": "code",
+      "prompt": "Tulis `kuadrat(n)` yang mengembalikan `n` dipangkatkan dua.",
+      "starter": "def kuadrat(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "kuadrat(3) == 9",
+        "kuadrat(-4) == 16",
+        "kuadrat(0) == 0",
+        "kuadrat(1) == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def kuadrat(n):\n    return n ** 2</pre>\n\n`n ** 2` berarti \\(n^2\\). Bisa juga `n * n` — sama benarnya dan sama cepatnya.\n\nUji `kuadrat(-4) == 16` ada untuk satu alasan: **kuadrat membuang tanda**. Meleset ke bawah 4 dan meleset ke atas 4 sama-sama memberi 16. Itulah satu-satunya alasan MSE memakai kuadrat, dan kamu akan melihatnya lagi tiga kali di topik ini.\n\nPerhatikan juga apa yang **tidak** terjadi di sini. Baca Kode 02 Soal 3 menunjukkan `-2 ** 2` bernilai −4. Tetapi di sini, `n` sudah berisi −4 sebelum `**` bekerja, jadi hasilnya 16 dengan benar. Jebakan itu cuma menggigit kalau kamu mengetik angka negatifnya langsung, bukan lewat variabel."
+    },
+    {
+      "id": "S3",
+      "name": "Seberapa jauh",
+      "type": "code",
+      "prompt": "Dua pos berjajar di garis lurus. Yang ditanya cuma jaraknya, bukan siapa yang di kiri.\n\nTulis `selisih_mutlak(a, b)` yang mengembalikan jarak antara `a` dan `b` — selalu tidak negatif.",
+      "starter": "def selisih_mutlak(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "selisih_mutlak(10, 4) == 6",
+        "selisih_mutlak(4, 10) == 6",
+        "selisih_mutlak(5, 5) == 0",
+        "selisih_mutlak(-3, 2) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def selisih_mutlak(a, b):\n    return abs(a - b)</pre>\n\n`abs` membuang tandanya. Yang tersisa adalah jarak.\n\nYang salah: `return a - b`. Uji pertama lolos (10 − 4 = 6), lalu uji kedua memberi −6 dan gagal. Sekali lagi: satu uji tidak pernah cukup, dan uji kedua di sini adalah **uji pertama yang dibalik** — sengaja.\n\nYang juga sering ditulis, dan benar tetapi bertele-tele:\n\n<pre class=\"code\">if a &gt; b:\n    return a - b\nelse:\n    return b - a</pre>\n\nEmpat baris untuk sesuatu yang sudah ada namanya. Kalau kamu menulis ini, kamu tidak salah — kamu cuma belum tahu `abs`. Sekarang sudah."
+    },
+    {
+      "id": "S4",
+      "name": "Garis tebakan",
+      "type": "code",
+      "prompt": "Sebuah garis regresi punya bentuk \\(\\hat y = a + b\\,x\\). Beri ia `a`, `b`, dan sebuah `x`, dan ia menebak `y`.\n\nTulis `prediksi(a, b, x)` yang mengembalikan tebakan garis itu.",
+      "starter": "def prediksi(a, b, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "prediksi(5, 3, 2) == 11",
+        "prediksi(5, 3, 0) == 5",
+        "prediksi(0, 2, 4) == 8",
+        "prediksi(1, 1, 1) == 2"
+      ],
+      "solution": "<pre class=\"kunci\">def prediksi(a, b, x):\n    return a + b * x</pre>\n\nIni garis regresi, dan ia akan muncul di setiap soal sisa topik ini.\n\nPerkalian dikerjakan sebelum penjumlahan, sama seperti di matematika — jadi `a + b * x` sudah berarti \\(a + (b \\times x)\\). Tidak perlu kurung.\n\nYang salah, dan menarik: `return (a + b) * x`. Kode ini **lolos 2 dari 4 uji**:\n\n| uji | dengan `(a + b) * x` | |\n|---|---|---|\n| `prediksi(5, 3, 2) == 11` | \\((5+3) \\times 2 = 16\\) | gagal |\n| `prediksi(5, 3, 0) == 5` | \\((5+3) \\times 0 = 0\\) | gagal |\n| `prediksi(0, 2, 4) == 8` | \\((0+2) \\times 4 = 8\\) | **lolos** |\n| `prediksi(1, 1, 1) == 2` | \\((1+1) \\times 1 = 2\\) | **lolos** |\n\nLihat kenapa dua itu lolos. Yang ketiga lolos karena `a` kebetulan **0** — dan menambah nol tidak mengubah apa pun, jadi kedua rumus bertemu. Yang keempat lolos karena `a`, `b`, dan `x` semuanya **1**, dan pada angka 1 hampir semua rumus memberi jawaban yang sama.\n\nItu pelajaran tersendiri: **angka 0 dan 1 adalah saksi yang buruk**. Keduanya membuat perkalian dan penjumlahan berperilaku mirip, jadi rumus yang salah pun sering lolos. Kalau kamu menguji kodemu sendiri, pakai angka yang tidak istimewa.\n\nUji kedua yang paling tajam di sini. Titik \\(x = 0\\) adalah tempat garis memotong sumbu tegak, dan nilainya **harus** `a`. Versi salah memberi 0. Kalau fungsimu tidak memberi `a` saat `x = 0`, ia bukan garis \\(a + bx\\)."
+    },
+    {
+      "id": "S5",
+      "name": "Meleset berapa",
+      "type": "code",
+      "prompt": "Kenyataannya `y`, tebakan garisnya `y_topi`. Yang ditanya: melesetnya berapa, **dan ke arah mana**.\n\nTulis `galat(y, y_topi)` yang mengembalikan kenyataan dikurangi tebakan.",
+      "starter": "def galat(y, y_topi):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "galat(10, 8) == 2",
+        "galat(8, 10) == -2",
+        "galat(5, 5) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def galat(y, y_topi):\n    return y - y_topi</pre>\n\nUrutannya penting, dan tidak boleh ditebak: **kenyataan dikurangi tebakan**. Bukan sebaliknya.\n\nUji `galat(8, 10) == -2` memaksanya. Kalau kamu menulis `y_topi - y`, uji itu memberi +2 dan gagal.\n\nKenapa urutan ini yang dipilih dunia? Karena tandanya jadi punya arti: galat **positif** berarti kenyataannya di **atas** garis (garisnya menebak terlalu rendah), dan galat negatif berarti sebaliknya. Kalau dibalik, artinya jadi terbalik juga dan semua orang bingung.\n\nPerhatikan bahwa `galat` di sini **tidak** membuang tanda — beda dengan Soal 3. Itu disengaja. Tandanya baru dibuang nanti, saat dikuadratkan."
+    },
+    {
+      "id": "S6",
+      "name": "Rata-rata",
+      "type": "code",
+      "prompt": "Tulis `rata_rata(data)` yang mengembalikan rata-rata isi `data`. Dijamin `data` tidak pernah kosong.",
+      "starter": "def rata_rata(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "rata_rata([1, 2, 3]) == 2",
+        "rata_rata([1, 2]) == 1.5",
+        "rata_rata([1, 2, 2]) == 5 / 3",
+        "rata_rata([4]) == 4"
+      ],
+      "solution": "<pre class=\"kunci\">def rata_rata(data):\n    return sum(data) / len(data)</pre>\n\nSatu garis miring, bukan dua.\n\nKalau kamu menulis `//`, kodemu **lolos 2 dari 4 uji** — dan justru itu yang membuatnya berbahaya:\n\n| uji | dengan `//` | |\n|---|---|---|\n| `rata_rata([1, 2, 3]) == 2` | `6 // 3` = 2 | **lolos** |\n| `rata_rata([1, 2]) == 1.5` | `3 // 2` = 1 | gagal |\n| `rata_rata([1, 2, 2]) == 5 / 3` | `5 // 3` = 1 | gagal |\n| `rata_rata([4]) == 4` | `4 // 1` = 4 | **lolos** |\n\nDua uji yang lolos punya kesamaan: **hasilnya kebetulan bulat**. Selama datamu bagus, `//` terlihat benar seumur hidup. Uji kedua dan ketiga sengaja dipilih supaya hasilnya **tidak** bulat.\n\nPerhatikan `rata_rata([1, 2, 3]) == 2` tetap lolos walau `/` memberi `2.0`, bukan `2`. Python menganggap `2.0 == 2` benar — nilainya sama, cuma jenisnya beda. Jadi jangan pernah pakai `//` demi \"supaya bulat\"; kalau kamu memang butuh bilangan bulat, `round` di **paling akhir** yang benar."
+    }
+  ],
+  "number": 24
+}

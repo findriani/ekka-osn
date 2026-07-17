@@ -1,0 +1,92 @@
+{
+  "id": "meeting-01-latihan-probabilitas-isian-02",
+  "group": "Pertemuan 1",
+  "title": "Probabilitas 02",
+  "summary": "",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Bacalah format itu sebelum menulis jawaban — jawaban yang benar tetapi salah format dianggap salah.",
+  "formulas": "\\[\nP(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}.\n\\]\n\n\\[\nP(A\\mid B)=\\frac{P(B\\mid A)P(A)}{P(B)}.\n\\]\n\nUntuk memilih kelas, penyebut yang sama boleh diabaikan: bandingkan \\(P(\\text{bukti}\\mid C)P(C)\\).",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Pengunjung perpustakaan",
+      "type": "fill",
+      "prompt": "Di sebuah perpustakaan tercatat 120 pengunjung hari ini. Sebanyak 80 pengunjung meminjam buku, 50 pengunjung mengakses komputer, dan 30 pengunjung melakukan keduanya.\n\nJika seorang pengunjung diketahui mengakses komputer, berapa probabilitas ia juga meminjam buku?",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.6,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Penyebutnya adalah pengunjung yang mengakses komputer (50), bukan total pengunjung (120) dan bukan peminjam buku (80).\n\n\\[\nP(\\text{pinjam}\\mid\\text{komputer})=\\frac{30}{50}=0.6.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Alergi dan bersin",
+      "type": "fill",
+      "prompt": "Di suatu daerah, 15% penduduk memiliki alergi. Sebanyak 40% penduduk yang memiliki alergi mengalami bersin-bersin di pagi hari. Secara keseluruhan, 12% penduduk mengalami bersin-bersin di pagi hari.\n\nJika Rina mengalami bersin-bersin di pagi hari, berapa probabilitas Rina memiliki alergi?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen. Misalkan, \\(64.71\\%\\) ditulis `64`.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 50,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nP(\\text{alergi}\\mid\\text{bersin})\n=\\frac{0.40(0.15)}{0.12}\n=\\frac{0.06}{0.12}\n=0.5.\n\\]"
+    },
+    {
+      "id": "S3",
+      "name": "Motor mogok",
+      "type": "fill",
+      "prompt": "Sebuah bengkel sering menerima motor yang mogok. Dua penyebab paling umum adalah aki soak dan busi kotor.\n\n\\[\nP(\\text{aki soak})=0.30,\\qquad P(\\text{busi kotor})=0.70.\n\\]\n\n\\[\nP(\\text{mesin sulit distarter}\\mid\\text{aki soak})=0.90,\n\\]\n\n\\[\nP(\\text{mesin sulit distarter}\\mid\\text{busi kotor})=0.35.\n\\]\n\nSebuah motor datang dengan keluhan mesin sulit distarter. Penyebab manakah yang lebih mungkin?",
+      "hint": "Format Pengisian HANYA `aki` atau `busi`.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "aki"
+          ]
+        }
+      ],
+      "solution": "\\[\n\\text{aki}:\\;0.90(0.30)=0.270,\n\\qquad\n\\text{busi}:\\;0.35(0.70)=0.245.\n\\]\n\nPenyebut \\(P(\\text{sulit distarter})\\) tidak perlu dihitung: nilainya sama untuk kedua penyebab, sehingga tidak mengubah urutan. Perhatikan bahwa busi kotor jauh lebih sering terjadi (0.70 lawan 0.30), tetapi tetap kalah."
+    },
+    {
+      "id": "S4",
+      "name": "Telur retak",
+      "type": "fill",
+      "prompt": "Sebuah toko menjual telur dari dua peternakan. Sebanyak 70% telur berasal dari Peternakan A dan 30% dari Peternakan B. Dari telur Peternakan A, 4% retak. Dari telur Peternakan B, 10% retak.\n\nSeorang pembeli mengambil satu telur secara acak dan ternyata telur itu retak. Berapa probabilitas telur itu berasal dari Peternakan B?",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 3 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.517,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nP(\\text{retak})=0.70(0.04)+0.30(0.10)=0.028+0.030=0.058.\n\\]\n\n\\[\nP(B\\mid\\text{retak})=\\frac{0.030}{0.058}\\approx0.51724.\n\\]\n\nPeternakan B hanya memasok 30% telur, tetapi menyumbang lebih dari separuh telur retak."
+    },
+    {
+      "id": "S5",
+      "name": "Pengenalan wajah di stadion",
+      "type": "fill",
+      "prompt": "Sebuah sistem pengenalan wajah dipasang di pintu masuk stadion untuk mendeteksi penonton yang masuk daftar hitam. Hanya 1% penonton yang benar-benar masuk daftar hitam. Sistem ini menandai dengan benar 95% penonton yang masuk daftar hitam, tetapi juga salah menandai 5% penonton biasa sebagai daftar hitam.\n\nJika sistem menandai seorang penonton sebagai daftar hitam, berapa probabilitas penonton itu benar-benar masuk daftar hitam?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen, dibulatkan ke bawah.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 16,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nP(\\text{ditandai})=0.01(0.95)+0.99(0.05)=0.0095+0.0495=0.0590.\n\\]\n\n\\[\nP(\\text{daftar hitam}\\mid\\text{ditandai})=\\frac{0.0095}{0.0590}\\approx16.10\\%.\n\\]\n\nSistem yang terdengar akurat tetap menghasilkan banyak penandaan yang salah, karena kelas positifnya sangat jarang."
+    }
+  ],
+  "number": 2
+}

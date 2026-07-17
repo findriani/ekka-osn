@@ -1,0 +1,936 @@
+/* ==========================================================================
+   OSN AI — practice banks
+   Palette derives from matplotlib's tab10 cycle: the colour language these
+   students already read in every plot they make.
+   ========================================================================== */
+
+:root {
+  --paper:      #FAFAF7;
+  --panel:      #FFFFFF;
+  --ink:        #14181C;
+  --muted:      #6E7671;
+  --rule:       #DDE0DA;
+  --rule-soft:  #ECEEE9;
+
+  --blue:       #1F77B4;
+  --blue-wash:  #EAF2F8;
+  --orange:     #FF7F0E;
+  --orange-wash:#FFF3E6;
+  --green:      #2CA02C;
+  --green-wash: #EBF6EB;
+  --red:        #D62728;
+  --red-wash:   #FBEDED;
+
+  --display: "Space Grotesk", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --rail-w: 15rem;
+  --measure: 42rem;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper:      #15191D;
+  --panel:      #1D2329;
+  --ink:        #F2F4F0;
+  --muted:      #B4BCB5;
+  --rule:       #3A444B;
+  --rule-soft:  #293139;
+
+  --blue:       #64B5E9;
+  --blue-wash:  #19384C;
+  --orange:     #FFAD62;
+  --orange-wash:#4A301B;
+  --green:      #66C56B;
+  --green-wash: #1D4124;
+  --red:        #F47D7E;
+  --red-wash:   #482527;
+  color-scheme: dark;
+}
+
+[data-theme="dark"] .note.warn { color: #FFD4AB; }
+[data-theme="dark"] .note.ok { color: #B7F3BB; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The plotting-canvas grid. Present everywhere, almost invisible. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 60rem);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 60rem);
+}
+
+.shell { position: relative; z-index: 1; }
+
+a { color: var(--blue); }
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.15; margin: 0; }
+
+/* --- Utility type ------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* --- Masthead ----------------------------------------------------------- */
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 85%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.masthead-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.wordmark {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* A plot tick, drawn in the primary series colour. */
+.wordmark::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--blue);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--blue-wash);
+}
+
+.masthead .spacer { flex: 1; }
+
+.theme-toggle {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.theme-toggle:hover { border-color: var(--blue); color: var(--blue); }
+
+/* --- Page frames -------------------------------------------------------- */
+
+.page { max-width: 68rem; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
+.page-narrow { max-width: 46rem; }
+
+.page-head { margin-bottom: 1.5rem; }
+.page-head h1 {
+  font-size: clamp(1.875rem, 4vw, 2.5rem);
+  letter-spacing: -0.03em;
+  margin: 0.375rem 0 0.5rem;
+}
+.page-head p {
+  color: var(--muted);
+  max-width: var(--measure);
+  margin: 0;
+}
+
+/* --- Bank list ---------------------------------------------------------- */
+
+.bank-list { display: grid; gap: 0.125rem; max-width: 42rem; }
+
+.bank {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.bank:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px -6px rgba(31, 119, 180, 0.3);
+}
+
+.bank-num {
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--blue);
+  text-align: center;
+  padding: 0;
+  border: 1px solid var(--blue-wash);
+  background: var(--blue-wash);
+  border-radius: 3px;
+}
+
+.bank-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.125rem;
+}
+
+.bank-summary { color: var(--muted); font-size: 0.9375rem; margin: 0; line-height: 1.5; }
+
+.bank-meta {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.bank-done {
+  width: 1.125rem;
+  height: 1.125rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 0.375rem;
+  vertical-align: 0.08em;
+}
+
+.bank-arrow { color: var(--blue); font-size: 1rem; }
+
+/* --- Quiz layout: rail + column ---------------------------------------- */
+
+.quiz-layout {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 4rem;
+}
+
+/* ==========================================================================
+   SIGNATURE — the answer grid.
+   During the quiz each cell reads "answered?". After submitting, the same
+   cells re-read as "correct?". One instrument, two readings.
+   ========================================================================== */
+
+.rail { position: sticky; top: 1.5rem; }
+
+.rail-label { margin-bottom: 0.75rem; display: block; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.3125rem;
+  margin-bottom: 1.25rem;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.cell:hover { border-color: var(--ink); }
+
+/* answered, not yet graded */
+.cell.filled {
+  background: var(--blue-wash);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* graded readings */
+.cell.correct { background: var(--green); border-color: var(--green); color: #fff; }
+.cell.partial {
+  border-color: var(--green);
+  color: var(--green);
+  background: linear-gradient(135deg, var(--green-wash) 50%, var(--panel) 50%);
+}
+.cell.wrong { background: var(--red-wash); border-color: var(--red); color: var(--red); }
+
+/* Skipped reads as absence, not as failure: no colour, dashed edge. A student
+   who ran out of time and one who misunderstood need different responses. */
+.cell.skipped {
+  background: var(--paper);
+  border-style: dashed;
+  border-color: var(--rule);
+  color: var(--muted);
+}
+
+.rail-stat { display: flex; align-items: baseline; gap: 0.25rem; border-top: 1px solid var(--rule); padding-top: 0.875rem; }
+.rail-stat-value { font-family: var(--mono); font-size: 1.5rem; font-weight: 500; }
+.rail-stat-label { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+
+.formula-card {
+  margin-top: 1rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.formula-card[hidden] { display: none; }
+.formula-card .eyebrow { display: block; margin-bottom: 0.5rem; }
+.formula-card p { margin: 0.5rem 0; }
+.formula-card .katex-display { margin: 0.5rem 0; font-size: 0.9em; }
+.formula-card code { font-family: var(--mono); font-size: 0.9em; }
+
+/* --- Quiz head ---------------------------------------------------------- */
+
+.quiz-head { margin-bottom: 0.875rem; }
+.quiz-head h1 {
+  font-size: clamp(1.625rem, 3.5vw, 2.125rem);
+  letter-spacing: -0.025em;
+  margin: 0.375rem 0 0;
+}
+
+/* --- Name gate ---------------------------------------------------------- */
+
+.gate {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--orange);
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 0.875rem;
+}
+
+.gate label { display: block; margin-bottom: 0.5rem; font-size: 0.9375rem; }
+
+.field {
+  font-family: var(--body);
+  font-size: 1rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  width: 100%;
+  max-width: 22rem;
+}
+
+.field:focus { outline: 2px solid var(--blue); outline-offset: 0; border-color: var(--blue); }
+.field.invalid { border-color: var(--red); }
+
+/* --- Part divider ------------------------------------------------------- */
+
+.part-rule {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0 0.75rem;
+}
+.part-rule::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.part-rule:first-child { margin-top: 0; }
+
+/* Separate meetings clearly while keeping each meeting's bank rows compact. */
+#banks .group + .group .part-rule { margin-top: 2rem; }
+
+/* --- Question ----------------------------------------------------------- */
+
+.q {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.125rem 1.25rem;
+  margin-bottom: 0.5rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.q-head { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.625rem; }
+
+.q-id {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--blue);
+}
+
+.q-type {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.125rem 0.375rem;
+}
+
+.q-prompt > *:first-child { margin-top: 0; }
+.q-prompt > *:last-child { margin-bottom: 0; }
+.q-prompt p { margin: 0 0 0.75rem; }
+.q-prompt ul { margin: 0 0 0.75rem; padding-left: 1.25rem; }
+.q-prompt li { margin-bottom: 0.25rem; }
+.q-prompt code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--rule-soft);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+.q-image {
+  margin: 0.875rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.q-image img { display: block; width: 100%; height: auto; }
+
+/* Figures authored as inline SVG in the bank rather than as an image file.
+ * They draw with currentColor and carry no background, so they follow the
+ * theme instead of punching a white slab into the dark one. */
+.q-image svg { display: block; width: 100%; height: auto; }
+
+/* Code listings. The renderer has no ``` fence: it joins lines with spaces,
+   which would destroy indentation — the one thing Python cannot lose. Banks
+   therefore write <pre class="code">, which passes through as raw HTML. */
+pre.code {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  margin: 0.875rem 0;
+  padding: 0.75rem 0.875rem;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--blue);
+  border-radius: 3px;
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 4;
+}
+
+/* --- Code questions ----------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.code-q { margin-top: 0.875rem; }
+
+/* The tests are the specification, so they lead — she should read them before
+   she writes anything. Orange marks them as a rule to obey, matching .hint. */
+.code-q .uji {
+  padding: 0.75rem 0.875rem 0.125rem;
+  background: var(--orange-wash);
+  border: 1px solid var(--rule);
+  border-radius: 3px 3px 0 0;
+  border-bottom: 0;
+}
+.code-q .uji .eyebrow { display: block; margin-bottom: 0.5rem; }
+.code-q .uji pre.code {
+  margin: 0 0 0.75rem;
+  background: var(--panel);
+  border-left-color: var(--orange);
+}
+
+.code-input {
+  display: block;
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  tab-size: 4;
+  padding: 0.75rem 0.875rem;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  resize: vertical;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+.code-input:focus { outline: 2px solid var(--blue); outline-offset: -2px; border-color: var(--blue); }
+.code-input:read-only { background: var(--rule-soft); color: var(--muted); }
+
+.code-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--rule);
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
+  background: var(--rule-soft);
+}
+.btn-run { padding: 0.3125rem 0.875rem; font-size: 0.8125rem; }
+
+.run-status { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.run-status.ok { color: var(--green); }
+.run-status.no { color: var(--red); }
+
+.code-help {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.run-out { margin-top: 0.75rem; }
+
+.uji-hasil { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
+.uji-hasil li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.375rem 0.625rem;
+  border-radius: 3px;
+  font-size: 0.8125rem;
+}
+.uji-hasil li.ok { background: var(--green-wash); }
+.uji-hasil li.no { background: var(--red-wash); }
+.uji-hasil code { font-family: var(--mono); font-size: 0.75rem; }
+.uji-hasil .tick { font-family: var(--mono); font-weight: 700; }
+.uji-hasil li.ok .tick { color: var(--green); }
+.uji-hasil li.no .tick { color: var(--red); }
+.uji-hasil .err {
+  grid-column: 2;
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--red);
+}
+
+.run-fatal pre.code { border-left-color: var(--red); background: var(--red-wash); margin-top: 0.375rem; }
+.run-stdout pre.code { border-left-color: var(--muted); margin-top: 0.375rem; }
+.run-fatal .eyebrow, .run-stdout .eyebrow { display: block; }
+.run-stdout { margin-top: 0.75rem; }
+
+/* --- Choices ------------------------------------------------------------ */
+
+.choices { display: grid; gap: 0.375rem; margin-top: 0.875rem; }
+
+.choice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.12s, background-color 0.12s;
+}
+
+.choice:hover { border-color: var(--blue); background: var(--blue-wash); }
+.choice input { margin: 0; accent-color: var(--blue); }
+.choice-key { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); }
+.choice.picked { border-color: var(--blue); background: var(--blue-wash); }
+
+/* graded */
+.choice.is-answer { border-color: var(--green); background: var(--green-wash); }
+.choice.is-wrong  { border-color: var(--red);   background: var(--red-wash); }
+
+.verdict {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  grid-column: 2;
+}
+.is-answer .verdict { color: var(--green); }
+.is-wrong .verdict { color: var(--red); }
+
+/* --- Blanks ------------------------------------------------------------- */
+
+.blanks { display: grid; gap: 0.5rem; margin-top: 0.875rem; }
+
+.blank {
+  display: grid;
+  grid-template-columns: auto 11rem;
+  justify-content: end;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.blank:last-child { border-bottom: 0; }
+
+.blank-label { font-size: 0.9375rem; text-align: right; }
+.blank input { font-family: var(--mono); font-size: 0.9375rem; }
+
+.blank-mark {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  grid-column: 2;
+  padding-top: 0.125rem;
+}
+.blank-mark.ok { color: var(--green); }
+.blank-mark.no { color: var(--red); }
+
+.blank input.ok { border-color: var(--green); background: var(--green-wash); }
+.blank input.no { border-color: var(--red);   background: var(--red-wash); }
+
+/* --- Solution ----------------------------------------------------------- */
+
+.sol-toggle {
+  margin-top: 0.875rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.4375rem 0.75rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.12s, color 0.12s;
+}
+.sol-toggle:hover { border-color: var(--orange); color: var(--orange); }
+.sol-toggle[aria-expanded="true"] { border-color: var(--orange); color: var(--orange); }
+
+.sol {
+  margin-top: 1rem;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  border-left: 3px solid var(--orange);
+  background: var(--orange-wash);
+  border-radius: 0 3px 3px 0;
+  font-size: 0.9375rem;
+}
+.sol[hidden] { display: none; }
+.sol > *:first-child { margin-top: 0; }
+.sol > *:last-child { margin-bottom: 0; }
+.sol p { margin: 0 0 0.75rem; }
+.sol ul, .sol ol { margin: 0 0 0.75rem; padding-left: 1.25rem; }
+.sol li { margin-bottom: 0.375rem; }
+.sol code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: rgba(255, 127, 14, 0.13);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.btn {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.6875rem 1.25rem;
+  border-radius: 3px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.12s, border-color 0.12s, color 0.12s;
+}
+.btn:hover { background: var(--blue); border-color: var(--blue); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:disabled:hover { background: var(--ink); border-color: var(--ink); }
+
+.btn-ghost { background: none; color: var(--ink); border-color: var(--rule); }
+.btn-ghost:hover { background: none; border-color: var(--ink); color: var(--ink); }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* --- Result banner ------------------------------------------------------ */
+
+.result {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--green);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 1.5rem;
+}
+.result[hidden] { display: none; }
+
+.result-score {
+  font-family: var(--mono);
+  font-size: clamp(2.25rem, 6vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 0.5rem 0;
+}
+.result-score .of { color: var(--muted); font-size: 0.4em; }
+.result-line { color: var(--muted); font-size: 0.9375rem; margin: 0; }
+
+.note {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
+}
+.note.warn { background: var(--orange-wash); color: #8a4400; }
+.note.ok { background: var(--green-wash); color: #1a6b1a; }
+.note[hidden] { display: none; }
+
+/* --- Admin table -------------------------------------------------------- */
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--panel);
+}
+
+table { border-collapse: collapse; width: 100%; font-size: 0.875rem; }
+
+th {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--rule-soft); }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--paper); }
+td.num { font-family: var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+
+.pct { font-family: var(--mono); font-weight: 500; }
+.pct.hi { color: var(--green); }
+.pct.mid { color: var(--orange); }
+.pct.lo { color: var(--red); }
+
+.empty { padding: 3rem 1.5rem; text-align: center; color: var(--muted); }
+
+/* --- Instructions (Petunjuk jawaban) ------------------------------------ */
+
+/* These banks mark a right value in the wrong format as wrong, so the format
+   rules are load-bearing content, not boilerplate. */
+.instructions {
+  background: var(--blue-wash);
+  border: 1px solid color-mix(in srgb, var(--blue) 25%, transparent);
+  border-radius: 4px;
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.875rem;
+  font-size: 0.9375rem;
+}
+.instructions > *:first-child { margin-top: 0; }
+.instructions > *:last-child { margin-bottom: 0; }
+.instructions p { margin: 0 0 0.5rem; }
+.instructions code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: rgba(31, 119, 180, 0.14);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+.q-name {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--orange);
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* Fill-in format rules sit under the field they describe, not under the prompt. */
+.blanks + .hint {
+  width: 11rem;
+  margin: 0.375rem 0 0 auto;
+  text-align: right;
+}
+
+/* --- Rich content: tables and quotes ------------------------------------ */
+
+.table-scroll {
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+
+.table-scroll table { font-size: 0.875rem; width: 100%; }
+
+/* Reset the admin-table treatment: headers here hold math, not field names. */
+.table-scroll th {
+  font-family: var(--body);
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  font-weight: 600;
+  background: var(--rule-soft);
+  padding: 0.5rem 0.75rem;
+  white-space: normal;
+}
+.table-scroll td { padding: 0.5rem 0.75rem; }
+.table-scroll tbody tr:hover { background: transparent; }
+
+.sol .table-scroll { border-color: color-mix(in srgb, var(--orange) 30%, transparent); }
+.sol .table-scroll th { background: rgba(255, 127, 14, 0.1); }
+.sol .table-scroll td { border-bottom-color: rgba(255, 127, 14, 0.15); }
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--blue);
+  background: var(--blue-wash);
+  border-radius: 0 3px 3px 0;
+}
+blockquote p { margin: 0; }
+
+/* --- KaTeX ------------------------------------------------------------- */
+
+.katex { font-size: 1.03em; }
+.katex-display { margin: 0.875rem 0; overflow-x: auto; overflow-y: hidden; padding: 0.125rem 0; }
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 60rem) {
+  .quiz-layout { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+
+  /* Grid/flex children default to min-width:auto, so the 18 cells would set a
+     min-content floor wider than a phone and push the whole layout sideways. */
+  .rail, .grid { min-width: 0; }
+
+  .rail {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.75rem 0;
+    margin: 0 -1.5rem;
+    padding-inline: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+
+  .rail-label { display: none; }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(1.25rem, 1fr));
+    margin-bottom: 0;
+    grid-column: 1;
+  }
+
+  .cell { font-size: 0; }
+
+  .rail-stat { grid-column: 2; grid-row: 1; border-top: 0; padding-top: 0; text-align: right; white-space: nowrap; }
+  .rail-stat-value { font-size: 1.125rem; }
+  .rail-stat-label { display: inline; }
+  .formula-card { grid-column: 1 / -1; margin-top: 0; padding-top: 0.5rem; }
+}
+
+@media (max-width: 40rem) {
+  body { font-size: 1rem; }
+  .masthead-inner { padding: 0.625rem 1.25rem; }
+  .page { padding: 1.25rem 1.25rem 3rem; }
+  .quiz-layout { padding: 1rem 1.25rem 3rem; }
+  .rail { margin: 0 -1.25rem; padding-inline: 1.25rem; }
+  .q { padding: 1rem; }
+  .bank { grid-template-columns: 2.25rem 1fr; gap: 0.5rem; padding: 0.25rem; }
+  .bank-meta, .bank-arrow { display: none; }
+  .blank { grid-template-columns: auto minmax(9rem, 11rem); gap: 0.5rem; }
+  .blank-mark { grid-column: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .rail, .actions, .sol-toggle, .masthead { display: none; }
+  .sol[hidden] { display: block !important; }
+  body::before { display: none; }
+}

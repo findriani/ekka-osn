@@ -1,0 +1,101 @@
+{
+  "id": "python-04a-string-baca-01",
+  "group": "Latihan Python",
+  "title": "String & DNA — Baca Kode 01",
+  "summary": "Topik 4, membaca kode. Sebuah untai DNA adalah **teks**: `\"AGCTTAGC\"`. Soal 26–40 seleksi 2025 seluruhnya dibangun di atas teks seperti itu — dihitung basanya, dipotong-potong, dibandingkan satu sama lain.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal DNA, tulis untainya di kertas dengan nomor indeks di atas tiap huruf. Sebagian besar jebakan di topik ini lenyap begitu kamu melihat nomornya.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali kalau yang diminta berupa untai — tulis untainya apa adanya, misalnya `AGCT`. Untuk pilihan ganda, tulis hurufnya.",
+  "formulas": "- `len(dna)` panjangnya · `dna[0]` basa pertama · `dna[-1]` basa terakhir\n- `dna[a:b]` dari indeks `a` sampai **sebelum** `b` · `dna[::-1]` urutan terbalik\n- `dna.count(\"A\")` banyaknya A\n- `\"ATG\" in dna` bernilai `True`/`False`\n- Teks **tidak bisa diubah**. Semua method-nya mengembalikan teks **baru**.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menghitung basa",
+      "type": "fill",
+      "prompt": "Untai di bawah memiliki beberapa basa A. Kode menjumlahkan panjang seluruh untai dengan banyaknya A yang muncul di dalamnya.\n\n<pre class=\"code\">dna = \"AGCTTAGC\"\nprint(len(dna) + dna.count(\"A\"))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 10,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| indeks | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n|---|---|---|---|---|---|---|---|---|\n| basa | **A** | G | C | T | T | **A** | G | C |\n\n- `len(dna)` = **8** — delapan basa\n- `dna.count(\"A\")` = **2** — A di indeks 0 dan 5\n\n8 + 2 = **10**.\n\nPerhatikan `len` dan `count` menjawab dua pertanyaan berbeda: \"berapa banyak semuanya\" dan \"berapa banyak yang ini\". Keduanya akan kamu pakai bersama di rumus kandungan GC, dan tertukar di situ akan memberi angka yang salah tanpa error."
+    },
+    {
+      "id": "S2",
+      "name": "Memotong untai",
+      "type": "fill",
+      "prompt": "Kode mengambil satu potongan dari tengah untai dan satu potongan dari ujung kanan, kemudian menyambungkannya. Tandai indeks tiap basa agar batas akhir irisannya tidak keliru.\n\n<pre class=\"code\">dna = \"AGCTTAGC\"\nprint(dna[2:5] + dna[-2:])</pre>\n\nUntai apa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "CTTGC"
+          ]
+        }
+      ],
+      "solution": "Dua irisan, lalu disambung.\n\n| | | hasil |\n|---|---|---|\n| `dna[2:5]` | indeks 2, 3, 4 — berhenti **sebelum** 5 | `\"CTT\"` |\n| `dna[-2:]` | dua terakhir | `\"GC\"` |\n\n`\"CTT\" + \"GC\"` = **`\"CTTGC\"`**.\n\nTanda `+` pada teks berarti **menyambung**, bukan menjumlahkan. Aturan irisannya sama persis dengan list di Topik 2 — tidak ada yang baru, cuma isinya huruf.\n\nJebakan yang sering: mengira `dna[2:5]` mengambil empat huruf. Ingat rumusnya: `dna[a:b]` berisi \\(b - a\\) isi. Di sini \\(5 - 2 = 3\\)."
+    },
+    {
+      "id": "S3",
+      "name": "Mengganti basa pertama",
+      "type": "mc",
+      "prompt": "Sebuah untai perlu diganti basa pertamanya dari A menjadi T. Karena teks tidak dapat diubah langsung pada satu posisinya, kita perlu membentuk untai baru dan menyimpannya kembali ke `dna`.\n\n<pre class=\"code\">dna = \"AGCT\"</pre>\n\nManakah yang membuat `dna` **menjadi** `\"TGCT\"`?",
+      "choices": [
+        "`dna[0] = \"T\"`",
+        "`dna = \"T\" + dna[1:]`",
+        "`dna.replace(\"A\", \"T\")`",
+        "`dna[0].replace(\"A\", \"T\")`"
+      ],
+      "answer": 1,
+      "solution": "| pilihan | apa yang terjadi |\n|---|---|\n| **A.** `dna[0] = \"T\"` | **`TypeError`** — teks tidak bisa diubah |\n| **B.** `dna = \"T\" + dna[1:]` | membuat teks baru, lalu memberi nama lama padanya ✓ |\n| **C.** `dna.replace(\"A\", \"T\")` | membuat `\"TGCT\"` — lalu **membuangnya** |\n| **D.** `dna[0].replace(\"A\", \"T\")` | membuat `\"T\"` — sehuruf, dan dibuang juga |\n\nInilah perbedaan besar antara teks dan list, dan seluruh sisa topik ini bergantung padanya.\n\n**List bisa diubah. Teks tidak.**\n\n<pre class=\"code\">data = [\"A\", \"G\"]\ndata[0] = \"T\"        # boleh\n\ndna = \"AG\"\ndna[0] = \"T\"         # TypeError</pre>\n\nKarena itu, tidak ada satu pun method teks yang mengubah teksnya. `.replace`, `.upper`, `.strip` — semuanya **membuat teks baru** dan mengembalikannya. Teks aslinya tidak tersentuh, selamanya.\n\nC adalah pilihan yang paling menggoda, dan justru itu gunanya. Ia **memang menghasilkan** `\"TGCT\"`. Masalahnya hasil itu tidak ditampung ke mana pun, jadi ia lahir dan langsung hilang. `dna` masih `\"AGCT\"`.\n\nSekarang sandingkan dengan pelajaran `.sort()` di Topik 2 dan rasakan bahwa keduanya **berlawanan arah**:\n\n| | mengubah aslinya | mengembalikan |\n|---|---|---|\n| `data.sort()` (list) | **ya** | `None` |\n| `dna.replace(...)` (teks) | **tidak** | teks baru |\n\nDua cara berbeda untuk gagal. Dengan list, kamu salah karena **menampung** hasilnya. Dengan teks, kamu salah karena **tidak menampungnya**. Kalau kamu bisa mengucapkan tabel ini dari ingatan, dua kelas bug terbesar di Python sudah lewat."
+    },
+    {
+      "id": "S4",
+      "name": "Membuang basa rusak",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya membuang semua basa `N` yang tidak terbaca. Untuk `bersihkan(\"AGNCT\")` hasilnya seharusnya `\"AGCT\"`, tetapi yang keluar adalah `\"AGNCT\"` — tanpa error apa pun. Perhatikan bahwa `replace` membuat teks baru; hasilnya perlu disimpan sebelum fungsi mengembalikannya.\n\n<pre class=\"code\">1  def bersihkan(dna):\n2      dna.replace(\"N\", \"\")\n3      return dna</pre>\n\nBaris nomor berapa yang hasilnya dibuang percuma?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Baris 2 memanggil `dna.replace(\"N\", \"\")`, yang **membuat** untai bersih `\"AGCT\"` — lalu tidak menyimpannya ke mana pun. Baris 3 mengembalikan `dna` yang masih utuh seperti semula.\n\nYang benar adalah menampungnya:\n\n<pre class=\"code\">def bersihkan(dna):\n    return dna.replace(\"N\", \"\")</pre>\n\nAtau, kalau ingin dua langkah: `dna = dna.replace(\"N\", \"\")` lalu `return dna`.\n\nPerhatikan tidak ada error sama sekali. Baris 2 adalah kode yang sah dan berjalan sempurna; ia cuma tidak berguna. Python tidak pernah memperingatkanmu kalau kamu membuang hasil sebuah perhitungan — mungkin saja kamu memang sengaja.\n\nIni kembaran Soal 3 pilihan C, dalam bentuk fungsi. Kalau kamu mengenali keduanya sebagai satu kesalahan yang sama, kamu sudah paham teks."
+    },
+    {
+      "id": "S5",
+      "name": "Menghitung G dan C",
+      "type": "fill",
+      "prompt": "Dalam analisis DNA, banyaknya basa G dan C sering dihitung bersama. Kode ini memeriksa setiap huruf dan menambah penghitung hanya ketika hurufnya G atau C.\n\n<pre class=\"code\">dna = \"AGCTTAGC\"\nhitung = 0\nfor basa in dna:\n    if basa == \"G\" or basa == \"C\":\n        hitung += 1\nprint(hitung)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| indeks | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n|---|---|---|---|---|---|---|---|---|\n| basa | A | **G** | **C** | T | T | A | **G** | **C** |\n\nEmpat basa yang berupa G atau C → **4**.\n\nDua hal yang dilatih.\n\n`for basa in dna` menelusuri teks **huruf per huruf**, persis seperti `for n in data` menelusuri list isi per isi. Kamu tidak perlu `range` dan tidak perlu indeks; teks sudah bisa ditelusuri langsung.\n\nDan `or` berarti \"salah satu saja sudah cukup\". Kalau kamu menulis `and`, syaratnya menjadi \"basa ini G **dan sekaligus** C\" — mustahil, dan `hitung` akan tetap 0 selamanya.\n\nKamu baru saja menghitung **kandungan GC**, ciri paling dasar sebuah untai DNA dan salah satu yang dipakai di Soal 26–40. Versi pendeknya: `dna.count(\"G\") + dna.count(\"C\")`."
+    },
+    {
+      "id": "S6",
+      "name": "Menghitung pasangan AA",
+      "type": "fill",
+      "prompt": "Untai ini berisi A berurutan. Perhatikan bahwa method `count` pada teks tidak menghitung dua pasangan yang memakai huruf A yang sama.\n\n<pre class=\"code\">dna = \"AAAAA\"\nprint(dna.count(\"AA\"))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Bukan 3, bukan 4. **2**.\n\nIni yang paling mengejutkan di seluruh topik, dan yang paling mahal kalau tidak diketahui.\n\n`.count` mencari kemunculan yang **tidak boleh tumpang tindih**. Setelah menemukan satu, ia melanjutkan pencarian dari **sesudah** yang barusan ditemukan:\n\n<pre class=\"code\">A A A A A\n^-^                 ketemu di indeks 0, lanjut cari dari indeks 2\n    ^-^             ketemu di indeks 2, lanjut cari dari indeks 4\n        ^           cuma sisa satu A — tidak cukup</pre>\n\nJadi hasilnya **2**.\n\nSekarang, kalau yang kamu maksud adalah \"ada berapa **jendela** dua huruf yang isinya `AA`\", jawabannya **4** — jendela di indeks 0, 1, 2, dan 3, semuanya `\"AA\"`, dan mereka saling tumpang tindih.\n\n<pre class=\"code\">A A A A A\n^-^                 indeks 0: AA\n  ^-^               indeks 1: AA\n    ^-^             indeks 2: AA\n      ^-^           indeks 3: AA</pre>\n\nDua pertanyaan berbeda, dua jawaban berbeda, dan `.count` cuma menjawab yang pertama.\n\nKenapa ini penting: di soal DNA, yang hampir selalu ditanyakan adalah versi **jendela** — berapa kali pola `\"AT\"` muncul di sepanjang untai, termasuk yang tumpang tindih. Kalau kamu memakai `.count`, kodemu berjalan mulus dan memberi angka yang terlalu kecil, dan untai yang tidak punya huruf berulang tidak akan memperlihatkan bedanya sama sekali.\n\nKamu akan menulis versi jendelanya sendiri di Tulis Kode 03 Soal 2. Untuk sekarang cukup ingat: **`.count` tidak menghitung yang tumpang tindih.**"
+    }
+  ],
+  "number": 27
+}

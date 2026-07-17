@@ -1,0 +1,23 @@
+{
+  "name": "osn-ai-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Practice question banks for OSN AI 2026, on Cloudflare Pages.",
+  "scripts": {
+    "banks": "node tools/build-banks.mjs",
+    "banks:check": "node tools/build-banks.mjs --check",
+    "vendor:pyodide": "node tools/vendor-pyodide.mjs",
+    "postinstall": "node tools/vendor-pyodide.mjs",
+    "dev": "wrangler pages dev",
+    "db:local": "wrangler d1 execute osn-ai-quiz --local --file=./schema.sql",
+    "db:remote": "wrangler d1 execute osn-ai-quiz --remote --file=./schema.sql",
+    "deploy": "wrangler pages deploy"
+  },
+  "dependencies": {
+    "katex": "^0.17.0",
+    "pyodide": "^314.0.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

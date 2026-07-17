@@ -1,0 +1,100 @@
+{
+  "id": "python-01a-alur-baca-02",
+  "group": "Latihan Python",
+  "title": "Control Flow dan Operator — Baca Kode 02",
+  "summary": "Topik 1, membaca kode, tingkat lanjut. Perulangan bersarang, `while`, dan sifat-sifat `//` dan `%` yang tidak selalu sesuai dugaan. Kalau Baca Kode 01 terasa mudah, mulailah dari sini.",
+  "instructions": "Kerjakan **tanpa komputer**, dengan tabel variabel di kertas. Soal-soal di sini dipilih justru karena jawaban \"yang kelihatannya masuk akal\" sering salah — jadi jangan menebak dari bentuknya, telusuri saja.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- Di Python, `%` selalu mengikuti tanda **pembagi**, bukan tanda yang dibagi. Jadi `-7 % 3` bernilai positif.\n- `a // b` membulatkan **ke bawah** (ke arah minus tak hingga), bukan memotong ke arah nol.\n- `while` berjalan selama syaratnya masih benar. Kalau tak ada yang mengubah syarat itu, ia tidak pernah berhenti.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Jadwal sparring",
+      "type": "fill",
+      "prompt": "Empat sasana diundi untuk saling bertanding. Pasangan `(i, j)` hanya dicatat kalau `i` lebih kecil dari `j`, supaya pertandingan yang sama tidak tercatat dua kali. Bayangkan tabel pasangan nomor sasana, lalu hitung hanya kotak yang memenuhi syarat itu.\n\n<pre class=\"code\">n = 0\nfor i in range(3):\n    for j in range(3):\n        if i &lt; j:\n            n += 1\nprint(n)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`i` dan `j` sama-sama berjalan dari 0 sampai 2, jadi ada sembilan pasangan. Yang memenuhi `i < j` hanya:\n\n| pasangan | `i < j`? |\n|---|---|\n| (0,1) | ya |\n| (0,2) | ya |\n| (1,2) | ya |\n\nTiga pasangan. Yang lain gagal karena `i` sama dengan `j` (tiga pasangan) atau `i` lebih besar (tiga pasangan) — 3 + 3 + 3 = 9, cocok.\n\nPola ini muncul lagi nanti di topik grid: dua perulangan bersarang, dengan satu syarat yang menyaring hasilnya. Kalau ragu, gambar saja tabel 3×3 dan centang kotaknya."
+    },
+    {
+      "id": "S2",
+      "name": "Lama perjalanan",
+      "type": "fill",
+      "prompt": "Sebuah bus menempuh 3.725 detik perjalanan, yaitu tiga ribu tujuh ratus dua puluh lima detik. Kode ini memecahnya menjadi jam dan menit, lalu menggabungkannya menjadi satu bilangan seperti penulisan waktu `jammenit`.\n\n<pre class=\"code\">detik = 3725\njam = detik // 3600\nsisa = detik % 3600\nmenit = sisa // 60\nprint(jam * 100 + menit)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 102,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Langkah demi langkah:\n\n- `jam = 3725 // 3600` = **1** (satu jam penuh)\n- `sisa = 3725 % 3600` = **125** detik\n- `menit = 125 // 60` = **2** (dua menit penuh, sisa 5 detik dibuang)\n- `1 * 100 + 2` = **102**\n\nPasangan `//` dan `%` bekerja bersama: `//` memberi \"berapa kali muat\", `%` memberi \"berapa yang tersisa\". Hampir setiap konversi satuan berbentuk seperti ini.\n\nJebakan yang biasa: menghitung `menit = 3725 // 60` = 62, lalu lupa bahwa 60 menit di antaranya sudah dihitung sebagai satu jam."
+    },
+    {
+      "id": "S3",
+      "name": "Utang arisan",
+      "type": "mc",
+      "prompt": "Bu Rina mencatat utang sebagai bilangan negatif. Ia mengira `-7 % 3` akan bernilai `-1`, seperti di kalkulatornya. Namun, aturan sisa pembagian Python berbeda; gunakan aturan Python yang tertulis pada Rumus cepat.\n\n<pre class=\"code\">print(-7 % 3)</pre>\n\nApa yang sebenarnya dicetak Python?",
+      "choices": [
+        "`-1`",
+        "`1`",
+        "`2`",
+        "`-2`"
+      ],
+      "answer": 2,
+      "solution": "Python mencetak **2**.\n\nDi Python, hasil `%` selalu **mengikuti tanda pembaginya**. Pembaginya 3 (positif), jadi hasilnya pasti 0, 1, atau 2 — tidak pernah negatif. Bahasa lain seperti C dan Java memberi `-1` di sini, dan kalkulator biasanya juga.\n\nAlasannya konsisten dengan `//`, yang membulatkan **ke bawah**: `-7 // 3` bernilai `-3` (bukan `-2`), dan `-3 * 3 + 2 = -7` benar. Kedua operator itu selalu cocok satu sama lain.\n\nAkibat praktisnya menyenangkan: `n % 2 == 0` tetap benar untuk bilangan negatif. `-4 % 2` bernilai 0, jadi kamu tidak perlu memberi perlakuan khusus untuk bilangan minus saat memeriksa genap-ganjil."
+    },
+    {
+      "id": "S4",
+      "name": "Permainan tebak angka",
+      "type": "fill",
+      "prompt": "Aturannya: kalau angkanya genap, bagi dua. Kalau ganjil, kalikan tiga lalu tambah satu. Ulangi sampai angkanya menjadi 1. Mulailah dari 6 dan catat perubahan nilai `n` satu per satu sebelum menghitung banyak langkahnya.\n\n<pre class=\"code\">n = 6\nlangkah = 0\nwhile n != 1:\n    if n % 2 == 0:\n        n = n // 2\n    else:\n        n = 3 * n + 1\n    langkah += 1\nprint(langkah)</pre>\n\nBerapa langkah yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| langkah | `n` sebelum | aturan | `n` sesudah |\n|---|---|---|---|\n| 1 | 6 | genap → bagi 2 | 3 |\n| 2 | 3 | ganjil → 3n+1 | 10 |\n| 3 | 10 | genap → bagi 2 | 5 |\n| 4 | 5 | ganjil → 3n+1 | 16 |\n| 5 | 16 | genap → bagi 2 | 8 |\n| 6 | 8 | genap → bagi 2 | 4 |\n| 7 | 4 | genap → bagi 2 | 2 |\n| 8 | 2 | genap → bagi 2 | 1 |\n\nSetelah `n` menjadi 1, syarat `n != 1` gagal dan perulangan berhenti. Delapan langkah.\n\nDua kesalahan yang biasa: menghitung keadaan awal sebagai satu langkah (memberi 9), atau berhenti di 2 (memberi 7). `langkah += 1` ada **di dalam** perulangan dan **setelah** perubahan, jadi yang dihitung adalah banyaknya perubahan."
+    },
+    {
+      "id": "S5",
+      "name": "Menghitung yang ganjil",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya menghitung berapa bilangan ganjil dari 1 sampai `n`, termasuk `n` sendiri. Untuk `hitung_ganjil(5)` jawabannya seharusnya `3` — yaitu 1, 3, dan 5 — tetapi kode ini memberi `2`. Periksa batas akhir pada `range`: apakah nilai `n` benar-benar ikut dikunjungi?\n\n<pre class=\"code\">1  def hitung_ganjil(n):\n2      count = 0\n3      for i in range(1, n):\n4          if i % 2 == 1:\n5              count += 1\n6      return count</pre>\n\nBaris nomor berapa yang harus diperbaiki?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`range(1, n)` berhenti **sebelum** `n`, jadi untuk `n = 5` isinya hanya 1, 2, 3, 4 — angka 5 tidak pernah ikut diperiksa. Yang ganjil tinggal 1 dan 3, sehingga hasilnya 2.\n\nPerbaikannya: `range(1, n + 1)`.\n\nSoalnya bilang \"termasuk `n` sendiri\", dan di situlah letak petunjuknya. Setiap kali sebuah soal mengatakan \"sampai N, termasuk N\", hampir pasti kamu butuh `n + 1` di dalam `range`."
+    },
+    {
+      "id": "S6",
+      "name": "Saldo e-wallet",
+      "type": "fill",
+      "prompt": "Aplikasi menolak transaksi yang akan membuat saldo menjadi minus, lalu lanjut ke transaksi berikutnya. Proses transaksi berlangsung sesuai urutan di dalam list; transaksi yang ditolak tidak mengubah saldo sama sekali.\n\n<pre class=\"code\">saldo = 100000\nfor transaksi in [-30000, -50000, -40000, 20000]:\n    if saldo + transaksi &lt; 0:\n        continue\n    saldo += transaksi\nprint(saldo)</pre>\n\nBerapa saldo akhir yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 40000,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| transaksi | `saldo + transaksi` | minus? | `saldo` |\n|---|---|---|---|\n| -30000 | 70000 | tidak | 70000 |\n| -50000 | 20000 | tidak | 20000 |\n| -40000 | **-20000** | ya → `continue` | 20000 (tetap) |\n| +20000 | 40000 | tidak | 40000 |\n\nTransaksi ketiga ditolak, jadi `saldo += transaksi` tidak pernah dijalankan untuk baris itu — dan yang penting, perulangannya **tetap lanjut**. Kalau `continue` diganti `break`, transaksi keempat tidak akan diproses dan hasilnya 20000.\n\nPerhatikan syaratnya memeriksa `saldo + transaksi`, bukan `saldo`. Memeriksa akibat sebelum melakukannya adalah pola yang akan kamu pakai lagi di topik grid, saat memeriksa batas sebelum melangkah."
+    }
+  ],
+  "number": 13
+}

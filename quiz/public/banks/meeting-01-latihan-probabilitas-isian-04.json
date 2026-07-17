@@ -1,0 +1,93 @@
+{
+  "id": "meeting-01-latihan-probabilitas-isian-04",
+  "group": "Pertemuan 1",
+  "title": "Probabilitas 04 — Naive Bayes",
+  "summary": "Fokus set ini: Naive Bayes dari nol — menghitung sendiri probabilitas dari tabel data latih, menggabungkan beberapa fitur, menangani frekuensi nol, tiga kelas, dan model komposisi untuk barisan.",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Bacalah format itu sebelum menulis jawaban — jawaban yang benar tetapi salah format dianggap salah.\n\nPada semua soal, Naive Bayes mengasumsikan setiap fitur **saling independen jika kelasnya diketahui**, sehingga\n\n\\[\nP(\\text{fitur}_1,\\text{fitur}_2,\\ldots\\mid C)=P(\\text{fitur}_1\\mid C)\\times P(\\text{fitur}_2\\mid C)\\times\\cdots\n\\]",
+  "formulas": "\\[\n\\operatorname{skor}(C)=P(C)\\prod_i P(f_i\\mid C).\n\\]\n\n\\[\nP(f\\mid C)=\\frac{\\text{banyak data di kelas }C\\text{ yang memiliki }f}{\\text{banyak data di kelas }C}.\n\\]\n\nPilih kelas dengan skor terbesar. Tanpa smoothing, satu frekuensi nol membuat skor kelas itu nol.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Kedai kopi",
+      "type": "fill",
+      "prompt": "Sebuah kedai kopi mencatat 10 pesanan terakhir beserta kondisi saat pesanan dibuat:\n\n| No | Cuaca | Waktu | Pesanan |\n|---:|---|---|---|\n| 1 | cerah | pagi | dingin |\n| 2 | cerah | sore | dingin |\n| 3 | cerah | sore | dingin |\n| 4 | hujan | pagi | panas |\n| 5 | hujan | pagi | panas |\n| 6 | hujan | sore | panas |\n| 7 | cerah | pagi | panas |\n| 8 | hujan | sore | dingin |\n| 9 | hujan | pagi | panas |\n| 10 | cerah | sore | dingin |\n\nSeorang pelanggan datang saat **cuaca hujan** pada **waktu pagi**. Menurut Naive Bayes, pesanan apakah yang paling mungkin?",
+      "hint": "Format Pengisian HANYA `panas` atau `dingin`.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "panas"
+          ]
+        }
+      ],
+      "solution": "Kelas `panas` ada pada baris 4, 5, 6, 7, 9 (5 pesanan). Kelas `dingin` ada pada baris 1, 2, 3, 8, 10 (5 pesanan).\n\n\\[\nP(\\texttt{panas})=\\tfrac{5}{10}=0.5,\\qquad\nP(\\texttt{dingin})=\\tfrac{5}{10}=0.5.\n\\]\n\nHitung probabilitas fitur dengan mencacah **di dalam tiap kelas**:\n\n\\[\nP(\\text{hujan}\\mid\\texttt{panas})=\\tfrac{4}{5}=0.8,\\qquad\nP(\\text{pagi}\\mid\\texttt{panas})=\\tfrac{4}{5}=0.8,\n\\]\n\n\\[\nP(\\text{hujan}\\mid\\texttt{dingin})=\\tfrac{1}{5}=0.2,\\qquad\nP(\\text{pagi}\\mid\\texttt{dingin})=\\tfrac{1}{5}=0.2.\n\\]\n\n\\[\nS_{\\texttt{panas}}=0.5(0.8)(0.8)=0.32,\n\\qquad\nS_{\\texttt{dingin}}=0.5(0.2)(0.2)=0.02.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Ulasan produk",
+      "type": "fill",
+      "prompt": "Sebuah sistem menilai apakah sebuah ulasan produk `ASLI` atau `PALSU`.\n\n\\[\nP(\\text{ASLI})=0.8,\\qquad P(\\text{PALSU})=0.2.\n\\]\n\nProbabilitas fitur diberikan berikut ini.\n\n| Fitur | ASLI | PALSU |\n|---|---:|---:|\n| Memuat kata “terbaik” | 0.3 | 0.7 |\n| Panjang kurang dari 20 kata | 0.2 | 0.6 |\n| Diberi 5 bintang | 0.4 | 0.9 |\n\nSebuah ulasan memuat kata “terbaik”, panjangnya kurang dari 20 kata, dan diberi 5 bintang. Berapa probabilitas ulasan itu termasuk kelas `PALSU` menurut model?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen, dibulatkan ke bawah.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 79,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nS_{\\text{ASLI}}=0.8(0.3)(0.2)(0.4)=0.0192\n\\]\n\n\\[\nS_{\\text{PALSU}}=0.2(0.7)(0.6)(0.9)=0.0756\n\\]\n\n\\[\nP(\\text{PALSU}\\mid\\text{bukti})=\\frac{0.0756}{0.0192+0.0756}=\\frac{0.0756}{0.0948}\\approx79.75\\%.\n\\]\n\nPrior sangat berpihak pada `ASLI` (0.8 lawan 0.2), tetapi tiga fitur sekaligus membalikkannya."
+    },
+    {
+      "id": "S3",
+      "name": "Frekuensi nol",
+      "type": "fill",
+      "prompt": "Sebuah sistem mengklasifikasikan pesan menjadi `SPAM` atau `BUKAN`. Dari data latih:\n\n- kelas `SPAM`: 5 pesan, dengan total 40 kata;\n- kelas `BUKAN`: 15 pesan, dengan total 60 kata.\n\nKata “hadiah” muncul 8 kali pada pesan `SPAM` dan **0 kali** pada pesan `BUKAN`. Ukuran kosakata adalah \\(V=20\\).\n\nDengan Laplace smoothing \\((\\alpha=1)\\), yaitu\n\n\\[\nP(w\\mid C)=\\frac{\\text{jumlah kemunculan }w\\text{ di }C+\\alpha}{\\text{total kata di }C+\\alpha V},\n\\]\n\nhitung \\(P(\\text{“hadiah”}\\mid\\texttt{BUKAN})\\).",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 4 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.0125,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nP(\\text{“hadiah”}\\mid\\texttt{BUKAN})=\\frac{0+1}{60+1(20)}=\\frac{1}{80}=0.0125.\n\\]\n\nTanpa smoothing hasilnya \\(0/60=0\\), sehingga skor kelas `BUKAN` menjadi **nol mutlak** — berapa pun bukti lain yang mendukung, satu kata yang belum pernah terlihat akan menghapus seluruh kelas. Inilah alasan smoothing diperlukan."
+    },
+    {
+      "id": "S4",
+      "name": "Diagnosis daun padi",
+      "type": "fill",
+      "prompt": "Sebuah aplikasi mendiagnosis kondisi daun padi menjadi `blas`, `hawar`, atau `sehat`.\n\n\\[\nP(\\text{blas})=0.2,\\qquad\nP(\\text{hawar})=0.3,\\qquad\nP(\\text{sehat})=0.5.\n\\]\n\n| Fitur | blas | hawar | sehat |\n|---|---:|---:|---:|\n| Ada bercak coklat | 0.8 | 0.6 | 0.05 |\n| Daun menguning | 0.3 | 0.7 | 0.1 |\n\nSehelai daun memiliki bercak coklat **dan** menguning. Kelas apakah yang dipilih model?",
+      "hint": "Format Pengisian HANYA `blas`, `hawar`, atau `sehat`.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "hawar"
+          ]
+        }
+      ],
+      "solution": "\\[\nS_{\\text{blas}}=0.2(0.8)(0.3)=0.048\n\\]\n\n\\[\nS_{\\text{hawar}}=0.3(0.6)(0.7)=0.126\n\\]\n\n\\[\nS_{\\text{sehat}}=0.5(0.05)(0.1)=0.0025\n\\]\n\nKelas `sehat` memiliki prior terbesar (0.5), tetapi kedua bukti hampir mustahil terjadi pada daun sehat, sehingga skornya runtuh."
+    },
+    {
+      "id": "S5",
+      "name": "Komposisi basa DNA",
+      "type": "fill",
+      "prompt": "Barisan DNA tersusun oleh empat basa nitrogen: A, T, G, dan C. Diketahui data latih dari dua spesies:\n\n| Spesies | A | T | G | C | Total basa |\n|---|---:|---:|---:|---:|---:|\n| Kucing | 16 | 14 | 5 | 5 | 40 |\n| Ikan | 5 | 5 | 15 | 15 | 40 |\n\nKedua spesies memiliki prior yang sama, yaitu \\(P(\\text{Kucing})=P(\\text{Ikan})=0.5\\).\n\nModel komposisi basa memperlakukan setiap basa dalam untai sebagai fitur yang independen jika spesiesnya diketahui:\n\n\\[\nP(\\text{untai}\\mid S)=\\prod_{b\\,\\in\\,\\text{untai}}P(b\\mid S).\n\\]\n\nDiberikan untai `GC`. Berapa probabilitas untai ini berasal dari spesies Ikan?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen, dibulatkan ke bawah.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 90,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nP(G\\mid\\text{Kucing})=\\tfrac{5}{40}=0.125,\\qquad\nP(C\\mid\\text{Kucing})=\\tfrac{5}{40}=0.125,\n\\]\n\n\\[\nP(G\\mid\\text{Ikan})=\\tfrac{15}{40}=0.375,\\qquad\nP(C\\mid\\text{Ikan})=\\tfrac{15}{40}=0.375.\n\\]\n\n\\[\nS_{\\text{Kucing}}=0.5(0.125)(0.125)=0.0078125\n\\]\n\n\\[\nS_{\\text{Ikan}}=0.5(0.375)(0.375)=0.0703125\n\\]\n\n\\[\nP(\\text{Ikan}\\mid\\texttt{GC})=\\frac{0.0703125}{0.0078125+0.0703125}=\\frac{0.0703125}{0.078125}=0.9.\n\\]"
+    }
+  ],
+  "number": 4
+}

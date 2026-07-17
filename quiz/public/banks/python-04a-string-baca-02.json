@@ -1,0 +1,101 @@
+{
+  "id": "python-04a-string-baca-02",
+  "group": "Latihan Python",
+  "title": "String & DNA — Baca Kode 02",
+  "summary": "Topik 4, membaca kode, tingkat lanjut. Sekarang alat yang sebenarnya dipakai di soal DNA: **jendela** yang bergeser sepanjang untai, dan **perbandingan** dua untai basa per basa.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal jendela, gambar untainya sekali lalu tandai tiap jendela dengan garis bawah. Kamu akan langsung melihat ada berapa.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali kalau yang diminta berupa untai — tulis untainya apa adanya. Untuk pilihan ganda, tulis hurufnya.",
+  "formulas": "- Jendela sepanjang `k` di untai sepanjang `n`: ada \\(n - k + 1\\) buah, di indeks `0` sampai `n - k`.\n- `dna[i:i+k]` adalah jendela ke-`i`.\n- `dna.count(pola)` **tidak** menghitung yang tumpang tindih; jendela **iya**.\n- `dna[::-1]` membalik urutan. Teks tidak punya `.reverse()`.\n- `round(x)` membulatkan ke **genap terdekat** kalau tepat di tengah.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menghitung jendela AA",
+      "type": "fill",
+      "prompt": "Kode menggeser jendela sepanjang dua basa dari kiri ke kanan. Karena jendelanya bergeser satu langkah setiap kali, dua kemunculan boleh saling tumpang tindih.\n\n<pre class=\"code\">dna = \"AAAA\"\nhitung = 0\nfor i in range(len(dna) - 1):\n    if dna[i:i + 2] == \"AA\":\n        hitung += 1\nprint(hitung)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`len(dna) - 1` adalah 3, jadi `i` bernilai 0, 1, 2 — tiga putaran, dan ketiga jendelanya `\"AA\"`:\n\n<pre class=\"code\">A A A A\n^-^                 i = 0: dna[0:2] = \"AA\"  ✓\n  ^-^               i = 1: dna[1:2+1] = \"AA\"  ✓\n    ^-^             i = 2: dna[2:4] = \"AA\"  ✓</pre>\n\nJawabannya **3**.\n\nSekarang bagian pentingnya. Bandingkan dengan `\"AAAA\".count(\"AA\")`, yang memberi **2**.\n\n| cara | hasil | kenapa |\n|---|---|---|\n| jendela (kode ini) | **3** | tiap posisi diperiksa, boleh tumpang tindih |\n| `.count(\"AA\")` | **2** | melompat ke sesudah yang barusan ketemu |\n\nKode yang sama, untai yang sama, dua angka yang berbeda. Inilah lanjutan Baca Kode 01 Soal 6, dan sekarang kamu melihat versi yang benar untuk soal DNA: **jendela**.\n\nRumus banyaknya jendela: untai sepanjang \\(n\\), jendela selebar \\(k\\), ada \\(n - k + 1\\) buah. Di sini \\(4 - 2 + 1 = 3\\). Kode ini menulisnya sebagai `range(len(dna) - 1)` karena \\(k = 2\\) — bentuk yang sama dengan pola tetangga di Topik 3 Baca Kode 02 Soal 6.\n\nKalau kamu menulis `range(len(dna))`, putaran terakhir mengambil `dna[3:5]`, yang cuma berisi `\"A\"` — sehuruf, tidak sama dengan `\"AA\"`, jadi tidak dihitung. Perhatikan: **tidak ada `IndexError`**. Irisan di luar batas tidak protes, ia cuma memberi apa adanya. Jawabannya kebetulan tetap 3, dan bug-nya lolos tanpa jejak.\n\nItu bahaya yang khas untuk teks: irisan terlalu pemaaf. Di list kamu akan kena error; di sini kamu cuma dapat untai pendek yang diam-diam tidak cocok."
+    },
+    {
+      "id": "S2",
+      "name": "Menyusun dari depan",
+      "type": "fill",
+      "prompt": "Setiap basa dibaca dari kiri ke kanan, tetapi selalu ditempatkan di depan `hasil`. Perhatikan bagaimana cara ini membalik urutan tanpa memakai irisan.\n\n<pre class=\"code\">dna = \"AGCT\"\nhasil = \"\"\nfor basa in dna:\n    hasil = basa + hasil\nprint(hasil)</pre>\n\nUntai apa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "TCGA"
+          ]
+        }
+      ],
+      "solution": "Kuncinya ada di urutan `basa + hasil`, bukan `hasil + basa`. Basa baru selalu dipasang di **depan**.\n\n| `basa` | `hasil` sesudahnya |\n|---|---|\n| A | `\"A\"` |\n| G | `\"GA\"` |\n| C | `\"CGA\"` |\n| T | `\"TCGA\"` |\n\nMenambah di depan berulang-ulang **membalik urutannya** — yang terakhir masuk berakhir paling depan.\n\nKalau kodenya `hasil = hasil + basa`, hasilnya `\"AGCT\"`, yaitu untai aslinya, dan kodenya jadi tidak berguna. Satu penukaran urutan, dua arti yang berlawanan.\n\nIni cara membalik untai dengan tangan. Cara yang benar tetap `dna[::-1]` — satu langkah, dan jauh lebih cepat karena tidak membuat teks baru di tiap putaran."
+    },
+    {
+      "id": "S3",
+      "name": "Membalik untai",
+      "type": "mc",
+      "prompt": "Untai perlu dibaca dari ujung kanan kembali ke ujung kiri. Pilih ekspresi yang benar-benar menghasilkan teks baru dengan urutan terbalik, bukan method milik list.\n\n<pre class=\"code\">dna = \"AGCTA\"</pre>\n\nManakah yang menghasilkan untai `\"ATCGA\"`?",
+      "choices": [
+        "`dna.reverse()`",
+        "`dna[::-1]`",
+        "`reversed(dna)`",
+        "`sorted(dna)`"
+      ],
+      "answer": 1,
+      "solution": "| pilihan | hasil |\n|---|---|\n| **A.** `dna.reverse()` | **`AttributeError`** — teks tidak punya `.reverse` |\n| **B.** `dna[::-1]` | `\"ATCGA\"` ✓ |\n| **C.** `reversed(dna)` | sebuah objek, bukan teks |\n| **D.** `sorted(dna)` | `['A', 'A', 'C', 'G', 'T']` — list, dan terurut |\n\nA adalah jebakan untuk orang yang baru selesai Topik 2. List **punya** `.reverse()`; teks tidak. Alasannya sudah kamu tahu: `.reverse()` membalik di tempat, dan teks tidak bisa diubah di tempat. Method yang mustahil itu tidak ada sama sekali.\n\nC menarik karena \"hampir\". `reversed(dna)` memang berisi hurufnya dalam urutan terbalik, tetapi bentuknya bukan teks — ia perlu dirakit dulu: `\"\".join(reversed(dna))`. Kalau kamu langsung mencetaknya, yang muncul semacam `<reversed object at 0x...>`.\n\nD memperlihatkan bedanya \"terbalik\" dan \"terurut\". `sorted` mengurutkan sesuai abjad, dan hasilnya **list huruf**, bukan teks. Dua kali salah sekaligus.\n\nAturan singkatnya: untuk membalik teks, cuma ada satu jawaban yang perlu diingat, dan itu `[::-1]`."
+    },
+    {
+      "id": "S4",
+      "name": "Menukar A dengan G",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya menukar setiap A menjadi G dan setiap G menjadi A. Untuk `tukar_ag(\"AG\")` hasilnya seharusnya `\"GA\"`, tetapi yang keluar adalah `\"AA\"` — tanpa error apa pun.\n\n<pre class=\"code\">1  def tukar_ag(dna):\n2      hasil = dna.replace(\"A\", \"G\")\n3      hasil = hasil.replace(\"G\", \"A\")\n4      return hasil</pre>\n\nBaris nomor berapa yang sudah tidak bisa lagi membedakan G asli dari G buatan baris 2?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Telusuri `tukar_ag(\"AG\")`:\n\n| baris | `hasil` sesudahnya | |\n|---|---|---|\n| 2 — `replace(\"A\", \"G\")` | `\"GG\"` | A jadi G — tetapi G yang lama **juga** masih G |\n| 3 — `replace(\"G\", \"A\")` | `\"AA\"` | **kedua** G jadi A, tak bisa dibedakan |\n\nYang keluar `\"AA\"`, bukan `\"GA\"`.\n\nKenapa jawabannya baris 3 dan bukan baris 2? Karena baris 2 sendiri melakukan persis yang diperintahkan, dan tidak salah apa-apa. Masalahnya muncul di baris 3: saat itu untainya berisi dua G, dan **tidak ada cara** membedakan mana yang dulunya A dan mana yang memang G sejak awal. Informasi itu sudah tercampur, dan baris 3 memperlakukan keduanya sama.\n\nIni pola kesalahan \"penukaran lewat perantara\" yang klasik. Kamu tidak bisa menukar dua benda dengan memindahkan satu ke tempat yang lain lalu balik lagi — perlu tempat ketiga.\n\nYang benar adalah menyusun untai baru huruf per huruf, sehingga tiap basa diputuskan **sekali** berdasarkan aslinya:\n\n<pre class=\"code\">def tukar_ag(dna):\n    hasil = \"\"\n    for basa in dna:\n        if basa == \"A\":\n            hasil += \"G\"\n        elif basa == \"G\":\n            hasil += \"A\"\n        else:\n            hasil += basa\n    return hasil</pre>\n\nPerhatikan `elif`, bukan `if` kedua. Dengan dua `if` terpisah, basa yang baru diubah menjadi G akan diperiksa lagi oleh syarat berikutnya — dan kamu kembali ke bug yang sama, di dalam satu putaran.\n\nIngat baik-baik. Komplemen DNA (A↔T, G↔C) adalah **dua penukaran sekaligus**, dan rantai `.replace` di sana gagal dengan cara yang persis sama. Kamu akan menulisnya dengan benar di Tulis Kode 02 Soal 3."
+    },
+    {
+      "id": "S5",
+      "name": "Membandingkan dua untai",
+      "type": "fill",
+      "prompt": "Dua untai sama panjang dibandingkan basa per basa. Setiap posisi yang hurufnya berbeda menambah satu pada penghitung `beda`; posisi yang sama tidak menambah apa pun.\n\n<pre class=\"code\">a = \"AGCTA\"\nb = \"AGGTT\"\nbeda = 0\nfor i in range(len(a)):\n    if a[i] != b[i]:\n        beda += 1\nprint(beda)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| indeks | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| `a` | A | G | **C** | T | **A** |\n| `b` | A | G | **G** | T | **T** |\n| beda? | | | ✓ | | ✓ |\n\nDua posisi berbeda → **2**.\n\nIni namanya **jarak Hamming**: ada berapa posisi yang isinya tidak sama. Ia mengukur seberapa mirip dua untai yang sama panjang, dan ia muncul di mana-mana — mencocokkan untai DNA, membandingkan kode, mencari mutasi.\n\nPerhatikan kodenya memakai `range(len(a))` dan bukan `for basa in a`. Alasannya: kamu butuh **posisi**, karena `a[i]` harus dibandingkan dengan `b[i]` yang **posisinya sama**. Menelusuri hurufnya saja tidak cukup — kamu tidak akan tahu sedang di mana.\n\nDan `!=` berarti \"tidak sama dengan\". Kalau kamu memakai `==`, kamu menghitung yang **cocok**, yaitu 3 — jawaban yang benar untuk pertanyaan yang lain."
+    },
+    {
+      "id": "S6",
+      "name": "Kandungan GC dalam persen",
+      "type": "fill",
+      "prompt": "Kandungan GC adalah persentase basa G dan C terhadap seluruh panjang untai. Kode menghitung G dan C lebih dulu, membaginya dengan panjang untai, lalu mengubahnya menjadi persen dan membulatkannya.\n\n<pre class=\"code\">dna = \"AGGCCTGA\"\ngc = dna.count(\"G\") + dna.count(\"C\")\nprint(round(gc / len(dna) * 100))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 62,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Bukan 63.\n\nHitung dulu:\n\n| indeks | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n|---|---|---|---|---|---|---|---|---|\n| basa | A | **G** | **G** | **C** | **C** | T | **G** | A |\n\n- `dna.count(\"G\")` = **3**\n- `dna.count(\"C\")` = **2**\n- `gc` = **5**, `len(dna)` = **8**\n\n\\(5 / 8 = 0.625\\), dikali 100 → **62.5**.\n\nDan `round(62.5)` adalah **62**, bukan 63 — karena Python membulatkan ke **genap terdekat** saat angkanya jatuh tepat di tengah. Ini jebakan yang sama dengan Topik 3 Baca Kode 02 Soal 2, sekarang muncul di tempatnya yang paling wajar: persentase.\n\nBukan kebetulan. Persentase adalah tempat `.5` paling sering muncul, karena penyebutnya kecil dan bulat. Untai sepanjang 8 hanya bisa memberi kelipatan 12.5 persen; separuhnya berakhir di `.5`. Untai sepanjang 4, 8, 16, atau 40 — semuanya rawan.\n\nTiga hal yang layak dicatat dari satu baris ini.\n\nPertama, `gc / len(dna)` memakai `/`. Dengan `//`, hasilnya `5 // 8` = 0, lalu dikali 100 → **0**. Bukan meleset sedikit — hancur total, dan tanpa error.\n\nKedua, urutannya `gc / len(dna) * 100`, dikerjakan dari kiri: bagi dulu, baru kali. Hasilnya sama saja kalau dibalik menjadi `gc * 100 / len(dna)`, dan yang kedua ini justru lebih aman dari pembulatan — tetapi kamu tetap harus tahu keduanya berakhir di 62.5.\n\nKetiga, `round` ada di **paling luar**, dikerjakan paling akhir. Itu yang benar. Kalau `round` diselipkan di tengah — misalnya `round(gc / len(dna)) * 100` — hasilnya `round(0.625) * 100` = **100**. Membulatkan terlalu awal, Topik 3 Baca Kode 02 Soal 4, sekarang dengan akibat yang jauh lebih parah."
+    }
+  ],
+  "number": 28
+}

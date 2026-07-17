@@ -1,0 +1,102 @@
+{
+  "id": "meeting-01c-latihan-pohon-01",
+  "group": "Pertemuan 1",
+  "title": "Pohon Keputusan 01",
+  "summary": "Sebuah koperasi jeruk siam Banjar di Barito Kuala menyortir panen menjadi dua jalur: **Ekspor** dan **Lokal**. Penyortiran dilakukan dengan **pohon keputusan**. Setiap buah diperiksa berdasarkan satu syarat, lalu mengikuti cabang `ya` atau `tidak` hingga tiba di daun yang menentukan jalur akhirnya.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama kelas**.\n\n- Untuk angka, tuliskan nilainya **tanpa pembulatan**. Semua jawaban pada set ini berupa desimal berhenti, misalnya `0.48`. Gunakan titik sebagai pemisah desimal.\n- Untuk nama kelas, tuliskan persis seperti pada soal: `Ekspor` atau `Lokal`.\n- Kelas positif pada set ini selalu **Ekspor**.",
+  "formulas": "\\[\n\\text{akurasi}=\\frac{TP+TN}{TP+TN+FP+FN}.\n\\]\n\n\\[\n\\text{precision}=\\frac{TP}{TP+FP},\\qquad\n\\text{recall}=\\frac{TP}{TP+FN}.\n\\]\n\nPrecision dibaca dari **kolom** prediksi positif; recall dibaca dari **baris** kelas positif yang sebenarnya.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Pohon penyortir koperasi",
+      "type": "fill",
+      "prompt": "Koperasi menggunakan pohon berikut untuk menentukan jalur setiap jeruk. Mulailah dari kotak paling atas. Jika syarat pada kotak terpenuhi, ikuti cabang `ya`; jika tidak, ikuti cabang `tidak`. Buah berhenti ketika mencapai kotak kelas **Ekspor** atau **Lokal**.\n\n<figure class=\"q-image\">\n<svg viewBox=\"0 0 700 348\" role=\"img\">\n  <title>Pohon keputusan penyortir jeruk siam Banjar</title>\n  <desc>Akar menguji diameter minimal 60 milimeter. Cabang tidak berakhir pada daun Lokal. Cabang ya menuju uji kadar gula minimal 11 derajat Brix. Cabang tidak dari situ berakhir pada daun Lokal. Cabang ya menuju uji cacat kulit maksimal 5 persen, yang bercabang ke daun Ekspor untuk ya dan daun Lokal untuk tidak.</desc>\n  <defs>\n    <marker id=\"pk-ar\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"5\" markerHeight=\"5\" orient=\"auto-start-reverse\">\n      <path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"currentColor\" opacity=\"0.55\"/>\n    </marker>\n  </defs>\n  <g font-family=\"ui-sans-serif, system-ui, sans-serif\" font-size=\"15\" text-anchor=\"middle\">\n    <rect x=\"175\" y=\"8\" width=\"210\" height=\"44\" rx=\"4\" fill=\"none\" stroke=\"#0072B2\" stroke-width=\"2\"/>\n    <text x=\"280\" y=\"36\" fill=\"currentColor\">diameter ≥ 60 mm?</text>\n    <g stroke=\"currentColor\" stroke-width=\"1.6\" opacity=\"0.55\" fill=\"none\">\n      <path d=\"M 280 52 L 280 74\"/>\n      <path d=\"M 280 74 L 120 74 L 120 98\" marker-end=\"url(#pk-ar)\"/>\n      <path d=\"M 280 74 L 430 74 L 430 98\" marker-end=\"url(#pk-ar)\"/>\n    </g>\n    <text x=\"198\" y=\"68\" font-size=\"13\" fill=\"currentColor\" opacity=\"0.8\">tidak</text>\n    <text x=\"356\" y=\"68\" font-size=\"13\" fill=\"currentColor\" opacity=\"0.8\">ya</text>\n    <rect x=\"65\" y=\"100\" width=\"110\" height=\"38\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" opacity=\"0.5\"/>\n    <text x=\"120\" y=\"124\" fill=\"currentColor\">Lokal</text>\n    <rect x=\"320\" y=\"100\" width=\"220\" height=\"44\" rx=\"4\" fill=\"none\" stroke=\"#0072B2\" stroke-width=\"2\"/>\n    <text x=\"430\" y=\"128\" fill=\"currentColor\">kadar gula ≥ 11 °Brix?</text>\n    <g stroke=\"currentColor\" stroke-width=\"1.6\" opacity=\"0.55\" fill=\"none\">\n      <path d=\"M 430 144 L 430 166\"/>\n      <path d=\"M 430 166 L 300 166 L 300 192\" marker-end=\"url(#pk-ar)\"/>\n      <path d=\"M 430 166 L 560 166 L 560 192\" marker-end=\"url(#pk-ar)\"/>\n    </g>\n    <text x=\"366\" y=\"160\" font-size=\"13\" fill=\"currentColor\" opacity=\"0.8\">tidak</text>\n    <text x=\"496\" y=\"160\" font-size=\"13\" fill=\"currentColor\" opacity=\"0.8\">ya</text>\n    <rect x=\"245\" y=\"194\" width=\"110\" height=\"38\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" opacity=\"0.5\"/>\n    <text x=\"300\" y=\"218\" fill=\"currentColor\">Lokal</text>\n    <rect x=\"460\" y=\"194\" width=\"200\" height=\"44\" rx=\"4\" fill=\"none\" stroke=\"#0072B2\" stroke-width=\"2\"/>\n    <text x=\"560\" y=\"222\" fill=\"currentColor\">cacat kulit ≤ 5%?</text>\n    <g stroke=\"currentColor\" stroke-width=\"1.6\" opacity=\"0.55\" fill=\"none\">\n      <path d=\"M 560 238 L 560 260\"/>\n      <path d=\"M 560 260 L 470 260 L 470 286\" marker-end=\"url(#pk-ar)\"/>\n      <path d=\"M 560 260 L 640 260 L 640 286\" marker-end=\"url(#pk-ar)\"/>\n    </g>\n    <text x=\"504\" y=\"254\" font-size=\"13\" fill=\"currentColor\" opacity=\"0.8\">ya</text>\n    <text x=\"606\" y=\"254\" font-size=\"13\" fill=\"currentColor\" opacity=\"0.8\">tidak</text>\n    <rect x=\"415\" y=\"288\" width=\"110\" height=\"38\" rx=\"4\" fill=\"none\" stroke=\"#D55E00\" stroke-width=\"2\"/>\n    <text x=\"470\" y=\"312\" fill=\"currentColor\">Ekspor</text>\n    <rect x=\"585\" y=\"288\" width=\"110\" height=\"38\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" opacity=\"0.5\"/>\n    <text x=\"640\" y=\"312\" fill=\"currentColor\">Lokal</text>\n  </g>\n</svg>\n</figure>\n\nSebuah jeruk yang baru dipanen memiliki diameter 64 mm, kadar gula 12 °Brix, dan cacat kulit 3%. Telusuri ketiga cirinya dari akar pohon hingga daun terakhir.\n\nKe daun mana buah ini berhenti?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "Ekspor"
+          ]
+        }
+      ],
+      "solution": "Telusuri satu per satu:\n\n1. diameter ≥ 60 mm? \\(64\\ge 60\\) → **ya**, ke kanan;\n2. kadar gula ≥ 11 °Brix? \\(12\\ge 11\\) → **ya**, ke kanan;\n3. cacat kulit ≤ 5%? \\(3\\le 5\\) → **ya**, ke kiri.\n\nBuah berhenti di daun **Ekspor**."
+    },
+    {
+      "id": "S2",
+      "name": "Sampai mana buah diperiksa",
+      "type": "fill",
+      "prompt": "Memeriksa cacat kulit memerlukan pengamatan satu per satu di bawah lampu, sehingga prosesnya paling lambat. Namun, tidak semua buah perlu melewati pemeriksaan ini: hanya buah yang lolos dua syarat sebelumnya yang akan sampai ke simpul cacat kulit.\n\nGunakan pohon pada Soal 1 untuk menyortir lima buah berikut. Untuk setiap buah, cukup telusuri sampai pohon menghentikannya; tidak perlu memeriksa ciri yang berada setelah daun tempat buah itu berhenti.\n\n| Jeruk | Diameter (mm) | Kadar gula (°Brix) | Cacat kulit (%) |\n|---|---:|---:|---:|\n| A | 63 | 12 | 2 |\n| B | 57 | 14 | 1 |\n| C | 61 | 9 | 3 |\n| D | 72 | 11 | 7 |\n| E | 60 | 13 | 6 |\n\nBerapa banyak di antara kelima buah itu yang sampai ke simpul **cacat kulit ≤ 5%?**",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Sebuah buah sampai ke simpul cacat kulit hanya jika ia lolos **dua** syarat sebelumnya.\n\n| Jeruk | diameter ≥ 60? | kadar gula ≥ 11? | Sampai ke simpul cacat? |\n|---|---|---|---|\n| A | 63 ≥ 60 → ya | 12 ≥ 11 → ya | **ya** |\n| B | 57 ≥ 60 → tidak | — | tidak, berhenti di daun Lokal |\n| C | 61 ≥ 60 → ya | 9 ≥ 11 → tidak | tidak, berhenti di daun Lokal |\n| D | 72 ≥ 60 → ya | 11 ≥ 11 → ya | **ya** |\n| E | 60 ≥ 60 → ya | 13 ≥ 11 → ya | **ya** |\n\nJawabannya **3**: A, D, dan E.\n\nDua baris di tabel itu berada tepat di batas. Jeruk D punya kadar gula **tepat** 11, dan jeruk E punya diameter **tepat** 60. Syaratnya memakai ≥, bukan >, sehingga keduanya **lolos**. Bila salah satu dibaca sebagai \"harus lebih besar\", jawabannya menjadi 1 atau 2."
+    },
+    {
+      "id": "S3",
+      "name": "Laporan bulan lalu",
+      "type": "fill",
+      "prompt": "Sepanjang bulan lalu, pohon penyortir digunakan untuk menilai 40 jeruk. Setelah itu, penyortir manusia memeriksa ulang setiap jeruk; penilaian manusia dianggap sebagai kelas sebenarnya. Hasil perbandingan antara prediksi pohon dan hasil pemeriksaan tersebut diringkas dalam confusion matrix berikut, dengan **Ekspor** sebagai kelas positif.\n\n| Aktual ↓ / Prediksi → | Ekspor | Lokal |\n|---|---:|---:|\n| **Ekspor** | 15 | 5 |\n| **Lokal** | 1 | 19 |\n\nBerapa **akurasi** pohon tersebut?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.85,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Dari tabel: \\(TP=15\\), \\(FN=5\\), \\(FP=1\\), \\(TN=19\\). Akurasi menjumlahkan **dua kotak yang benar**, yaitu diagonalnya, lalu membaginya dengan seluruh isi tabel.\n\n\\[\n\\text{akurasi}=\\frac{TP+TN}{40}=\\frac{15+19}{40}=\\frac{34}{40}=0.85.\n\\]\n\nJumlahkan dahulu seluruh isi tabel untuk memastikan: \\(15+5+1+19=40\\). Bila jumlahnya bukan 40, ada kotak yang salah dibaca.\n\nSekilas 0.85 terdengar bagus. Tetapi lihat baris pertama: dari 20 jeruk yang sebenarnya layak ekspor, 5 di antaranya dibuang ke jalur lokal. Recall-nya \\(15/20=0.75\\), dan setiap satuan dari 5 buah itu adalah uang yang hilang. Akurasi tinggi karena tabel ini juga memuat 19 jeruk lokal yang ditebak benar — dan menebak \"Lokal\" itu mudah."
+    },
+    {
+      "id": "S4",
+      "name": "Menguji pohon pada panen kemarin",
+      "type": "fill",
+      "prompt": "Delapan jeruk dari panen kemarin telah dinilai oleh penyortir manusia berpengalaman, dan penilaian itu dianggap benar. Sekarang gunakan pohon pada Soal 1 untuk membuat prediksi bagi delapan jeruk yang sama, lalu bandingkan prediksi tersebut dengan kelas sebenarnya.\n\n| Jeruk | Diameter (mm) | Kadar gula (°Brix) | Cacat kulit (%) | Kelas sebenarnya |\n|---|---:|---:|---:|---|\n| J1 | 64 | 12 | 3 | Ekspor |\n| J2 | 58 | 13 | 2 | Lokal |\n| J3 | 62 | 10 | 1 | Ekspor |\n| J4 | 70 | 11 | 8 | Lokal |\n| J5 | 66 | 14 | 5 | Ekspor |\n| J6 | 61 | 11 | 4 | Lokal |\n| J7 | 68 | 12 | 2 | Ekspor |\n| J8 | 55 | 15 | 1 | Ekspor |\n\nTelusuri kedelapan buah melalui pohon, lalu susun confusion matrix dengan **Ekspor** sebagai kelas positif. Setelah itu, hitung **precision**: dari semua buah yang diprediksi Ekspor, berapa bagian yang memang layak Ekspor?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.75,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Telusuri kedelapan buah melalui pohon Soal 1.\n\n| Jeruk | diameter ≥ 60? | gula ≥ 11? | cacat ≤ 5%? | Prediksi | Sebenarnya | Kotak |\n|---|---|---|---|---|---|---|\n| J1 | ya | ya | 3 → ya | Ekspor | Ekspor | TP |\n| J2 | 58 → tidak | — | — | Lokal | Lokal | TN |\n| J3 | ya | 10 → tidak | — | Lokal | Ekspor | FN |\n| J4 | ya | 11 → ya | 8 → tidak | Lokal | Lokal | TN |\n| J5 | ya | ya | 5 → ya | Ekspor | Ekspor | TP |\n| J6 | 61 → ya | 11 → ya | 4 → ya | Ekspor | Lokal | FP |\n| J7 | ya | ya | 2 → ya | Ekspor | Ekspor | TP |\n| J8 | 55 → tidak | — | — | Lokal | Ekspor | FN |\n\nConfusion matrix-nya:\n\n| Aktual ↓ / Prediksi → | Ekspor | Lokal |\n|---|---:|---:|\n| **Ekspor** | 3 | 2 |\n| **Lokal** | 1 | 2 |\n\n\\[\n\\text{precision}=\\frac{TP}{TP+FP}=\\frac{3}{3+1}=\\frac{3}{4}=0.75.\n\\]\n\nPrecision dibaca dari **kolom** Ekspor: dari empat buah yang dikirim pohon ke jalur ekspor, tiga memang layak dan satu (J6) tidak.\n\nPerhatikan J5: cacat kulitnya **tepat** 5, dan syaratnya ≤ 5, jadi ia lolos menjadi Ekspor. Perhatikan pula J8: kadar gulanya paling tinggi di seluruh tabel (15), tetapi diameternya 55 sehingga pohon menolaknya di syarat pertama dan tidak pernah melihat kadar gulanya. Pohon keputusan tidak menimbang-nimbang; ia berhenti pada syarat pertama yang gagal."
+    },
+    {
+      "id": "S5",
+      "name": "Menggeser satu ambang",
+      "type": "fill",
+      "prompt": "Koperasi mengeluh karena terlalu banyak jeruk yang sebenarnya layak ekspor justru masuk jalur Lokal. Seorang teknisi mengusulkan satu perubahan pada pohon Soal 1: **ambang diameter diturunkan dari 60 mm menjadi 55 mm**. Dua syarat lainnya tetap sama.\n\nGunakan pohon yang sudah diubah itu pada **delapan jeruk yang sama seperti Soal 4**. Susun confusion matrix yang baru, lalu hitung **recall**: dari semua jeruk yang sebenarnya layak Ekspor, berapa bagian yang berhasil dikenali sebagai Ekspor?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Hanya syarat pertama yang berubah: sekarang **diameter ≥ 55**. Telusuri ulang kedelapan buah.\n\n| Jeruk | diameter ≥ 55? | gula ≥ 11? | cacat ≤ 5%? | Prediksi | Sebenarnya | Kotak |\n|---|---|---|---|---|---|---|\n| J1 | 64 → ya | ya | ya | Ekspor | Ekspor | TP |\n| J2 | 58 → **ya** | 13 → ya | 2 → ya | **Ekspor** | Lokal | **FP** |\n| J3 | 62 → ya | 10 → tidak | — | Lokal | Ekspor | FN |\n| J4 | 70 → ya | 11 → ya | 8 → tidak | Lokal | Lokal | TN |\n| J5 | 66 → ya | ya | 5 → ya | Ekspor | Ekspor | TP |\n| J6 | 61 → ya | ya | 4 → ya | Ekspor | Lokal | FP |\n| J7 | 68 → ya | ya | ya | Ekspor | Ekspor | TP |\n| J8 | 55 → **ya** | 15 → ya | 1 → ya | **Ekspor** | Ekspor | **TP** |\n\nDua baris berpindah kotak, dan keduanya adalah buah yang dahulu ditolak di syarat pertama:\n\n- **J8** kini lolos (\\(55\\ge55\\), tepat di batas) dan ternyata memang layak → dahulu FN, kini **TP**;\n- **J2** juga kini lolos, tetapi ternyata tidak layak → dahulu TN, kini **FP**.\n\nConfusion matrix barunya:\n\n| Aktual ↓ / Prediksi → | Ekspor | Lokal |\n|---|---:|---:|\n| **Ekspor** | 4 | 1 |\n| **Lokal** | 2 | 1 |\n\n\\[\n\\text{recall}=\\frac{TP}{TP+FN}=\\frac{4}{4+1}=\\frac{4}{5}=0.8.\n\\]\n\nRecall naik dari \\(3/5=0.6\\) menjadi \\(4/5=0.8\\) — persis yang diminta koperasi. Tetapi periksa precision-nya: turun dari \\(3/4\\) menjadi \\(4/6\\). Ambang yang lebih longgar menangkap lebih banyak buah layak **dan** lebih banyak buah tak layak sekaligus. Tidak ada ambang yang memperbaiki keduanya; menggeser ambang hanya memindahkan kesalahan dari satu kotak ke kotak seberangnya. Yang harus diputuskan koperasi adalah kesalahan mana yang lebih mahal — membuang buah layak, atau mengirim buah tak layak ke kapal."
+    },
+    {
+      "id": "S6",
+      "name": "Dua pohon, satu keranjang uji",
+      "type": "fill",
+      "prompt": "Koperasi sedang memilih di antara dua pohon keputusan. Keduanya diuji pada keranjang yang sama, berisi 20 jeruk, dengan **Ekspor** sebagai kelas positif. Karena koperasi paling khawatir kehilangan jeruk yang sebenarnya layak ekspor, ukuran yang paling penting di sini adalah recall.\n\n**Pohon A**\n\n| Aktual ↓ / Prediksi → | Ekspor | Lokal |\n|---|---:|---:|\n| **Ekspor** | 3 | 7 |\n| **Lokal** | 1 | 9 |\n\n**Pohon B**\n\n| Aktual ↓ / Prediksi → | Ekspor | Lokal |\n|---|---:|---:|\n| **Ekspor** | 7 | 3 |\n| **Lokal** | 5 | 5 |\n\nHitung recall kedua pohon. Kemudian tuliskan **nilai recall milik pohon yang lebih baik** dalam menemukan jeruk yang sebenarnya layak Ekspor.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.7,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "**Pohon A:** \\(TP=3\\), \\(FN=7\\).\n\n\\[\n\\text{recall}_A=\\frac{3}{3+7}=\\frac{3}{10}=0.3.\n\\]\n\n**Pohon B:** \\(TP=7\\), \\(FN=3\\).\n\n\\[\n\\text{recall}_B=\\frac{7}{7+3}=\\frac{7}{10}=0.7.\n\\]\n\nPohon B jauh lebih unggul pada ukuran yang dipedulikan koperasi, jadi jawabannya **0.7**.\n\nSekarang hitung akurasi keduanya:\n\n\\[\n\\text{akurasi}_A=\\frac{3+9}{20}=\\frac{12}{20}=0.6,\n\\qquad\n\\text{akurasi}_B=\\frac{7+5}{20}=\\frac{12}{20}=0.6.\n\\]\n\n**Persis sama.** Bila koperasi hanya melihat akurasi, kedua pohon tampak kembar dan tidak ada alasan memilih salah satunya. Padahal Pohon A membuang 7 dari 10 buah layak ekspor ke jalur lokal, sedangkan Pohon B hanya membuang 3. Akurasi menyembunyikan perbedaan itu karena ia menjumlahkan dua jenis kebenaran yang harganya tidak sama."
+    }
+  ],
+  "number": 6
+}

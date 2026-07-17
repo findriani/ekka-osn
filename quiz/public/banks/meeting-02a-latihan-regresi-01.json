@@ -1,0 +1,103 @@
+{
+  "id": "meeting-02a-latihan-regresi-01",
+  "group": "Pertemuan 2",
+  "title": "Regresi 01",
+  "summary": "Fokus set ini: menghitung prediksi dari sebuah aturan, menghitung residual beserta **tandanya**, dan menyusun MSE langkah demi langkah. Semua soal dapat dikerjakan di atas kertas.",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Bacalah format itu sebelum menulis jawaban — jawaban yang benar tetapi salah format dianggap salah.\n\nUntuk soal pilihan ganda, pilih tombol jawaban yang benar.",
+  "formulas": "\\[\n\\hat y=\\alpha+\\beta x,\\qquad r=y-\\hat y.\n\\]\n\n\\[\n\\operatorname{MSE}=\\frac{1}{n}\\sum_{i=1}^{n}(y_i-\\hat y_i)^2.\n\\]\n\nUntuk satu tebakan tetap, gunakan \\(\\hat y=\\bar y\\). Jumlah residual nol belum tentu MSE kecil.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Angkringan Malioboro",
+      "type": "fill",
+      "prompt": "Sebuah angkringan memperkirakan jumlah porsi nasi kucing yang terjual setiap malam dengan aturan berikut:\n\n> perkiraan porsi terjual = 12 porsi dasar + 4 porsi untuk setiap jam angkringan buka\n\nMalam ini angkringan buka selama 7 jam.\n\nBerapa porsi yang diperkirakan terjual?",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 40,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\hat y = 12 + 4(7) = 12 + 28 = 40.\n\\]\n\nPerkalian dikerjakan sebelum penjumlahan."
+    },
+    {
+      "id": "S2",
+      "name": "Bengkel servis motor",
+      "type": "mc",
+      "prompt": "Sebuah bengkel memakai model untuk menaksir biaya servis. Untuk satu motor, model memprediksi biaya **Rp320.000**. Ternyata biaya sebenarnya adalah **Rp275.000**.\n\nManakah pernyataan yang benar tentang residual \\(r=y-\\hat y\\) pada kasus ini?",
+      "choices": [
+        "\\(r=+45.000\\); model memprediksi terlalu rendah.",
+        "\\(r=-45.000\\); artinya biaya servis motor tersebut bernilai negatif.",
+        "\\(r=+45.000\\); model memprediksi terlalu tinggi.",
+        "\\(r=-45.000\\); model memprediksi terlalu tinggi."
+      ],
+      "answer": 3,
+      "solution": "\\[\nr = y - \\hat y = 275.000 - 320.000 = -45.000.\n\\]\n\nResidual negatif berarti nilai **aktual lebih rendah** daripada prediksi — model menaksir terlalu tinggi.\n\nPilihan **B** adalah miskonsepsi yang sering muncul: residual negatif **tidak** berarti nilai yang diprediksi negatif. Biaya servisnya tetap Rp275.000, sebuah bilangan positif."
+    },
+    {
+      "id": "S3",
+      "name": "Pendakian Gunung Rinjani",
+      "type": "fill",
+      "prompt": "Seorang pendaki memakai aturan sederhana untuk menaksir suhu udara berdasarkan ketinggian:\n\n\\[\n\\hat y = 30 - x,\n\\]\n\ndengan \\(x\\) = ketinggian dalam **ratusan meter** dan \\(\\hat y\\) = suhu dalam °C.\n\nTiga pengukuran nyata dicatat sepanjang jalur pendakian:\n\n| Ketinggian \\(x\\) (ratus m) | Suhu terukur \\(y\\) (°C) |\n|---:|---:|\n| 5 | 26 |\n| 10 | 18 |\n| 15 | 16 |\n\nBerapa nilai MSE aturan tersebut pada tiga pengukuran ini?",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| \\(x\\) | \\(y\\) | \\(\\hat y = 30-x\\) | \\(r = y-\\hat y\\) | \\(r^2\\) |\n|---:|---:|---:|---:|---:|\n| 5 | 26 | 25 | \\(+1\\) | 1 |\n| 10 | 18 | 20 | \\(-2\\) | 4 |\n| 15 | 16 | 15 | \\(+1\\) | 1 |\n| | | | **Jumlah** | **6** |\n\n\\[\n\\operatorname{MSE} = \\frac{6}{3} = 2.\n\\]\n\nPerhatikan bahwa jumlah residualnya \\(1-2+1 = 0\\). Kalau residual dijumlahkan begitu saja, aturan ini tampak sempurna — padahal tidak."
+    },
+    {
+      "id": "S4",
+      "name": "Kerupuk jemur",
+      "type": "fill",
+      "prompt": "Seorang perajin kerupuk mencatat jumlah kaleng yang terjual selama lima hari:\n\n\\[\n14,\\quad 18,\\quad 11,\\quad 20,\\quad 12.\n\\]\n\nIa ingin menebak penjualan hari berikutnya dengan **satu bilangan tetap** saja, tanpa memakai informasi lain apa pun. Ia memilih bilangan yang membuat MSE sekecil mungkin.\n\nBilangan berapa yang harus ia pilih?",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 15,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Konstanta terbaik adalah **rata-rata** \\(\\bar y\\).\n\n\\[\n\\bar y = \\frac{14+18+11+20+12}{5} = \\frac{75}{5} = 15.\n\\]"
+    },
+    {
+      "id": "S5",
+      "name": "Fotokopi kampus",
+      "type": "mc",
+      "prompt": "Sebuah usaha fotokopi memakai model biaya\n\n\\[\n\\hat y = 2000 + 150x,\n\\]\n\ndengan \\(x\\) = jumlah lembar dan \\(\\hat y\\) = biaya dalam rupiah.\n\nApa arti angka **150** dalam model ini?",
+      "choices": [
+        "Tambahan biaya Rp150 untuk setiap satu lembar tambahan.",
+        "Biaya tetap Rp150 yang dikenakan sekali untuk setiap pesanan.",
+        "Total biaya rata-rata Rp150 untuk sebuah pesanan.",
+        "Jumlah lembar yang dapat difotokopi dengan uang Rp150."
+      ],
+      "answer": 0,
+      "solution": "Angka 150 adalah **kemiringan** \\(\\beta\\): perubahan biaya ketika jumlah lembar bertambah satu. Satuannya rupiah per lembar.\n\nAngka 2000 adalah **intersep** \\(\\alpha\\), yaitu biaya tetap yang tidak bergantung pada jumlah lembar."
+    },
+    {
+      "id": "S6",
+      "name": "Sablon kaos",
+      "type": "fill",
+      "prompt": "Sebuah usaha sablon mengevaluasi model penaksir waktu pengerjaan pada empat pesanan terakhir. Residual keempat pesanan tersebut (dalam jam) adalah\n\n\\[\n+3,\\quad -3,\\quad +4,\\quad -4.\n\\]\n\nPemilik usaha menjumlahkan keempat residual, memperoleh 0, lalu menyimpulkan bahwa modelnya sempurna.\n\nHitunglah MSE model tersebut untuk menunjukkan bahwa kesimpulan itu keliru.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 12.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\operatorname{MSE} = \\frac{3^2 + (-3)^2 + 4^2 + (-4)^2}{4}\n= \\frac{9+9+16+16}{4} = \\frac{50}{4} = 12.5.\n\\]\n\nKuadrat sebuah bilangan tidak pernah negatif, sehingga kesalahan tidak dapat saling meniadakan. Rata-rata kesalahan model ini justru cukup besar."
+    }
+  ],
+  "number": 7
+}

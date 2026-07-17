@@ -1,0 +1,86 @@
+{
+  "id": "meeting-01-latihan-probabilitas-isian-01",
+  "group": "Pertemuan 1",
+  "title": "Probabilitas 01",
+  "summary": "",
+  "instructions": "Tuliskan jawaban sebagai **bilangan bulat tanpa tanda persen**. Jika hasilnya berupa persen desimal, **bulatkan ke bawah**. Contoh: \\(64.71\\%\\) ditulis `64`.",
+  "formulas": "\\[\nP(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}.\n\\]\n\n\\[\nP(H_i\\mid E)=\\frac{P(E\\mid H_i)P(H_i)}{\\sum_j P(E\\mid H_j)P(H_j)}.\n\\]\n\nUntuk memilih kelas Naive Bayes, bandingkan \\(P(C)\\prod_i P(f_i\\mid C)\\) dan ambil yang terbesar.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Pembelian suvenir museum",
+      "type": "fill",
+      "prompt": "Pengelola sebuah museum ingin memperkirakan jumlah suvenir yang perlu disiapkan. Pola kunjungan dan pembelian suvenir berbeda antara hari kerja dan akhir pekan.\n\nDiketahui bahwa:\n\n- 70% pengunjung museum datang pada hari kerja;\n- 30% pengunjung museum datang pada akhir pekan;\n- 20% pengunjung hari kerja membeli suvenir; dan\n- 50% pengunjung akhir pekan membeli suvenir.\n\nBerapa probabilitas seorang pengunjung yang dipilih secara acak membeli suvenir?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 29,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n0.7(0.2)+0.3(0.5)=0.29.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Transportasi siswa",
+      "type": "fill",
+      "prompt": "Sebuah sekolah sedang mengevaluasi hubungan antara moda transportasi siswa dan waktu kedatangan mereka pada pagi hari.\n\nSebanyak 120 siswa datang ke sekolah:\n\n- 50 siswa menggunakan bus;\n- 70 siswa menggunakan transportasi lain;\n- 35 pengguna bus tiba sebelum pukul 07.00; dan\n- 28 pengguna transportasi lain tiba sebelum pukul 07.00.\n\nDipilih secara acak seorang siswa yang diketahui tiba sebelum pukul 07.00. Berapa probabilitas siswa tersebut menggunakan bus?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 55,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\frac{35}{35+28}=\\frac{35}{63}\\approx55.56\\%.\n\\]"
+    },
+    {
+      "id": "S3",
+      "name": "Pemeriksaan produk",
+      "type": "fill",
+      "prompt": "Tim pengendalian mutu menemukan sebuah barang cacat dan ingin menelusuri jalur produksi yang paling mungkin menghasilkan barang tersebut.\n\nSebuah pabrik menggunakan dua jalur produksi:\n\n- Jalur A memproduksi 60% barang, dengan tingkat cacat 2%; dan\n- Jalur B memproduksi 40% barang, dengan tingkat cacat 5%.\n\nSebuah barang dipilih dan ternyata cacat. Berapa probabilitas barang tersebut berasal dari Jalur B?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 62,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\frac{0.4(0.05)}{0.6(0.02)+0.4(0.05)}=0.625.\n\\]"
+    },
+    {
+      "id": "S4",
+      "name": "Tes antigen influenza",
+      "type": "fill",
+      "prompt": "Sebuah puskesmas menggunakan tes antigen influenza sebagai penyaringan awal, tetapi tes tersebut tidak selalu memberikan hasil yang benar. Angka-angka berikut merupakan data hipotetis untuk latihan.\n\n- 4% orang dalam populasi sedang terkena influenza;\n- jika seseorang terkena influenza, tes memberikan hasil positif dengan probabilitas 90%; dan\n- jika seseorang tidak terkena influenza, tes memberikan hasil negatif dengan probabilitas 95%.\n\nSeseorang memperoleh hasil tes positif. Berapa probabilitas orang tersebut benar-benar terkena influenza?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 42,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\frac{0.04(0.90)}{0.04(0.90)+0.96(0.05)}\n\\approx42.86\\%.\n\\]"
+    },
+    {
+      "id": "S5",
+      "name": "Klasifikasi pesan",
+      "type": "fill",
+      "prompt": "Sebuah kantor menerima banyak pesan setiap hari dan menggunakan sistem otomatis untuk membantu menentukan pesan yang perlu segera dibaca. \n\nSebuah sistem Naive Bayes mengklasifikasikan pesan menjadi `URGENT` atau `NORMAL`.\n\n\\[\nP(\\text{URGENT})=0.3,\\qquad P(\\text{NORMAL})=0.7.\n\\]\n\nProbabilitas fitur diberikan berikut ini.\n\n| Fitur | URGENT | NORMAL |\n|---|---:|---:|\n| Memuat kata “deadline” | 0.8 | 0.2 |\n| Memiliki lampiran | 0.5 | 0.1 |\n\nSistem menganggap kedua fitur saling independen jika kelasnya diketahui.\n\nSebuah pesan memuat kata “deadline” dan memiliki lampiran. Berapa probabilitas pesan tersebut termasuk kelas `URGENT` menurut model?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 89,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nS_U=0.3(0.8)(0.5)=0.12,\n\\]\n\n\\[\nS_N=0.7(0.2)(0.1)=0.014,\n\\]\n\n\\[\n\\frac{0.12}{0.12+0.014}\\approx89.55\\%.\n\\]"
+    }
+  ],
+  "number": 1
+}

@@ -1,0 +1,100 @@
+{
+  "id": "python-02a-list-baca-02",
+  "group": "Latihan Python",
+  "title": "List & Penyalinan — Baca Kode 02",
+  "summary": "Topik 2, membaca kode, tingkat lanjut. List di dalam list, irisan berlangkah, dan bentuk paling berbahaya dari penyalinan yang gagal: `[[0] * 3] * 3`. Soal-soal di sini adalah kode yang **berjalan tanpa error** tetapi memberi jawaban salah — jenis bug yang paling mahal, karena tidak ada yang memberitahumu.",
+  "instructions": "Kerjakan **tanpa komputer**, dengan menggambar isi list-nya di kertas.\n\nUntuk soal list di dalam list, gambarlah kotak: satu kotak untuk tiap list yang **benar-benar ada**, lalu tarik panah dari yang menunjuk ke sana. Kalau dua panah menunjuk ke kotak yang sama, kamu baru saja menemukan jawabannya.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- `data[::2]` mengambil selang-seling mulai dari indeks 0. `data[1::2]` mulai dari indeks 1.\n- `data[::-1]` membalik urutan.\n- `[[0] * 3] * 3` membuat **satu** baris, lalu menunjuknya tiga kali.\n- `[[0] * 3 for _ in range(3)]` membuat **tiga** baris yang berbeda.\n- `sorted(data)` mengembalikan list baru; `data.sort()` mengubah aslinya dan mengembalikan `None`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Papan dakon",
+      "type": "fill",
+      "prompt": "Panitia membuat papan 3 baris × 2 lubang, lalu mengisi satu lubang dengan 5 biji. Kode pembuat papan ini tampak seperti membuat tiga baris terpisah, tetapi perhatikan apakah ketiganya benar-benar list yang berbeda.\n\n<pre class=\"code\">papan = [[0] * 2] * 3\npapan[1][0] = 5\ntotal = 0\nfor baris in papan:\n    total += sum(baris)\nprint(total)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 15,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Ini jebakan paling penting di seluruh topik.\n\n`[0] * 2` membuat **satu** list: `[0, 0]`. Lalu `[...] * 3` **tidak** membuat tiga list — ia membuat satu list berisi **tiga panah yang semuanya menunjuk ke `[0, 0]` yang sama itu**.\n\nGambarnya begini:\n\n<pre class=\"code\">papan ──┬──> [0, 0]   &lt;── satu-satunya list yang benar-benar ada\n        ├──────^\n        └──────^</pre>\n\nJadi `papan[1][0] = 5` mengubah satu-satunya baris yang ada, dan **ketiga** panah melihat perubahan itu. Isinya menjadi:\n\n<pre class=\"code\">[[5, 0], [5, 0], [5, 0]]</pre>\n\nTotalnya 5 + 5 + 5 = **15**, bukan 5.\n\nYang benar:\n\n<pre class=\"code\">papan = [[0] * 2 for _ in range(3)]</pre>\n\nBentuk ini menjalankan `[0] * 2` **tiga kali**, jadi benar-benar lahir tiga list yang berbeda.\n\nKenapa ini berbahaya: kodenya berjalan mulus, tidak ada error, dan untuk grid kecil hasilnya kadang terlihat masuk akal. Di soal grid seleksi, bug ini memberimu angka yang salah dan kamu tidak akan tahu dari mana asalnya."
+    },
+    {
+      "id": "S2",
+      "name": "Nomor kursi selang-seling",
+      "type": "fill",
+      "prompt": "Panitia memisahkan kursi bernomor ganjil dan genap posisinya, lalu mencari selisih jumlahnya. Di sini `kode[::2]` dan `kode[1::2]` memilih isi berdasarkan posisi indeks yang selang-seling.\n\n<pre class=\"code\">kode = [1, 2, 3, 4, 5, 6]\nprint(sum(kode[::2]) - sum(kode[1::2]))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": -3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| irisan | isi | jumlah |\n|---|---|---|\n| `kode[::2]` | 1, 3, 5 | 9 |\n| `kode[1::2]` | 2, 4, 6 | 12 |\n\n9 − 12 = **−3**.\n\n`data[::2]` artinya \"dari awal sampai akhir, lompat 2\". Karena indeks mulai dari 0, yang terambil adalah indeks 0, 2, 4 — yaitu isi **pertama, ketiga, kelima**. `data[1::2]` mulai dari indeks 1, jadi isi kedua, keempat, keenam.\n\nPerhatikan jawabannya negatif. Kalau kamu menjawab 3, kamu membalik urutan pengurangannya."
+    },
+    {
+      "id": "S3",
+      "name": "Yang tidak merusak aslinya",
+      "type": "mc",
+      "prompt": "Bu Rina punya list nilai yang **tidak boleh berubah**, tetapi ia butuh versi terurutnya. Jadi, yang diperlukan adalah list baru untuk `b`; list `a` harus tetap dengan urutan semula.\n\n<pre class=\"code\">a = [3, 1, 2]</pre>\n\nManakah yang membuat `b` terurut **tanpa mengubah** `a`?",
+      "choices": [
+        "`b = a` lalu `b.sort()`",
+        "`b = sorted(a)`",
+        "`b = a` lalu `b.append(9)`",
+        "`a.sort()` lalu `b = a`"
+      ],
+      "answer": 1,
+      "solution": "| pilihan | apa yang terjadi | `a` berubah? |\n|---|---|---|\n| **A.** `b = a` lalu `b.sort()` | `b` cuma nama kedua untuk `a` | **ya** — rusak |\n| **B.** `b = sorted(a)` | `sorted` membuat list baru | tidak ✓ |\n| **C.** `b = a` lalu `b.append(9)` | nama kedua lagi, dan tidak mengurutkan | **ya** — rusak |\n| **D.** `a.sort()` lalu `b = a` | mengurutkan `a` itu sendiri | **ya** — rusak |\n\nA adalah jawaban yang paling menggoda, dan justru itu intinya: ia terlihat seperti \"salin dulu, baru urutkan\", padahal `b = a` tidak menyalin apa pun. Setelah `b.sort()`, `a` ikut terurut.\n\nAturan praktis: kalau kamu **tidak boleh** merusak aslinya, jangan pernah memulai dengan `b = a`. Pakai `sorted(a)`, atau salin dulu dengan `a[:]`."
+    },
+    {
+      "id": "S4",
+      "name": "Membuang yang ganjil",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya membuang semua bilangan ganjil. Untuk `buang_ganjil([1, 3, 5])` hasilnya seharusnya `[]`, tetapi yang keluar adalah `[3]` — tanpa error apa pun. Saat sebuah isi dihapus, posisi isi berikutnya bergeser; itulah hal yang perlu dicermati pada perulangan ini.\n\n<pre class=\"code\">1  def buang_ganjil(data):\n2      for n in data:\n3          if n % 2 == 1:\n4              data.remove(n)\n5      return data</pre>\n\nBaris nomor berapa yang mengubah list **yang sedang diulang** oleh baris 2?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Baris 4 membuang isi dari `data` — list yang sedang diulang oleh baris 2. Perulangan `for` melacak posisinya dengan nomor indeks, dan indeks itu **tidak ikut mundur** saat ada isi yang hilang.\n\nTelusuri:\n\n| putaran | indeks | `data` saat itu | `n` | tindakan |\n|---|---|---|---|---|\n| 1 | 0 | `[1, 3, 5]` | 1 | ganjil → buang 1 → `[3, 5]` |\n| 2 | 1 | `[3, 5]` | **5** | ganjil → buang 5 → `[3]` |\n| 3 | 2 | `[3]` | — | indeks 2 sudah lewat ujung → berhenti |\n\nAngka **3 tidak pernah diperiksa**. Setelah 1 dibuang, semua isi bergeser ke kiri: 3 pindah ke indeks 0, yang sudah dilewati. Perulangan lanjut ke indeks 1 dan menemukan 5.\n\nIni bug klasik \"mengubah list sambil mengulanginya\". Obatnya: jangan ubah, **bangun yang baru**.\n\n<pre class=\"code\">def buang_ganjil(data):\n    return [n for n in data if n % 2 == 0]</pre>\n\nKamu akan menulisnya sendiri di Tulis Kode 02."
+    },
+    {
+      "id": "S5",
+      "name": "Denah kelas",
+      "type": "fill",
+      "prompt": "Denah tempat duduk disimpan sebagai list berisi list. `denah[r][k]` adalah nomor siswa di baris `r`, kolom `k`. Ingat bahwa indeks baris dihitung lebih dahulu, baru kemudian indeks kolomnya.\n\n<pre class=\"code\">denah = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nprint(denah[1][2] + denah[2][0])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 13,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`denah[r][k]` dibaca dari kiri ke kanan: ambil dulu **baris** ke-`r`, lalu dari baris itu ambil **kolom** ke-`k`.\n\n| | kolom 0 | kolom 1 | kolom 2 |\n|---|---|---|---|\n| **baris 0** | 1 | 2 | 3 |\n| **baris 1** | 4 | 5 | **6** |\n| **baris 2** | **7** | 8 | 9 |\n\n- `denah[1][2]` → baris 1 = `[4, 5, 6]`, lalu kolom 2 = **6**\n- `denah[2][0]` → baris 2 = `[7, 8, 9]`, lalu kolom 0 = **7**\n\n6 + 7 = **13**.\n\nJebakannya: tertukar baris dan kolom. `denah[2][0]` bukan 3. Yang pertama **selalu** baris. Kalau kamu menjawab 3 + 8 = 11, kamu membacanya terbalik — dan itu tepat kesalahan yang akan membuat soal grid nanti memberi angka salah tanpa error."
+    },
+    {
+      "id": "S6",
+      "name": "Tumpukan piring",
+      "type": "fill",
+      "prompt": "Satu piring diselipkan di posisi kedua, lalu piring bernomor 8 diambil dari tumpukan. Tuliskan kembali list setelah `insert` dan setelah `remove`, kemudian baru ambil isi terakhirnya.\n\n<pre class=\"code\">tumpuk = [5, 3, 8]\ntumpuk.insert(1, 9)\ntumpuk.remove(8)\nprint(tumpuk[-1] * len(tumpuk))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 9,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| perintah | isi `tumpuk` |\n|---|---|\n| awal | `[5, 3, 8]` |\n| `.insert(1, 9)` | `[5, 9, 3, 8]` |\n| `.remove(8)` | `[5, 9, 3]` |\n\n`tumpuk[-1]` = **3**, `len(tumpuk)` = **3**, jadi 3 × 3 = **9**.\n\nDua hal yang sering keliru. `.insert(1, 9)` menyisipkan **9 di indeks 1** — angkanya di belakang, posisinya di depan; urutan argumennya kebalikan dari dugaan banyak orang. Dan `.remove(8)` membuang **isi yang bernilai 8**, bukan isi di indeks 8. Bandingkan dengan `.pop(0)` di Baca Kode 01, yang bekerja dengan posisi.\n\nAturan singkat: `remove` bicara soal **nilai**, `pop` dan `insert` bicara soal **posisi**."
+    }
+  ],
+  "number": 18
+}

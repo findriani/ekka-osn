@@ -1,0 +1,94 @@
+{
+  "id": "python-01b-alur-tulis-02",
+  "group": "Latihan Python",
+  "title": "Control Flow dan Operator — Tulis Kode 02 (Sedang)",
+  "summary": "Topik 1, menulis kode, tingkat **sedang**. Sekarang kamu butuh perulangan. Semua soal di sini memakai pola yang sama — **akumulasi**: siapkan wadah, isi sedikit demi sedikit, kembalikan wadahnya. Kalau pola itu sudah otomatis, separuh soal Python di seleksi tinggal menyalin bentuknya.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji, jadi lulus sebagian tetap dapat nilai sebagian.\n\nPerhatikan uji yang memakai list kosong `[]`. Itu bukan iseng: uji itulah yang memastikan wadahmu disiapkan dengan benar, dan di soal sungguhan kasus kosong muncul lebih sering daripada dugaanmu.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "Pola akumulasi, dalam tiga baris yang selalu sama:\n\n<pre class=\"code\">total = 0            # sebelum perulangan\nfor x in data:       # sekali untuk tiap isi\n    total += x       # ubah wadahnya\nreturn total         # setelah perulangan</pre>\n\n- Menghitung **jumlah** → wadahnya `0`, isi dengan `+= x`\n- Menghitung **banyaknya** → wadahnya `0`, isi dengan `+= 1`\n- `zip(a, b)` memasangkan dua list: `for x, y in zip(a, b)`\n- `range(len(data))` memberimu indeksnya kalau kamu butuh `data[i]` dan `data[i-1]` sekaligus.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Skor babak genap",
+      "type": "code",
+      "prompt": "Panitia menjumlahkan skor, tetapi hanya dari babak yang skornya genap. Skor ganjil dianggap batal.\n\nTulis `jumlah_genap(data)` yang mengembalikan jumlah semua bilangan genap di `data`. Kalau tidak ada yang genap, hasilnya `0`.",
+      "starter": "def jumlah_genap(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_genap([3, 8, 5, 4]) == 12",
+        "jumlah_genap([1, 3, 5]) == 0",
+        "jumlah_genap([]) == 0",
+        "jumlah_genap([-2, 7, -4]) == -6"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_genap(data):\n    total = 0\n    for n in data:\n        if n % 2 == 0:\n            total += n\n    return total</pre>\n\nPola akumulasi yang lengkap: wadah, perulangan, syarat, kembalikan. `total = 0` harus **sebelum** `for` — inilah bug yang kamu temukan di Baca Kode 01 Soal 4, sekarang dari sisi penulisnya.\n\nUji `[]` memastikan wadahnya benar-benar disiapkan, bukan diambil dari `data[0]`. Uji `[-2, 7, -4]` memastikan kamu memakai `n % 2 == 0` dan bukan menambahkan syarat `n > 0` yang tidak diminta — di Python `-2 % 2` bernilai `0`, jadi bilangan negatif pun genap.\n\nVersi pendeknya: `return sum(n for n in data if n % 2 == 0)`."
+    },
+    {
+      "id": "S2",
+      "name": "Berapa yang lulus",
+      "type": "code",
+      "prompt": "Bu Ratna ingin tahu berapa siswa yang nilainya mencapai KKM.\n\nTulis `hitung_lulus(nilai, kkm)` yang mengembalikan **banyaknya** nilai di `nilai` yang lebih besar atau sama dengan `kkm`.",
+      "starter": "def hitung_lulus(nilai, kkm):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_lulus([90, 40, 75], 70) == 2",
+        "hitung_lulus([70, 70, 70], 70) == 3",
+        "hitung_lulus([10, 20], 70) == 0",
+        "hitung_lulus([], 70) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_lulus(nilai, kkm):\n    lulus = 0\n    for n in nilai:\n        if n &gt;= kkm:\n            lulus += 1\n    return lulus</pre>\n\nBentuknya sama persis dengan Soal 1, hanya wadahnya diisi `+= 1` alih-alih `+= n`. Menjumlah dan menghitung adalah pola yang sama; yang berbeda cuma apa yang ditambahkan. Sadari itu dan kamu baru saja mendapat dua keterampilan dari satu.\n\nUji `[70, 70, 70]` menguji `>=` lawan `>`. KKM artinya \"mencapai\", jadi nilai yang **tepat** sama dengan KKM lulus. Kalau kamu memakai `>`, hasilnya 0 dan hanya uji ini yang menangkapnya."
+    },
+    {
+      "id": "S3",
+      "name": "Total belanja",
+      "type": "code",
+      "prompt": "Kasir punya dua list sejajar: harga tiap barang, dan berapa banyak yang dibeli. Barang ke-`i` di list pertama berpasangan dengan barang ke-`i` di list kedua.\n\nTulis `total_belanja(harga, jumlah)` yang mengembalikan total yang harus dibayar.",
+      "starter": "def total_belanja(harga, jumlah):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "total_belanja([8000, 3000], [2, 1]) == 19000",
+        "total_belanja([1000], [5]) == 5000",
+        "total_belanja([], []) == 0",
+        "total_belanja([5000, 2000], [0, 3]) == 6000"
+      ],
+      "solution": "<pre class=\"kunci\">def total_belanja(harga, jumlah):\n    total = 0\n    for h, j in zip(harga, jumlah):\n        total += h * j\n    return total</pre>\n\n`zip` memasangkan kedua list, jadi kamu tidak perlu mengurus indeks sama sekali. Versi dengan indeks sama benarnya:\n\n<pre class=\"code\">for i in range(len(harga)):\n    total += harga[i] * jumlah[i]</pre>\n\nUji `[5000, 2000], [0, 3]` memastikan kamu mengalikan, bukan menjumlahkan. Kalau kodemu `total += h + j`, hasilnya 7003 — angka yang aneh, dan justru itu petunjuknya: harga dijumlahkan dengan **banyaknya** barang, bukan dikalikan.\n\n`zip` akan kamu pakai lagi di topik Fungsi & Rumus untuk MSE, yang bentuknya persis sama: pasangkan dua list, olah tiap pasangan, jumlahkan."
+    },
+    {
+      "id": "S4",
+      "name": "Rata-rata pengunjung",
+      "type": "code",
+      "prompt": "Bu Ratna mencatat pengunjung perpustakaan tiap hari dan ingin rata-ratanya.\n\nTulis `rata_rata(data)` yang mengembalikan rata-rata isi `data`. List-nya dijamin tidak pernah kosong.",
+      "starter": "def rata_rata(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "abs(rata_rata([14, 18, 11, 20, 12]) - 15.0) < 1e-9",
+        "abs(rata_rata([7]) - 7.0) < 1e-9",
+        "abs(rata_rata([1, 2]) - 1.5) < 1e-9"
+      ],
+      "solution": "<pre class=\"kunci\">def rata_rata(data):\n    return sum(data) / len(data)</pre>\n\nJebakannya di uji ketiga. `sum([1, 2]) // len([1, 2])` memberi `1`, bukan `1.5`. Dua uji pertama lolos dengan `//` karena hasilnya kebetulan bulat — itulah gunanya uji ketiga.\n\nIni pengulangan dari Tulis Kode 01 Soal 3, dan memang disengaja: `/` lawan `//` adalah kesalahan yang paling sering kembali. Kalau di sini kamu masih memakai `//`, ulangi set yang mudah dulu."
+    },
+    {
+      "id": "S5",
+      "name": "Kelipatan",
+      "type": "code",
+      "prompt": "Panitia menandai setiap kursi yang nomornya kelipatan `k`, dari kursi 1 sampai kursi `n` (kursi `n` ikut dihitung).\n\nTulis `hitung_kelipatan(n, k)` yang mengembalikan **banyaknya** kursi yang ditandai.",
+      "starter": "def hitung_kelipatan(n, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_kelipatan(10, 3) == 3",
+        "hitung_kelipatan(12, 3) == 4",
+        "hitung_kelipatan(5, 7) == 0",
+        "hitung_kelipatan(6, 1) == 6"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_kelipatan(n, k):\n    total = 0\n    for i in range(1, n + 1):\n        if i % k == 0:\n            total += 1\n    return total</pre>\n\nDua hal sekaligus. Pertama, `range(1, n + 1)`: soalnya bilang \"kursi `n` ikut dihitung\", dan uji `hitung_kelipatan(12, 3) == 4` memastikannya — dengan `range(1, n)` kursi 12 terlewat dan hasilnya 3. Kedua, `i % k == 0` adalah cara membaca \"i kelipatan k\".\n\nUji `hitung_kelipatan(6, 1) == 6` masuk akal: setiap bilangan adalah kelipatan 1.\n\nSebenarnya jawabannya bisa langsung `return n // k` tanpa perulangan sama sekali — dan itu **juga benar**, lolos keempat uji. Kalau kamu menemukannya sendiri, bagus sekali: itu tanda kamu melihat polanya, bukan sekadar menyalin bentuk."
+    },
+    {
+      "id": "S6",
+      "name": "Grafik yang menurun",
+      "type": "code",
+      "prompt": "Analis mencatat harga cabai tiap minggu dan ingin tahu berapa kali harganya **turun** dibanding minggu sebelumnya. Harga yang sama persis tidak dihitung turun.\n\nTulis `hitung_turun(data)` yang mengembalikan banyaknya penurunan.",
+      "starter": "def hitung_turun(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_turun([2, 5, 4, 4, 3]) == 2",
+        "hitung_turun([1, 2, 3]) == 0",
+        "hitung_turun([5]) == 0",
+        "hitung_turun([]) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_turun(data):\n    turun = 0\n    for i in range(1, len(data)):\n        if data[i] &lt; data[i - 1]:\n            turun += 1\n    return turun</pre>\n\nSoal ini beda dari yang lain: kamu butuh **dua** angka sekaligus, yang sekarang dan yang sebelumnya. Jadi `for n in data` tidak cukup — kamu perlu indeksnya.\n\nKuncinya `range(1, len(data))`, dimulai dari **1**, bukan 0. Angka pertama tidak punya \"sebelumnya\", jadi tidak ada yang bisa dibandingkan. Kalau kamu mulai dari 0, `data[-1]` **tidak error** — Python membacanya sebagai angka **terakhir**, jadi kodemu diam-diam membandingkan yang pertama dengan yang terakhir dan menambah hitungan yang tidak seharusnya ada.\n\nUji `[2, 5, 4, 4, 3]`: 2→5 naik, 5→4 **turun**, 4→4 sama (tidak dihitung), 4→3 **turun**. Dua. Kalau kamu mulai dari indeks 0, Python juga membandingkan `data[0] = 2` dengan `data[-1] = 3`, dan karena 2 < 3 hitungannya menjadi 3. Uji `[1, 2, 3]` menangkap hal yang sama: 1 < 3, jadi jawabannya menjadi 1, bukan 0.\n\nUji `[5]` dan `[]` mengerjakan tugas yang berbeda. Keduanya memastikan kamu tidak perlu `if` khusus untuk list pendek: `range(1, 1)` dan `range(1, 0)` sama-sama kosong, jadi perulangannya tidak jalan sama sekali dan `turun` tetap 0. Benar dengan sendirinya."
+    }
+  ],
+  "number": 15
+}

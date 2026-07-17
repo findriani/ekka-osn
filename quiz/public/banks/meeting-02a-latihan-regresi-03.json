@@ -1,0 +1,103 @@
+{
+  "id": "meeting-02a-latihan-regresi-03",
+  "group": "Pertemuan 2",
+  "title": "Regresi 03",
+  "summary": "Fokus set ini: **pembulatan di akhir**, membaca simetri kurva MSE, dan mengenali garis yang tampak benar tetapi bukan yang terbaik. Set ini lebih sulit daripada Latihan 01 dan 02.",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Untuk soal pilihan ganda, pilih tombol jawaban yang benar.\n\n> **Peringatan.** Simpan hasil antara sebagai **pecahan**. Membulatkan di tengah jalan akan mengubah jawaban akhir pada set ini.",
+  "formulas": "\\[\nr_i=y_i-\\hat y_i,\\qquad \\operatorname{MSE}=\\frac{1}{n}\\sum_i r_i^2.\n\\]\n\n\\[\n\\hat y=\\alpha+\\beta x.\n\\]\n\nSimpan pecahan saat menghitung; bulatkan hanya pada jawaban akhir. Jumlah residual nol bukan bukti garis terbaik.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Gula aren Bantul",
+      "type": "fill",
+      "prompt": "Sebuah kelompok tani mencatat produksi gula aren dari tiga pohon:\n\n| Umur pohon \\(x\\) (tahun) | Produksi \\(y\\) (kg/bulan) |\n|---:|---:|\n| 4 | 30 |\n| 7 | 50 |\n| 10 | 61 |\n\nHitunglah nilai \\(\\beta\\) (kemiringan) yang menghasilkan MSE terkecil.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5.2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\bar x = \\frac{4+7+10}{3} = 7,\n\\qquad\n\\bar y = \\frac{30+50+61}{3} = \\frac{141}{3} = 47.\n\\]\n\n| \\(x_i\\) | \\(y_i\\) | \\(x_i-\\bar x\\) | \\(y_i-\\bar y\\) | Hasil kali | \\((x_i-\\bar x)^2\\) |\n|---:|---:|---:|---:|---:|---:|\n| 4 | 30 | \\(-3\\) | \\(-17\\) | \\(+51\\) | 9 |\n| 7 | 50 | \\(0\\) | \\(+3\\) | \\(0\\) | 0 |\n| 10 | 61 | \\(+3\\) | \\(+14\\) | \\(+42\\) | 9 |\n| **Jumlah** | | | | **93** | **18** |\n\n\\[\n\\beta = \\frac{93}{18} = \\frac{31}{6} = 5.1666\\ldots \\approx 5.2.\n\\]\n\n**Simpan \\(\\tfrac{31}{6}\\), bukan 5.2.** Soal 2 memerlukan nilai yang belum dibulatkan."
+    },
+    {
+      "id": "S2",
+      "name": "Gula aren Bantul (lanjutan)",
+      "type": "mc",
+      "prompt": "Gunakan data yang sama dengan Soal 1.\n\nHitunglah intersep \\(\\alpha\\), lalu bulatkan ke 1 angka di belakang koma.",
+      "choices": [
+        "\\(\\alpha = 36.4\\)",
+        "\\(\\alpha = 10.6\\)",
+        "\\(\\alpha = 10.8\\)",
+        "\\(\\alpha = 11.0\\)"
+      ],
+      "answer": 2,
+      "solution": "Pakai \\(\\beta\\) yang **belum dibulatkan**:\n\n\\[\n\\alpha = \\bar y - \\beta\\bar x = 47 - \\frac{31}{6}(7) = 47 - \\frac{217}{6} = \\frac{282-217}{6} = \\frac{65}{6} = 10.8333\\ldots\n\\]\n\nDibulatkan ke 1 angka di belakang koma: \\(\\alpha \\approx \\mathbf{10.8}\\).\n\nPilihan **B (10.6)** adalah hasil membulatkan \\(\\beta\\) lebih dahulu:\n\n\\[\n\\alpha = 47 - (5.2)(7) = 47 - 36.4 = 10.6.\n\\]\n\nSelisihnya 0.2 — kecil, tetapi salah. Kesalahan kecil pada \\(\\beta\\) tiba di \\(\\alpha\\) setelah dikalikan \\(\\bar x = 7\\).\n\n**Dan inilah bagian yang perlu diwaspadai.** Periksa loss kedua pasangan:\n\n\\[\nL(10.8,\\; 5.2) = \\frac{341}{75} \\approx 4.547,\n\\qquad\nL(10.6,\\; 5.2) = \\frac{338}{75} \\approx 4.507.\n\\]\n\nPasangan yang diperoleh dengan **membulatkan lebih awal justru memiliki loss lebih kecil.** Pasangan itu tetap **bukan** jawaban yang diminta, karena soal meminta nilai \\(\\alpha\\) dan \\(\\beta\\) yang meminimumkan \\(L\\) — baru kemudian dibulatkan. Bukan pasangan satu-desimal terbaik.\n\nIni persis peringatan yang dilampirkan pada soal Ekshibisi 2025:\n\n> *Cari nilai \\(\\alpha\\) dan \\(\\beta\\) yang menghasilkan \\(L(\\alpha,\\beta)\\) sekecil mungkin terlebih dahulu, baru kemudian dibulatkan sesuai permintaan soal. Saat sudah dibulatkan, solusinya belum tentu menjadi yang paling optimal lagi di presisi tersebut.*"
+    },
+    {
+      "id": "S3",
+      "name": "Tambak garam Madura",
+      "type": "fill",
+      "prompt": "Seorang petambak garam memakai model yang sudah ditetapkan sebelumnya:\n\n\\[\n\\hat y = 20 + 2.6x,\n\\]\n\ndengan \\(x\\) = jumlah hari kemarau berturut-turut dan \\(\\hat y\\) = hasil garam dalam karung.\n\nTiga musim tercatat sebagai berikut:\n\n| \\(x\\) (hari) | \\(y\\) (karung) |\n|---:|---:|\n| 10 | 42 |\n| 20 | 75 |\n| 30 | 96 |\n\nHitunglah MSE model tersebut. Parameter **sudah diberikan** — jangan mencocokkan ulang garisnya.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 9.7,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| \\(x\\) | \\(y\\) | \\(\\hat y = 20+2.6x\\) | \\(r\\) | \\(r^2\\) |\n|---:|---:|---:|---:|---:|\n| 10 | 42 | 46 | \\(-4\\) | 16 |\n| 20 | 75 | 72 | \\(+3\\) | 9 |\n| 30 | 96 | 98 | \\(-2\\) | 4 |\n| | | | **Jumlah** | **29** |\n\n\\[\n\\operatorname{MSE} = \\frac{29}{3} = 9.6666\\ldots \\approx 9.7.\n\\]\n\nParameternya diberikan, jadi tugasnya hanya **mengevaluasi**: prediksi, kurangkan, kuadratkan, jumlahkan, bagi."
+    },
+    {
+      "id": "S4",
+      "name": "Anyaman purun Amuntai",
+      "type": "fill",
+      "prompt": "Seorang perajin anyaman purun mencari kemiringan terbaik dengan cara mencoba beberapa nilai. Setiap garis yang ia coba **dipasak melewati titik rata-rata** \\((\\bar x,\\bar y)\\), lalu ia hitung total luas kuadrat kesalahannya.\n\nDiketahui bahwa nilai \\(x\\) pada data **tidak semuanya sama**, sehingga total kuadrat kesalahan sebagai fungsi \\(\\beta\\) membentuk parabola U dengan satu titik minimum.\n\n| Kemiringan \\(\\beta\\) | Total luas kuadrat |\n|---:|---:|\n| 2 | 24 |\n| 6 | 24 |\n\nKedua percobaan menghasilkan total luas yang **persis sama**.\n\nBerapa kemiringan terbaik untuk data ini?",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Ketika garis dipasak di \\((\\bar x,\\bar y)\\), total luas kuadrat sebagai fungsi \\(\\beta\\) berbentuk **parabola** — kurva U dengan satu titik terendah, dan **simetris** terhadap titik terendah itu.\n\nDua nilai \\(\\beta\\) yang menghasilkan total luas sama pasti berjarak sama dari titik terendah. Maka titik terendahnya tepat di tengah:\n\n\\[\n\\beta_{\\text{terbaik}} = \\frac{2+6}{2} = 4.\n\\]\n\nTidak perlu data mentahnya sama sekali. Simetri sudah cukup.\n\n**Mengapa syarat \"nilai \\(x\\) tidak semuanya sama\" perlu disebut?** Koefisien pemimpin parabola itu adalah \\(\\sum(x_i-\\bar x)^2\\). Kalau semua \\(x_i\\) bernilai sama, koefisien itu nol, dan kurvanya **datar** — bukan parabola. Setiap \\(\\beta\\) akan menghasilkan total luas yang persis sama, termasuk 2 dan 6, sehingga tidak ada kemiringan terbaik yang tunggal. Tanpa syarat itu, angka 4 tidak dapat disimpulkan. Bandingkan dengan Latihan 02 Soal 6, yang justru menguji keadaan datar tersebut."
+    },
+    {
+      "id": "S5",
+      "name": "Panggung pentas seni",
+      "type": "mc",
+      "prompt": "Panitia pentas seni mencatat tiga pertunjukan:\n\n| Durasi \\(x\\) (jam) | Penonton \\(y\\) (puluhan orang) |\n|---:|---:|\n| 1 | 10 |\n| 2 | 12 |\n| 3 | 20 |\n\nSeorang siswa mengusulkan garis \\(\\hat y = 8 + 3x\\). Ia memeriksa residualnya, memperoleh \\(-1\\), \\(-2\\), dan \\(+3\\), lalu menjumlahkannya menjadi **tepat nol**. Ia menyimpulkan bahwa garisnya pasti garis terbaik.\n\nManakah tanggapan yang benar?",
+      "choices": [
+        "Benar. Jumlah residual nol adalah definisi garis kuadrat terkecil.",
+        "Salah. Garis kuadrat terkecil memiliki MSE 2, lebih kecil daripada MSE garis tersebut.",
+        "Salah. Jumlah residual seharusnya positif untuk garis yang baik.",
+        "Benar, tetapi hanya karena data ini hanya memuat tiga titik."
+      ],
+      "answer": 1,
+      "solution": "Hitung garis kuadrat terkecilnya:\n\n\\[\n\\bar x = 2, \\qquad \\bar y = \\frac{10+12+20}{3} = 14.\n\\]\n\n| \\(x_i\\) | \\(y_i\\) | \\(x_i-\\bar x\\) | \\(y_i-\\bar y\\) | Hasil kali | \\((x_i-\\bar x)^2\\) |\n|---:|---:|---:|---:|---:|---:|\n| 1 | 10 | \\(-1\\) | \\(-4\\) | \\(+4\\) | 1 |\n| 2 | 12 | \\(0\\) | \\(-2\\) | \\(0\\) | 0 |\n| 3 | 20 | \\(+1\\) | \\(+6\\) | \\(+6\\) | 1 |\n| **Jumlah** | | | | **10** | **2** |\n\n\\[\n\\beta = \\frac{10}{2} = 5,\n\\qquad\n\\alpha = 14 - 5(2) = 4,\n\\qquad\n\\hat y = 4 + 5x.\n\\]\n\nBandingkan keduanya:\n\n| Garis | Residual | MSE |\n|---|---|---:|\n| \\(\\hat y = 8+3x\\) | \\(-1,\\; -2,\\; +3\\) | \\(\\frac{1+4+9}{3} = \\frac{14}{3} \\approx 4.667\\) |\n| \\(\\hat y = 4+5x\\) | \\(+1,\\; -2,\\; +1\\) | \\(\\frac{1+4+1}{3} = 2\\) |\n\n**Kedua garis memiliki jumlah residual nol.** Jumlah residual nol bukan sesuatu yang istimewa: **setiap** garis yang melewati titik rata-rata \\((\\bar x,\\bar y)=(2,14)\\) memilikinya, dan ada tak hingga banyaknya garis semacam itu — satu untuk setiap kemiringan.\n\nYang membedakan garis terbaik bukan jumlah residualnya, melainkan **jumlah kuadrat** residualnya."
+    },
+    {
+      "id": "S6",
+      "name": "Sapi perah Boyolali",
+      "type": "fill",
+      "prompt": "Seorang peternak mencatat empat ekor sapi perah:\n\n| Pakan konsentrat \\(x\\) (kg/hari) | Susu \\(y\\) (liter/hari) |\n|---:|---:|\n| 1 | 6 |\n| 2 | 5 |\n| 3 | 9 |\n| 4 | 12 |\n\nHitunglah nilai \\(\\beta\\) (kemiringan) yang menghasilkan MSE terkecil.",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2.2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\bar x = \\frac{1+2+3+4}{4} = 2.5,\n\\qquad\n\\bar y = \\frac{6+5+9+12}{4} = 8.\n\\]\n\n| \\(x_i\\) | \\(y_i\\) | \\(x_i-\\bar x\\) | \\(y_i-\\bar y\\) | Hasil kali | \\((x_i-\\bar x)^2\\) |\n|---:|---:|---:|---:|---:|---:|\n| 1 | 6 | \\(-1.5\\) | \\(-2\\) | \\(+3\\) | 2.25 |\n| 2 | 5 | \\(-0.5\\) | \\(-3\\) | \\(+1.5\\) | 0.25 |\n| 3 | 9 | \\(+0.5\\) | \\(+1\\) | \\(+0.5\\) | 0.25 |\n| 4 | 12 | \\(+1.5\\) | \\(+4\\) | \\(+6\\) | 2.25 |\n| **Jumlah** | | | | **11** | **5** |\n\n\\[\n\\beta = \\frac{11}{5} = 2.2.\n\\]\n\nPerhatikan bahwa \\(\\bar x\\) di sini **bukan** bilangan bulat, sehingga tidak ada titik yang menyumbang hasil kali nol. Keempat sapi ikut memilih.\n\n(Intersepnya \\(\\alpha = 8 - 2.2(2.5) = 2.5\\).)"
+    }
+  ],
+  "number": 9
+}

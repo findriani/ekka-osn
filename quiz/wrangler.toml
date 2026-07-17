@@ -1,0 +1,14 @@
+name = "osn-ai-quiz"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "public"
+
+# Fill database_id in after running:
+#   npx wrangler d1 create osn-ai-quiz
+[[d1_databases]]
+binding = "DB"
+database_name = "osn-ai-quiz"
+database_id = "PASTE_DATABASE_ID_HERE"
+
+# TEACHER_TOKEN is a secret, not a var — set it with:
+#   npx wrangler pages secret put TEACHER_TOKEN
+# For local dev only, put it in .dev.vars (which is gitignored).

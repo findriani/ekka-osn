@@ -1,0 +1,93 @@
+{
+  "id": "python-04b-string-tulis-01",
+  "group": "Latihan Python",
+  "title": "String & DNA — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 4, menulis kode, tingkat **mudah**. Semua jawabannya **satu baris**, dan tidak ada satu pun perulangan.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `len(dna)` panjangnya · `dna[0]` basa pertama · `dna[-1]` basa terakhir\n- `dna[::-1]` untai baru dengan urutan terbalik\n- `dna.count(\"A\")` banyaknya A\n- `\"ATG\" in dna` bernilai `True`/`False` — itu sudah jawaban, tidak perlu `if`\n- `dna.upper()` mengembalikan untai **baru** berhuruf besar. Aslinya tidak berubah.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Panjang untai",
+      "type": "code",
+      "prompt": "Tulis `panjang(dna)` yang mengembalikan banyaknya basa di `dna`.",
+      "starter": "def panjang(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "panjang(\"AGCT\") == 4",
+        "panjang(\"\") == 0",
+        "panjang(\"A\") == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def panjang(dna):\n    return len(dna)</pre>\n\n`len` bekerja pada teks persis seperti pada list. Tidak ada yang baru.\n\nYang layak diperhatikan justru bedanya dengan Topik 2 Soal 6. Di sana, `banyaknya([[1, 2], [3]])` memberi **2** — `len` hanya menghitung lapisan terluar. Teks tidak punya lapisan; ia selalu datar. Jadi `len` pada teks selalu berarti \"berapa huruf\", tanpa kecuali dan tanpa jebakan.\n\nSatu-satunya kelas soal yang bisa membingungkan: `len(\"\")` adalah 0, bukan 1. Teks kosong berisi nol huruf — ia bukan berisi \"satu huruf kosong\"."
+    },
+    {
+      "id": "S2",
+      "name": "Basa pertama",
+      "type": "code",
+      "prompt": "Tulis `basa_pertama(dna)` yang mengembalikan basa pertama dari `dna`. Dijamin `dna` tidak pernah kosong.",
+      "starter": "def basa_pertama(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "basa_pertama(\"AGCT\") == \"A\"",
+        "basa_pertama(\"G\") == \"G\"",
+        "basa_pertama(\"TTT\") == \"T\""
+      ],
+      "solution": "<pre class=\"kunci\">def basa_pertama(dna):\n    return dna[0]</pre>\n\nIndeks mulai dari **0**, sama seperti list.\n\nPerhatikan apa yang dikembalikan: `dna[0]` memberi `\"A\"` — sebuah **teks sepanjang satu huruf**, bukan jenis \"huruf\" yang khusus. Python tidak punya jenis tersendiri untuk satu karakter; satu huruf tetaplah teks, cuma pendek.\n\nKarena itu semua yang berlaku untuk teks berlaku juga untuknya. `dna[0].upper()` sah, `dna[0] + dna[1]` menyambung, dan `dna[0][0]` bahkan tetap memberi huruf yang sama. Kalau kedengarannya aneh, memang aneh — tapi itu yang membuat `for basa in dna` berjalan mulus: tiap `basa` adalah teks utuh, jadi ia bisa dibandingkan dan disambung tanpa dikonversi."
+    },
+    {
+      "id": "S3",
+      "name": "Menghitung A",
+      "type": "code",
+      "prompt": "Tulis `hitung_a(dna)` yang mengembalikan banyaknya basa `A` di `dna`.",
+      "starter": "def hitung_a(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_a(\"AGCTA\") == 2",
+        "hitung_a(\"GGG\") == 0",
+        "hitung_a(\"AAAA\") == 4",
+        "hitung_a(\"\") == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_a(dna):\n    return dna.count(\"A\")</pre>\n\n`.count` menghitung berapa kali sesuatu muncul. Untuk satu huruf, ia sederhana dan aman.\n\nKata **\"untuk satu huruf\"** itu yang penting. Baca Kode 01 Soal 6 sudah menunjukkan `.count` mulai berulah begitu polanya lebih dari satu huruf: `\"AAAAA\".count(\"AA\")` memberi 2, bukan 4. Untuk pola sepanjang satu, tumpang tindih tidak mungkin terjadi, jadi jebakannya tidak ada.\n\nAturan praktis: `.count` aman untuk satu basa, mencurigakan untuk pola. Kamu akan menulis versi jendela yang benar di Tulis Kode 03 Soal 2.\n\nPerhatikan juga `\"A\"` pakai tanda kutip. Tanpa kutip, `A` adalah nama variabel yang tidak ada, dan kamu dapat `NameError`."
+    },
+    {
+      "id": "S4",
+      "name": "Untai terbalik",
+      "type": "code",
+      "prompt": "Tulis `dibalik(dna)` yang mengembalikan untai baru dengan urutan terbalik.",
+      "starter": "def dibalik(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "dibalik(\"AGCT\") == \"TCGA\"",
+        "dibalik(\"AAGC\") == \"CGAA\"",
+        "dibalik(\"A\") == \"A\"",
+        "dibalik(\"\") == \"\""
+      ],
+      "solution": "<pre class=\"kunci\">def dibalik(dna):\n    return dna[::-1]</pre>\n\nSama persis dengan Topik 2 Tulis Kode 01 Soal 4 — bahkan namanya sama. Irisan berlangkah −1 bekerja pada teks tanpa perbedaan sedikit pun.\n\nYang **berbeda** adalah kesalahan yang mungkin. Di list, godaannya `data.reverse()`, yang mengembalikan `None` dan membuat semua uji gagal. Di teks, `dna.reverse()` bahkan tidak ada — kamu langsung dapat `AttributeError`.\n\n| | list | teks |\n|---|---|---|\n| `x[::-1]` | ✓ | ✓ |\n| `x.reverse()` | ada, mengubah aslinya, memberi `None` | **tidak ada sama sekali** |\n\nError itu sebenarnya hadiah. Ia memberitahumu langsung, alih-alih membiarkanmu bingung kenapa jawabanmu `None`.\n\nUji `dibalik(\"AAGC\") == \"CGAA\"` sengaja memakai untai yang **tidak simetris**. Perhatikan uji pertama, `dibalik(\"AGCT\") == \"TCGA\"`: untai itu kebetulan punya sifat langka — kebalikannya sama dengan komplemennya. Kalau cuma ada uji itu, kode yang menghitung komplemen (bukan kebalikan) akan lolos. Uji kedua ada khusus untuk menutup celah itu, dan bedanya akan sangat terasa di Tulis Kode 02."
+    },
+    {
+      "id": "S5",
+      "name": "Ada kodon start?",
+      "type": "code",
+      "prompt": "Setiap gen dimulai dengan urutan `ATG`, yang disebut kodon start.\n\nTulis `ada_start(dna)` yang mengembalikan `True` kalau `\"ATG\"` muncul di dalam `dna`, dan `False` kalau tidak.",
+      "starter": "def ada_start(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ada_start(\"AGATGCT\") is True",
+        "ada_start(\"AGCT\") is False",
+        "ada_start(\"ATG\") is True",
+        "ada_start(\"\") is False"
+      ],
+      "solution": "<pre class=\"kunci\">def ada_start(dna):\n    return \"ATG\" in dna</pre>\n\n`in` bekerja pada teks, dan **lebih pintar** daripada versinya di list.\n\nDi list, `x in data` menanyakan \"apakah `x` salah satu isinya\". Di teks, `\"ATG\" in dna` menanyakan \"apakah `ATG` muncul sebagai **potongan berurutan**\". Jadi ia tidak mencari satu huruf, ia mencari **urutannya**.\n\nUji `ada_start(\"AGATGCT\")` membuktikan ia mencari di mana saja:\n\n<pre class=\"code\">A G A T G C T\n    ^-^-^           ATG ada, mulai indeks 2</pre>\n\nKamu tidak perlu tahu di mana; `in` yang mencarikan.\n\nPerhatikan hasilnya **sudah** `True` atau `False`. Ini pelajaran ketiga kalinya, setelah `n % 2 == 0` di Topik 1 dan `x in data` di Topik 2: perbandingan adalah nilai, dan nilai bisa langsung dikembalikan. Kalau kamu menulis\n\n<pre class=\"code\">if \"ATG\" in dna:\n    return True\nelse:\n    return False</pre>\n\nkodemu benar, tetapi kamu menulis empat baris untuk mengatakan satu.\n\nUji `ada_start(\"\") is False` gratis — tidak ada apa pun di untai kosong, jadi tidak ada `ATG`.\n\nKalau kamu butuh **posisinya**, bukan sekadar ada-tidaknya, alatnya `dna.find(\"ATG\")` — yang memberi indeks kemunculan pertama, atau −1 kalau tidak ketemu."
+    },
+    {
+      "id": "S6",
+      "name": "Merapikan penulisan",
+      "type": "code",
+      "prompt": "Data dari laboratorium kadang tertulis huruf kecil.\n\nTulis `huruf_besar(dna)` yang mengembalikan untai baru dengan semua huruf dibesarkan.",
+      "starter": "def huruf_besar(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "huruf_besar(\"agct\") == \"AGCT\"",
+        "huruf_besar(\"AGCT\") == \"AGCT\"",
+        "huruf_besar(\"aGcT\") == \"AGCT\"",
+        "huruf_besar(\"\") == \"\""
+      ],
+      "solution": "<pre class=\"kunci\">def huruf_besar(dna):\n    return dna.upper()</pre>\n\nDi sinilah kemiripan dengan list berhenti.\n\n`.upper()` **mengembalikan untai baru** dan tidak menyentuh aslinya. Bandingkan dengan method list yang mengubah isinya:\n\n| | mengubah aslinya | mengembalikan |\n|---|---|---|\n| `data.sort()` (list) | **ya** | `None` |\n| `dna.upper()` (teks) | **tidak** | **untai baru** |\n\nDua kolom, dua-duanya berlawanan. Dan dari situ, dua cara berbeda untuk gagal:\n\n<pre class=\"code\">urut = data.sort()      # SALAH — urut berisi None\ndna.upper()             # SALAH — hasilnya dibuang</pre>\n\nYang pertama salah karena kamu **menampung**. Yang kedua salah karena kamu **tidak menampung**.\n\nKenapa berbeda? Karena teks tidak bisa diubah — sama sekali, tidak pernah. Sebuah method teks **tidak punya pilihan** selain membuat yang baru; tidak ada aslinya yang bisa dicoret-coret. Sekali kamu menerima kalimat itu, seluruh perilaku teks jadi bisa ditebak: `.upper`, `.lower`, `.replace`, `.strip` — semuanya sama, semuanya mengembalikan yang baru, tidak satu pun mengubah.\n\nUji `huruf_besar(\"AGCT\") == \"AGCT\"` memastikan huruf yang sudah besar tidak rusak, dan `huruf_besar(\"aGcT\")` memastikan campuran ditangani. `.upper()` tidak peduli — ia membesarkan yang perlu dan membiarkan sisanya.\n\nKalau kamu menulis `dna.upper()` tanpa `return`, fungsimu mengembalikan `None` dan semua uji gagal. Itu Baca Kode 01 Soal 4, sekarang di tanganmu sendiri."
+    }
+  ],
+  "number": 29
+}

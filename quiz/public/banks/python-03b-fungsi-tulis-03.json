@@ -1,0 +1,100 @@
+{
+  "id": "python-03b-fungsi-tulis-03",
+  "group": "Latihan Python",
+  "title": "Fungsi & Rumus — Tulis Kode 03 (Sedang)",
+  "summary": "Topik 3, menulis kode, tingkat **sedang**. Di Tulis Kode 02 kamu belajar mengukur seberapa buruk sebuah garis. Sekarang pertanyaannya berubah, dan berubah menjadi pertanyaan yang sesungguhnya: **dari beberapa garis, mana yang terbaik?**",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**.\n\nSebuah garis di sini ditulis sebagai list dua isi: `[a, b]`, artinya \\(\\hat y = a + b\\,x\\). Jadi `[5, 3]` adalah garis \\(\\hat y = 5 + 3x\\).\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `min(data)` isi terkecil · `data.index(x)` posisi kemunculan **pertama** `x`\n- Pola memilih terbaik: simpan yang terbaik sejauh ini, bandingkan dengan calon berikutnya, ganti kalau lebih baik.\n- Kalau **seri**, yang pertama menang. Itu berarti `&lt;`, bukan `&lt;=`.\n- \\(\\operatorname{MSE} = \\dfrac{1}{n}\\sum (y_i - \\hat y_i)^2\\) · \\(\\operatorname{MAD} = \\dfrac{1}{n}\\sum |y_i - \\hat y_i|\\)",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Yang terkecil ada di mana",
+      "type": "code",
+      "prompt": "Bukan **berapa** yang terkecil, tetapi di **posisi** mana ia berada.\n\nTulis `posisi_terkecil(data)` yang mengembalikan indeks isi terkecil. Kalau ada beberapa yang sama kecilnya, kembalikan yang **paling awal**. Dijamin `data` tidak pernah kosong, dan `data` tidak boleh berubah.",
+      "starter": "def posisi_terkecil(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "posisi_terkecil([5, 2, 8]) == 1",
+        "posisi_terkecil([3]) == 0",
+        "posisi_terkecil([4, 1, 1]) == 1",
+        "posisi_terkecil([9, 9, 2]) == 2",
+        "posisi_terkecil(_a := [5, 2, 8]) == 1",
+        "_a == [5, 2, 8]"
+      ],
+      "solution": "<pre class=\"kunci\">def posisi_terkecil(data):\n    terbaik = 0\n    for i in range(len(data)):\n        if data[i] &lt; data[terbaik]:\n            terbaik = i\n    return terbaik</pre>\n\nIni pola **\"simpan yang terbaik sejauh ini\"**, dan ia adalah tulang punggung seluruh set ini. Mulai dengan menganggap yang pertama sebagai juara sementara, lalu tantang ia dengan tiap calon berikutnya.\n\nVersi satu barisnya juga benar: `return data.index(min(data))`. Cari nilai terkecilnya, lalu tanya di mana ia pertama kali muncul. `.index` selalu memberi kemunculan **pertama**, jadi aturan seri terpenuhi dengan sendirinya.\n\nSekarang bagian yang penting. Perhatikan tanda `&lt;`, bukan `&lt;=`:\n\n| kalau kamu menulis | `posisi_terkecil([4, 1, 1])` |\n|---|---|\n| `if data[i] &lt; data[terbaik]` | **1** ✓ |\n| `if data[i] &lt;= data[terbaik]` | **2** ✗ |\n\nDengan `&lt;=`, isi terakhir yang seri akan **selalu merebut** gelarnya, karena \"sama kecil\" dianggap \"lebih baik\". Satu karakter, dan aturan serinya terbalik.\n\nUji `posisi_terkecil([4, 1, 1]) == 1` ada khusus untuk itu. Tanpa uji seri, `&lt;` dan `&lt;=` tidak bisa dibedakan sama sekali.\n\nUji `_a == [5, 2, 8]` menangkap godaan lain: mengurutkan `data` dulu untuk mencari yang terkecil. Itu merusak list pemanggil **dan** menghapus posisi aslinya — yaitu satu-satunya hal yang ditanyakan."
+    },
+    {
+      "id": "S2",
+      "name": "Menilai setiap kandidat",
+      "type": "code",
+      "prompt": "`daftar_p` adalah list berisi beberapa **himpunan tebakan**, masing-masing sejajar dengan `y`.\n\nTulis `daftar_mse(y, daftar_p)` yang mengembalikan list baru berisi MSE dari tiap tebakan, dengan urutan yang sama. Fungsi `mse` sudah disediakan — panggil saja.",
+      "starter": "def mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef daftar_mse(y, daftar_p):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "daftar_mse([1, 2], [[1, 2], [0, 0]]) == [0, 2.5]",
+        "daftar_mse([0], [[3], [4]]) == [9, 16]",
+        "daftar_mse([1], []) == []",
+        "daftar_mse([1, 2], _d := [[1, 2]]) == [0]",
+        "_d == [[1, 2]]"
+      ],
+      "solution": "<pre class=\"kunci\">def mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef daftar_mse(y, daftar_p):\n    return [mse(y, p) for p in daftar_p]</pre>\n\nSatu baris — karena `mse` sudah ada. Kamu tidak perlu tahu isi perutnya, cuma perlu tahu apa yang masuk dan apa yang keluar.\n\nPerhatikan bentuk datanya. `daftar_p` adalah **list berisi list**, persis seperti grid di Topik 2. Tiap `p` di dalamnya adalah satu himpunan tebakan utuh, sejajar dengan `y`. Jadi `for p in daftar_p` menelusuri **kandidat**, bukan angka.\n\nVersi panjangnya:\n\n<pre class=\"code\">hasil = []\nfor p in daftar_p:\n    hasil.append(mse(y, p))\nreturn hasil</pre>\n\nUji `daftar_mse([1], []) == []` gratis: tidak ada kandidat, tidak ada nilai. Tetapi ia menjaga sesuatu — kalau kamu tergoda menulis `min` di sini, list kosong akan meledak. Soal ini cuma **menilai**; memilih itu Soal 3.\n\nPerhatikan juga `[0, 2.5]` di uji pertama, bukan `[0.0, 2.5]`. Python menganggap `0.0 == 0` benar, jadi keduanya sama saja. Nilainya yang dibandingkan, bukan jenisnya."
+    },
+    {
+      "id": "S3",
+      "name": "Tebakan mana yang menang",
+      "type": "code",
+      "prompt": "Tulis `prediksi_terbaik(y, daftar_p)` yang mengembalikan **himpunan tebakan** dengan MSE terkecil. Kalau seri, kembalikan yang paling awal. Dijamin `daftar_p` tidak pernah kosong.",
+      "starter": "def mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef prediksi_terbaik(y, daftar_p):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "prediksi_terbaik([1, 2], [[0, 0], [1, 2], [5, 5]]) == [1, 2]",
+        "prediksi_terbaik([0], [[3], [1]]) == [1]",
+        "prediksi_terbaik([5], [[5]]) == [5]",
+        "prediksi_terbaik([0], [[1], [-1]]) == [1]"
+      ],
+      "solution": "<pre class=\"kunci\">def mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef prediksi_terbaik(y, daftar_p):\n    terbaik = daftar_p[0]\n    for p in daftar_p:\n        if mse(y, p) &lt; mse(y, terbaik):\n            terbaik = p\n    return terbaik</pre>\n\nPola Soal 1, dengan \"lebih kecil\" diganti \"MSE-nya lebih kecil\".\n\nKalau kamu sudah menulis `daftar_mse` dan `posisi_terkecil`, ada jalan yang lebih rapi — dan lebih pintar:\n\n<pre class=\"code\">nilai = [mse(y, p) for p in daftar_p]\nreturn daftar_p[posisi_terkecil(nilai)]</pre>\n\nBaca pelan-pelan. **Nilai semua kandidat**, **cari posisi yang terkecil**, **ambil kandidat di posisi itu**. Tiga langkah, dan dua di antaranya sudah kamu tulis di soal sebelumnya. Inilah alasan Soal 1 menanyakan *posisi* dan bukan *nilai*: nilai terkecilnya sendiri tidak berguna — yang kamu butuhkan adalah **siapa pemiliknya**.\n\nUji `prediksi_terbaik([0], [[1], [-1]]) == [1]` adalah uji seri. Tebakan `1` dan `-1` sama-sama meleset sejauh 1 dari kenyataan `0`, jadi MSE keduanya persis sama — kuadrat sudah membuang tandanya. Yang pertama menang, jadi `&lt;` lagi, bukan `&lt;=`.\n\nVersi di kunci memanggil `mse(y, terbaik)` berulang-ulang, satu kali tiap putaran. Untuk soal seleksi itu tidak masalah. Kalau ingin rapi, simpan nilainya:\n\n<pre class=\"code\">terbaik = daftar_p[0]\nnilai_terbaik = mse(y, terbaik)\nfor p in daftar_p:\n    n = mse(y, p)\n    if n &lt; nilai_terbaik:\n        terbaik = p\n        nilai_terbaik = n\nreturn terbaik</pre>"
+    },
+    {
+      "id": "S4",
+      "name": "Garis terbaik",
+      "type": "code",
+      "prompt": "Inilah soalnya.\n\n`garis` adalah list berisi beberapa kandidat, masing-masing berbentuk `[a, b]`. Tulis `garis_terbaik(x, y, garis)` yang mengembalikan kandidat dengan MSE terkecil terhadap data `x` dan `y`. Kalau seri, kembalikan yang paling awal. `x` dan `y` tidak boleh berubah.\n\nDua fungsi bantu sudah disediakan.",
+      "starter": "def prediksi_semua(a, b, x):\n    return [a + b * xi for xi in x]\n\ndef mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef garis_terbaik(x, y, garis):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "garis_terbaik([1, 2, 3], [8, 11, 14], [[5, 3], [0, 1]]) == [5, 3]",
+        "garis_terbaik([1, 2], [3, 5], [[0, 1], [1, 2]]) == [1, 2]",
+        "garis_terbaik([0], [10], [[10, 0], [0, 0]]) == [10, 0]",
+        "garis_terbaik([0], [0], [[1, 0], [-1, 0]]) == [1, 0]",
+        "garis_terbaik(_x := [0, 1], [1, 3], [[1, 2], [0, 0]]) == [1, 2]",
+        "_x == [0, 1]"
+      ],
+      "solution": "<pre class=\"kunci\">def prediksi_semua(a, b, x):\n    return [a + b * xi for xi in x]\n\ndef mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef garis_terbaik(x, y, garis):\n    terbaik = garis[0]\n    nilai_terbaik = mse(y, prediksi_semua(terbaik[0], terbaik[1], x))\n    for g in garis:\n        n = mse(y, prediksi_semua(g[0], g[1], x))\n        if n &lt; nilai_terbaik:\n            terbaik = g\n            nilai_terbaik = n\n    return terbaik</pre>\n\n**Ini Soal 9 seleksi 2025.** Berhenti sebentar dan lihat apa yang barusan kamu tulis.\n\nTidak ada rumus garis terbaik di sini. Tidak ada kalkulus, tidak ada turunan, tidak ada \\(\\sum xy - n\\bar x\\bar y\\). Yang ada cuma: **coba tiap kandidat, ukur, ambil yang paling kecil**. Ketika soalnya sudah memberikan pilihannya, itu sudah cukup — dan jauh lebih sulit disalahtuliskan daripada rumus mana pun.\n\nPerhatikan `g[0]` dan `g[1]`. Sebuah garis disimpan sebagai `[a, b]`, jadi `g[0]` adalah potongan sumbu tegaknya dan `g[1]` kemiringannya. Kalau kamu tertukar, kodemu tetap berjalan mulus dan memberi garis yang salah — tanpa satu pun error. Uji ketiga, `garis_terbaik([0], [10], [[10, 0], [0, 0]])`, menangkapnya: dengan `a` dan `b` tertukar, `[10, 0]` menjadi garis \\(\\hat y = 0 + 10x\\), yang di titik \\(x = 0\\) menebak 0 dan meleset jauh.\n\nKenapa `x` dan `y` aman? Karena `prediksi_semua` **membangun list baru** — pelajaran Tulis Kode 02 Soal 4. Kalau di sana kamu menimpa `x` di tempat, di sini akibatnya baru terasa sepenuhnya: kandidat pertama dinilai dengan `x` yang benar, dan **setiap kandidat sesudahnya** dinilai dengan `x` yang sudah rusak. Pemenangnya akan salah, dan tidak ada yang memberitahumu.\n\nItulah kenapa uji `_x == [0, 1]` ada, dan kenapa Topik 2 harus datang sebelum Topik 3."
+    },
+    {
+      "id": "S5",
+      "name": "Adu dua garis",
+      "type": "code",
+      "prompt": "Tulis `lebih_baik(x, y, garis1, garis2)` yang mengembalikan `True` kalau `garis1` **lebih cocok** dengan data daripada `garis2`, dan `False` kalau tidak. Kalau keduanya sama baiknya, `garis1` **tidak** lebih baik.",
+      "starter": "def prediksi_semua(a, b, x):\n    return [a + b * xi for xi in x]\n\ndef mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef lebih_baik(x, y, garis1, garis2):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "lebih_baik([1, 2], [3, 5], [1, 2], [0, 1]) is True",
+        "lebih_baik([1, 2], [3, 5], [0, 1], [1, 2]) is False",
+        "lebih_baik([0], [1], [1, 0], [1, 0]) is False",
+        "lebih_baik([0, 1], [0, 0], [0, 0], [1, 1]) is True"
+      ],
+      "solution": "<pre class=\"kunci\">def prediksi_semua(a, b, x):\n    return [a + b * xi for xi in x]\n\ndef mse(y, p):\n    total = 0\n    for i in range(len(y)):\n        total += (y[i] - p[i]) ** 2\n    return total / len(y)\n\ndef lebih_baik(x, y, garis1, garis2):\n    n1 = mse(y, prediksi_semua(garis1[0], garis1[1], x))\n    n2 = mse(y, prediksi_semua(garis2[0], garis2[1], x))\n    return n1 &lt; n2</pre>\n\n`n1 &lt; n2` **sudah** bernilai `True` atau `False`. Tidak perlu `if`.\n\nIni pelajaran yang sama dengan `x in data` di Topik 2 dan `n % 2 == 0` di Topik 1, muncul untuk ketiga kalinya dengan wajah baru: **perbandingan adalah nilai**. Kalau kamu menulis\n\n<pre class=\"code\">if n1 &lt; n2:\n    return True\nelse:\n    return False</pre>\n\nkodemu benar, tetapi kamu baru saja menulis empat baris untuk mengatakan `n1 &lt; n2`.\n\nPerhatikan arah tandanya. MSE **kecil** berarti **lebih baik** — itu ukuran keburukan, bukan kebaikan. Kalau kamu menulis `n1 &gt; n2`, kodemu akan selalu memilih garis yang lebih jelek, dan uji pertama serta terakhir menangkapnya.\n\nUji `lebih_baik([0], [1], [1, 0], [1, 0]) is False` adalah uji seri, dan sengaja memakai garis yang **persis sama**. Sesuatu tidak lebih baik daripada dirinya sendiri. Kalau kamu menulis `&lt;=`, uji ini gagal — dan itu tanda yang sama dengan `&lt;=` di Soal 1: aturan seri selalu ditentukan oleh satu karakter."
+    },
+    {
+      "id": "S6",
+      "name": "Kalau melesetnya tidak dikuadratkan",
+      "type": "code",
+      "prompt": "MSE mengkuadratkan tiap galat. Ada ukuran lain yang cuma mengambil nilai mutlaknya, namanya **MAD**: rata-rata jarak meleset.\n\nTulis `mad_garis(x, y, a, b)` yang mengembalikan MAD dari garis \\(\\hat y = a + b\\,x\\). Dijamin `x` tidak pernah kosong.",
+      "starter": "def prediksi_semua(a, b, x):\n    return [a + b * xi for xi in x]\n\ndef mad_garis(x, y, a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "mad_garis([1, 2, 3], [9, 11, 13], 5, 3) == 2 / 3",
+        "mad_garis([0], [10], 5, 3) == 5",
+        "mad_garis([1, 2], [8, 11], 5, 3) == 0",
+        "mad_garis([0, 0], [0, 10], 0, 0) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def prediksi_semua(a, b, x):\n    return [a + b * xi for xi in x]\n\ndef mad_garis(x, y, a, b):\n    p = prediksi_semua(a, b, x)\n    total = 0\n    for i in range(len(y)):\n        total += abs(y[i] - p[i])\n    return total / len(y)</pre>\n\nSama persis dengan `mse_garis`, dengan satu perubahan: `** 2` menjadi `abs`.\n\nSekarang bandingkan keduanya, dan di sinilah seluruh isi soal ini.\n\nUji pertama, `mad_garis([1, 2, 3], [9, 11, 13], 5, 3)`, memberi \\(2/3\\) — **angka yang sama persis** dengan `mse_garis` pada data yang sama di Tulis Kode 02 Soal 5. Kebetulan? Bukan: galatnya semua bernilai 1, 0, atau −1, dan untuk angka-angka itu \\(|x|\\) dan \\(x^2\\) memberi hasil yang identik. Selama melesetnya kecil, kedua ukuran nyaris tidak bisa dibedakan.\n\nSekarang uji terakhir, `mad_garis([0, 0], [0, 10], 0, 0)` — satu titik tepat sasaran, satu titik meleset **10**:\n\n| ukuran | hitungan | hasil |\n|---|---|---|\n| MAD | \\((0 + 10)/2\\) | **5** |\n| MSE | \\((0 + 100)/2\\) | **50** |\n\nSepuluh kali lipat. Itulah watak MSE: ia **melebih-lebihkan yang jauh**, dengan sengaja. Meleset 10 bukan sepuluh kali lebih buruk daripada meleset 1 — menurut MSE, ia **seratus** kali lebih buruk.\n\nDari situ mengalir semua yang aneh tentang kuadrat terkecil. Ingat cerita di bank Regresi Pertemuan 2: satu titik salah catat menyumbang residual 24, dan kuadratnya 576 — angka yang begitu besar sampai garisnya rela memutar dan merusak tiga titik yang tadinya sempurna, demi mengecilkannya. MAD tidak akan pernah melakukan itu; baginya titik itu cuma meleset 24, sama seperti 24 titik yang masing-masing meleset 1.\n\nJadi mana yang benar? Keduanya. Mereka menjawab pertanyaan yang berbeda. MSE dipakai di mana-mana karena matematikanya jauh lebih mudah — tetapi harganya adalah kepekaan berlebih terhadap pencilan, dan sekarang kamu bisa menghitung sendiri berapa harganya."
+    }
+  ],
+  "number": 26
+}

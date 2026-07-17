@@ -1,0 +1,104 @@
+{
+  "id": "meeting-01b-latihan-knn-01",
+  "group": "Pertemuan 1",
+  "title": "KNN 01",
+  "summary": "Sebuah pos pemantau lahan gambut di Kalimantan Selatan menilai petak-petak lahan dan mengelompokkannya sebagai **Rawan** (mudah terbakar) atau **Aman**. Pos ini memakai metode **K-Nearest Neighbors (KNN)**. Untuk menilai petak baru, KNN membandingkannya dengan petak-petak yang kelasnya sudah diketahui, lalu menentukan kelas berdasarkan tetangga yang paling dekat.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama kelas**.\n\n- Untuk angka, tuliskan nilainya **tanpa pembulatan**. Semua jawaban pada set ini berupa desimal berhenti, misalnya `0.75`. Gunakan titik sebagai pemisah desimal.\n- Untuk nama kelas, tuliskan persis seperti pada soal: `Rawan` atau `Aman`.\n- Kelas positif pada set ini selalu **Rawan**.",
+  "formulas": "\\[\nd(p,q)=\\sqrt{(p_1-q_1)^2+(p_2-q_2)^2}.\n\\]\n\nPenskalaan min-maks:\n\n\\[\nx'=\\frac{x-x_{\\min}}{x_{\\max}-x_{\\min}}.\n\\]\n\n\\[\n\\text{akurasi}=\\frac{TP+TN}{TP+TN+FP+FN}.\n\\]\n\n\\[\n\\text{precision}=\\frac{TP}{TP+FP},\\qquad\n\\text{recall}=\\frac{TP}{TP+FN}.\n\\]",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Enam petak yang sudah diketahui",
+      "type": "fill",
+      "prompt": "Pos pemantau telah memeriksa enam petak di lapangan, sehingga kelas masing-masing petak sudah diketahui. Setiap petak dicatat menurut dua ciri: **kelembapan tanah** dan **kerapatan vegetasi**, keduanya dalam persen. Data ini akan menjadi pembanding untuk menilai petak baru.\n\n| Petak | Kelembapan (%) | Kerapatan (%) | Kelas |\n|---|---:|---:|---|\n| R1 | 48 | 44 | Rawan |\n| R2 | 20 | 30 | Rawan |\n| R3 | 25 | 20 | Rawan |\n| A1 | 52 | 34 | Aman |\n| A2 | 55 | 45 | Aman |\n| A3 | 70 | 60 | Aman |\n\nHari ini pos mengukur satu petak baru, **petak U**, dengan kelembapan 45% dan kerapatan vegetasi 40%. Kelasnya belum diketahui. Untuk soal ini, hitung jarak U ke R1 menggunakan kedua ciri tersebut.\n\n<figure class=\"q-image\">\n<svg viewBox=\"0 0 470 460\" role=\"img\">\n  <title>Sebaran enam petak latih dan petak uji U</title>\n  <desc>Bidang kelembapan tanah terhadap kerapatan vegetasi. Tiga petak Rawan berupa persegi, tiga petak Aman berupa lingkaran, dan petak uji U berupa bintang di posisi 45 persen kelembapan dan 40 persen kerapatan. Kedua sumbu memakai skala yang sama.</desc>\n  <g font-family=\"ui-sans-serif, system-ui, sans-serif\" font-size=\"12\">\n    <g stroke=\"currentColor\" opacity=\"0.12\" stroke-width=\"1\">\n      <path d=\"M 100 400 L 100 40 M 160 400 L 160 40 M 220 400 L 220 40 M 280 400 L 280 40 M 340 400 L 340 40 M 400 400 L 400 40\"/>\n      <path d=\"M 70 370 L 430 370 M 70 310 L 430 310 M 70 250 L 430 250 M 70 190 L 430 190 M 70 130 L 430 130 M 70 70 L 430 70\"/>\n    </g>\n    <g stroke=\"currentColor\" opacity=\"0.65\" stroke-width=\"1.4\" fill=\"none\">\n      <path d=\"M 70 400 L 430 400\"/>\n      <path d=\"M 70 400 L 70 40\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.7\" text-anchor=\"middle\">\n      <text x=\"100\" y=\"418\">20</text><text x=\"160\" y=\"418\">30</text><text x=\"220\" y=\"418\">40</text>\n      <text x=\"280\" y=\"418\">50</text><text x=\"340\" y=\"418\">60</text><text x=\"400\" y=\"418\">70</text>\n      <text x=\"250\" y=\"440\" opacity=\"0.9\">kelembapan tanah (%)</text>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.7\" text-anchor=\"end\">\n      <text x=\"60\" y=\"374\">10</text><text x=\"60\" y=\"314\">20</text><text x=\"60\" y=\"254\">30</text>\n      <text x=\"60\" y=\"194\">40</text><text x=\"60\" y=\"134\">50</text><text x=\"60\" y=\"74\">60</text>\n    </g>\n    <text x=\"22\" y=\"220\" fill=\"currentColor\" opacity=\"0.9\" text-anchor=\"middle\" transform=\"rotate(-90 22 220)\">kerapatan vegetasi (%)</text>\n    <g fill=\"#D55E00\">\n      <rect x=\"261\" y=\"159\" width=\"14\" height=\"14\"/>\n      <rect x=\"93\" y=\"243\" width=\"14\" height=\"14\"/>\n      <rect x=\"123\" y=\"303\" width=\"14\" height=\"14\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" font-size=\"12\">\n      <text x=\"280\" y=\"157\">R1</text><text x=\"112\" y=\"241\">R2</text><text x=\"142\" y=\"301\">R3</text>\n    </g>\n    <g fill=\"#0072B2\">\n      <circle cx=\"292\" cy=\"226\" r=\"7\"/>\n      <circle cx=\"310\" cy=\"160\" r=\"7\"/>\n      <circle cx=\"400\" cy=\"70\" r=\"7\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" font-size=\"12\">\n      <text x=\"303\" y=\"244\">A1</text><text x=\"321\" y=\"150\">A2</text><text x=\"411\" y=\"60\">A3</text>\n    </g>\n    <path d=\"M 250 176 l 4.3 8.8 9.7 1.4 -7 6.8 1.6 9.6 -8.6 -4.5 -8.6 4.5 1.6 -9.6 -7 -6.8 9.7 -1.4 z\" fill=\"currentColor\"/>\n    <text x=\"266\" y=\"196\" fill=\"currentColor\" font-size=\"13\">U</text>\n    <g font-size=\"12.5\" fill=\"currentColor\" opacity=\"0.85\">\n      <rect x=\"78\" y=\"52\" width=\"12\" height=\"12\" fill=\"#D55E00\"/><text x=\"96\" y=\"63\">Rawan</text>\n      <circle cx=\"160\" cy=\"58\" r=\"6\" fill=\"#0072B2\"/><text x=\"172\" y=\"63\">Aman</text>\n      <text x=\"228\" y=\"63\">★ petak uji U</text>\n    </g>\n  </g>\n</svg>\n</figure>\n\nBerapa jarak Euclid antara petak U dan petak **R1**?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Selisih kelembapan \\(48-45=3\\), selisih kerapatan \\(44-40=4\\).\n\n\\[\nd=\\sqrt{3^2+4^2}=\\sqrt{9+16}=\\sqrt{25}=5.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Satu tetangga saja",
+      "type": "fill",
+      "prompt": "Pada percobaan pertama, pos memakai **k = 1**. Artinya, petak U mengikuti kelas dari **satu** petak pembanding yang jaraknya paling dekat. Tentukan lebih dahulu petak mana yang paling dekat dengan U.\n\nGunakan tabel dan gambar pada Soal 1. Kelas apa yang diberikan kepada petak U?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "Rawan"
+          ]
+        }
+      ],
+      "solution": "Hitung kuadrat jarak dari petak U (45, 40) ke setiap petak latih. Akarnya tidak perlu diambil: urutannya tidak berubah.\n\n| Petak | Selisih | Kuadrat jarak | Kelas |\n|---|---|---:|---|\n| R1 | (3, 4) | \\(9+16=25\\) | Rawan |\n| A1 | (7, 6) | \\(49+36=85\\) | Aman |\n| A2 | (10, 5) | \\(100+25=125\\) | Aman |\n| R2 | (25, 10) | \\(625+100=725\\) | Rawan |\n| R3 | (20, 20) | \\(400+400=800\\) | Rawan |\n| A3 | (25, 20) | \\(625+400=1025\\) | Aman |\n\nYang terdekat adalah **R1** dengan kuadrat jarak 25. Dengan \\(k=1\\), kelas petak U mengikuti R1, yaitu **Rawan**."
+    },
+    {
+      "id": "S3",
+      "name": "Tiga tetangga",
+      "type": "fill",
+      "prompt": "Kepala pos menilai keputusan yang hanya bergantung pada satu tetangga kurang dapat diandalkan. Ia mengubah pengaturan menjadi **k = 3**: ambil tiga petak pembanding terdekat, lalu pilih kelas yang jumlahnya paling banyak di antara ketiganya.\n\nGunakan data yang sama seperti Soal 1. Kelas apa yang sekarang diberikan kepada petak U?\n\n*Petunjuk: untuk mengurutkan tetangga dari yang terdekat, kamu tidak perlu menghitung akar. Jika kuadrat jaraknya lebih kecil, jaraknya juga lebih kecil.*",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "Aman"
+          ]
+        }
+      ],
+      "solution": "Tiga petak terdekat menurut tabel pada Soal 2 adalah R1 (25), A1 (85), dan A2 (125).\n\nHasil pemungutan suaranya adalah 1 Rawan dan 2 Aman. Kelas yang paling banyak muncul adalah **Aman**.\n\nPerhatikan bahwa jawaban ini **berbeda** dari jawaban \\(k=1\\) pada Soal 2. R1 adalah petak Rawan yang letaknya lebih dekat ke U daripada dua petak Rawan lainnya. Dengan \\(k=1\\), keputusan hanya mengikuti R1. Dengan \\(k=3\\), dua petak Aman yang juga dekat ikut diperhitungkan sehingga kelas Aman menjadi mayoritas."
+    },
+    {
+      "id": "S4",
+      "name": "Pos yang menambah alat ukur",
+      "type": "fill",
+      "prompt": "Pos pemantau kedua memakai dua ciri yang satuannya berbeda: **kelembapan tanah (%)** dan **jarak petak ke kanal drainase (meter)**. Petak yang lebih jauh dari kanal cenderung lebih basah. Karena skala kedua angka ini jauh berbeda, keduanya perlu disetarakan sebelum jarak antarpetak dibandingkan.\n\n| Petak | Kelembapan (%) | Jarak ke kanal (m) | Kelas |\n|---|---:|---:|---|\n| P1 | 20 | 900 | Rawan |\n| P2 | 30 | 500 | Rawan |\n| P3 | 70 | 100 | Aman |\n| P4 | 60 | 300 | Aman |\n\nPada seluruh data pos ini, kelembapan berada pada rentang **20 sampai 70**, sedangkan jarak ke kanal berada pada rentang **100 sampai 900** meter.\n\nSebuah petak baru, **petak V**, memiliki kelembapan 60% dan jarak ke kanal 700 m.\n\nGunakan penskalaan min-maks dengan rentang di atas untuk kedua ciri. Setelah itu, terapkan **k = 1** pada data yang sudah diskalakan. Kelas apa yang diberikan kepada petak V?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "Aman"
+          ]
+        }
+      ],
+      "solution": "Skalakan dahulu. Kelembapan dibagi kisaran \\(70-20=50\\), jarak dibagi kisaran \\(900-100=800\\).\n\n| Petak | Kelembapan' | Jarak' | Kelas |\n|---|---:|---:|---|\n| P1 | \\((20-20)/50=0\\) | \\((900-100)/800=1\\) | Rawan |\n| P2 | \\((30-20)/50=0.2\\) | \\((500-100)/800=0.5\\) | Rawan |\n| P3 | \\((70-20)/50=1\\) | \\((100-100)/800=0\\) | Aman |\n| P4 | \\((60-20)/50=0.8\\) | \\((300-100)/800=0.25\\) | Aman |\n| V | \\((60-20)/50=0.8\\) | \\((700-100)/800=0.75\\) | ? |\n\nKuadrat jarak dari V (0.8, 0.75):\n\n| Petak | Kuadrat jarak | Kelas |\n|---|---:|---|\n| P4 | \\(0^2+0.5^2=0.25\\) | Aman |\n| P2 | \\(0.6^2+0.25^2=0.4225\\) | Rawan |\n| P3 | \\(0.2^2+0.75^2=0.6025\\) | Aman |\n| P1 | \\(0.8^2+0.25^2=0.7025\\) | Rawan |\n\nYang terdekat adalah **P4**, sehingga kelas petak V adalah **Aman**.\n\nSekarang lihat apa yang terjadi bila penskalaan dilewati dan kuadrat jarak dihitung pada angka aslinya:\n\n| Petak | Kuadrat jarak | Kelas |\n|---|---:|---|\n| P2 | \\(30^2+200^2=40900\\) | Rawan |\n| P1 | \\(40^2+200^2=41600\\) | Rawan |\n| P4 | \\(0^2+400^2=160000\\) | Aman |\n| P3 | \\(10^2+600^2=360100\\) | Aman |\n\nTanpa penskalaan, yang terdekat adalah P2 dan jawabannya menjadi **Rawan** — berlawanan.\n\nSebabnya bisa dibaca langsung dari angkanya. Terhadap P4, selisih kelembapan V adalah **0**, tetapi selisih jaraknya 400 meter. Terhadap P2, selisih kelembapannya 30 (besar), tetapi selisih jaraknya hanya 200 meter. Karena jarak diukur dalam ratusan meter sedangkan kelembapan dalam puluhan persen, angka meter menelan angka persen: selisih kelembapan 30 poin pun tak terlihat di samping selisih 200 meter. Fitur yang paling menentukan justru diabaikan. Penskalaan mengembalikan keduanya ke rentang 0 sampai 1, sehingga keduanya sama-sama berbicara."
+    },
+    {
+      "id": "S5",
+      "name": "Sepuluh petak yang sudah dicek",
+      "type": "fill",
+      "prompt": "Pos menjalankan model KNN pada sepuluh petak lain. Setelah itu, tim lapangan memeriksa setiap petak untuk mengetahui kelas sebenarnya. Tabel berikut membandingkan hasil prediksi model dengan hasil pemeriksaan lapangan.\n\n| Petak | Kelas sebenarnya | Prediksi model |\n|---|---|---|\n| U1 | Rawan | Rawan |\n| U2 | Aman | Aman |\n| U3 | Rawan | Aman |\n| U4 | Rawan | Rawan |\n| U5 | Aman | Rawan |\n| U6 | Rawan | Aman |\n| U7 | Aman | Aman |\n| U8 | Rawan | Rawan |\n| U9 | Rawan | Aman |\n| U10 | Aman | Aman |\n\nSusun **confusion matrix** (tabel perbandingan prediksi dan kelas sebenarnya) dengan **Rawan** sebagai kelas positif. Kemudian hitung **recall**, yaitu bagian petak yang benar-benar Rawan dan berhasil dikenali model.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Hitung keempat kotak. Kelas positif adalah Rawan.\n\n- **TP** (Rawan, diprediksi Rawan): U1, U4, U8 → **3**\n- **FN** (Rawan, diprediksi Aman): U3, U6, U9 → **3**\n- **FP** (Aman, diprediksi Rawan): U5 → **1**\n- **TN** (Aman, diprediksi Aman): U2, U7, U10 → **3**\n\n| Aktual ↓ / Prediksi → | Rawan | Aman |\n|---|---:|---:|\n| **Rawan** | 3 | 3 |\n| **Aman** | 1 | 3 |\n\n\\[\n\\text{recall}=\\frac{TP}{TP+FN}=\\frac{3}{3+3}=\\frac{3}{6}=0.5.\n\\]\n\nRecall dihitung dari **baris** Rawan: dari enam petak yang sebenarnya rawan, model hanya menemukan tiga. Separuh petak rawan lolos tanpa tanda."
+    },
+    {
+      "id": "S6",
+      "name": "Laporan akhir musim",
+      "type": "fill",
+      "prompt": "Setelah seluruh 20 petak uji diperiksa, hasil model diringkas dalam confusion matrix berikut. Baris menunjukkan kelas sebenarnya, sedangkan kolom menunjukkan prediksi model.\n\n| Aktual ↓ / Prediksi → | Rawan | Aman |\n|---|---:|---:|\n| **Rawan** | 6 | 6 |\n| **Aman** | 2 | 6 |\n\nHitung **akurasi** model ini.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.6,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Dari tabel: \\(TP=6\\), \\(FN=6\\), \\(FP=2\\), \\(TN=6\\).\n\nAkurasi menjumlahkan **dua kotak yang benar** — TP dan TN, yaitu diagonalnya — lalu membaginya dengan seluruh isi tabel.\n\n\\[\n\\text{akurasi}=\\frac{TP+TN}{TP+TN+FP+FN}=\\frac{6+6}{6+6+2+6}=\\frac{12}{20}=0.6.\n\\]\n\nJumlahkan dahulu seluruh isi tabel untuk memastikan: \\(6+6+2+6=20\\), sesuai jumlah petak uji.\n\nSekarang bandingkan dengan Soal 5. Dua puluh petak ini memuat sepuluh petak yang sama seperti Soal 5, jadi rasionya tidak berubah: recall-nya tetap \\(6/12=0.5\\).\n\nJadi model yang sama menghasilkan **dua angka yang berbeda**: akurasi 0.6 dan recall 0.5. Keduanya benar, tetapi menjawab pertanyaan yang berlainan. Akurasi bertanya \"berapa bagian tebakan yang benar?\" — dan ia ikut menghitung enam petak Aman yang ditebak benar, padahal menebak \"Aman\" itu mudah. Recall bertanya \"berapa bagian petak rawan yang berhasil ditemukan?\" — dan jawabannya separuh. Untuk pemantauan kebakaran, angka kedua itulah yang menentukan apakah lahan terbakar atau tidak."
+    }
+  ],
+  "number": 5
+}

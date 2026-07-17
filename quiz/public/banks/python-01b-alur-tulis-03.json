@@ -1,0 +1,95 @@
+{
+  "id": "python-01b-alur-tulis-03",
+  "group": "Latihan Python",
+  "title": "Control Flow dan Operator — Tulis Kode 03 (Sedang)",
+  "summary": "Topik 1, menulis kode, tingkat **sedang**. Kalau Tulis Kode 02 semuanya \"jalan dari awal sampai akhir, jumlahkan\", set ini tentang perulangan yang **berhenti sendiri**, **melompat**, atau **bersarang**. Dua soal di sini adalah kode yang sudah kamu lacak di Baca Kode 02 — sekarang giliranmu yang menulisnya.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nHati-hati dengan `while`: kalau tidak ada yang mengubah syaratnya, kodemu berputar selamanya. Halaman ini akan menghentikannya setelah 5 detik dan memberitahumu — tidak apa-apa, itu bagian dari belajar.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `range(a, b, s)` mulai dari `a`, melompat `s`, berhenti **sebelum** `b`.\n- `return` di dalam perulangan **langsung** menghentikan seluruh fungsi — cara paling rapi untuk \"cari yang pertama\".\n- Pola `while`: ubah keadaan tiap putaran, sampai syaratnya gagal.\n- `n % 10` memberi digit terakhir; `n // 10` membuang digit terakhir.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Deret melompat",
+      "type": "code",
+      "prompt": "Petugas memeriksa gerbong secara berselang dan menjumlahkan nomor gerbong yang diperiksa.\n\nTulis `deret_lompat(a, b, langkah)` yang mengembalikan jumlah dari `a`, melompat sejauh `langkah`, berhenti **sebelum** `b`.",
+      "starter": "def deret_lompat(a, b, langkah):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "deret_lompat(2, 12, 3) == 26",
+        "deret_lompat(0, 5, 1) == 10",
+        "deret_lompat(1, 10, 4) == 15",
+        "deret_lompat(5, 5, 1) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def deret_lompat(a, b, langkah):\n    total = 0\n    for i in range(a, b, langkah):\n        total += i\n    return total</pre>\n\nYang perlu disadari: ketiga argumen soal ini **persis** ketiga argumen `range`. Jadi tidak ada yang perlu dihitung sendiri — cukup teruskan.\n\nVersi pendeknya `return sum(range(a, b, langkah))`, dan itu sama benarnya.\n\nUji `deret_lompat(5, 5, 1) == 0` menangkap kasus kosong: `range(5, 5)` tidak berisi apa-apa, jadi perulangannya tidak jalan dan `total` tetap 0. Benar dengan sendirinya, tanpa `if` khusus — pola yang sama seperti `hitung_turun([])` di set sebelumnya.\n\nUji `deret_lompat(2, 12, 3)`: isinya 2, 5, 8, 11 (11 + 3 = 14 sudah lewat batas), jumlahnya 26. Ini kode yang kamu lacak di Baca Kode 02, sekarang dari sisi penulis."
+    },
+    {
+      "id": "S2",
+      "name": "Pasangan piket",
+      "type": "code",
+      "prompt": "Ada `n` siswa bernomor 0 sampai `n-1`. Dua siswa boleh sepiket kalau nomornya **berbeda** dan **jumlah nomornya genap**. Urutan diperhatikan: pasangan (0, 2) dan (2, 0) dihitung dua kali.\n\nTulis `hitung_pasangan(n)` yang mengembalikan banyaknya pasangan yang boleh.",
+      "starter": "def hitung_pasangan(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_pasangan(4) == 4",
+        "hitung_pasangan(3) == 2",
+        "hitung_pasangan(2) == 0",
+        "hitung_pasangan(1) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_pasangan(n):\n    total = 0\n    for i in range(n):\n        for j in range(n):\n            if i != j and (i + j) % 2 == 0:\n                total += 1\n    return total</pre>\n\nPerulangan bersarang: untuk **tiap** `i`, jalankan **seluruh** `j`. Hasilnya \\(n^2\\) pasangan, lalu disaring oleh `if`.\n\nKarena soalnya bilang urutan diperhatikan, kedua perulangan berjalan penuh dari `0` sampai `n-1`. Kalau urutan **tidak** diperhatikan, `j` akan dimulai dari `i + 1` dan hasilnya separuh.\n\nPeriksa `hitung_pasangan(4)` dengan tangan:\n\n| pasangan | `i != j` | `(i+j)` genap | ikut? |\n|---|---|---|---|\n| (0,2) | ya | 2 ya | ✓ |\n| (2,0) | ya | 2 ya | ✓ |\n| (1,3) | ya | 4 ya | ✓ |\n| (3,1) | ya | 4 ya | ✓ |\n\nEmpat. Yang lain gagal di salah satu syarat. Uji `hitung_pasangan(2) == 0` menarik: (0,1) dan (1,0) sama-sama berjumlah ganjil, jadi tidak ada pasangan sama sekali walaupun ada dua siswa.\n\nBentuk `for` di dalam `for` inilah yang nanti menjadi tulang punggung topik Grid."
+    },
+    {
+      "id": "S3",
+      "name": "Mencari di antrean",
+      "type": "code",
+      "prompt": "Panitia mencari peserta bernomor tertentu di dalam antrean, dan hanya peduli pada yang **pertama** ditemukan.\n\nTulis `cari_pertama(data, x)` yang mengembalikan **indeks** kemunculan pertama `x` di dalam `data`, atau `-1` kalau tidak ada sama sekali.",
+      "starter": "def cari_pertama(data, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "cari_pertama([4, 7, 7, 1], 7) == 1",
+        "cari_pertama([5], 5) == 0",
+        "cari_pertama([4, 7], 9) == -1",
+        "cari_pertama([], 1) == -1"
+      ],
+      "solution": "<pre class=\"kunci\">def cari_pertama(data, x):\n    for i in range(len(data)):\n        if data[i] == x:\n            return i\n    return -1</pre>\n\nDua hal penting.\n\nPertama, `return i` **di dalam** perulangan. Begitu ketemu, fungsinya selesai saat itu juga — tidak perlu `break`, tidak perlu variabel penampung. Itulah sebabnya uji `[4, 7, 7, 1]` menjawab `1` dan bukan `2`: yang pertama menang, lalu berhenti.\n\nKedua, `return -1` berada **di luar** perulangan, sejajar dengan `for`. Baris itu hanya tercapai kalau perulangan selesai tanpa pernah menemukan apa pun. Kalau kamu menaruhnya di dalam (`else: return -1`), fungsinya menyerah setelah memeriksa satu isi saja.\n\nUji `[]` gratis: perulangannya tidak jalan, langsung ke `return -1`."
+    },
+    {
+      "id": "S4",
+      "name": "Saldo e-wallet",
+      "type": "code",
+      "prompt": "Aplikasi menolak transaksi yang akan membuat saldo menjadi minus, lalu **lanjut** ke transaksi berikutnya.\n\nTulis `saldo_akhir(saldo, transaksi)` yang mengembalikan saldo setelah semua transaksi diproses.",
+      "starter": "def saldo_akhir(saldo, transaksi):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "saldo_akhir(100000, [-30000, -50000, -40000, 20000]) == 40000",
+        "saldo_akhir(1000, []) == 1000",
+        "saldo_akhir(100, [-200]) == 100",
+        "saldo_akhir(0, [50, -50]) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def saldo_akhir(saldo, transaksi):\n    for t in transaksi:\n        if saldo + t &lt; 0:\n            continue\n        saldo += t\n    return saldo</pre>\n\nIni kode yang kamu lacak di Baca Kode 02 Soal 6. Perhatikan dua hal.\n\nSyaratnya memeriksa `saldo + t`, bukan `saldo` — kamu memeriksa **akibatnya** sebelum melakukannya. Ini pola yang akan kembali di topik Grid: periksa dulu apakah langkahnya sah, baru melangkah.\n\nDan `continue`, bukan `break`. Transaksi ketiga ditolak, tetapi yang keempat tetap diproses. Kalau kamu memakai `break`, uji pertama memberi 20000, bukan 40000.\n\nPerhatikan juga bahwa `saldo` adalah parameter yang langsung dipakai sebagai wadah akumulasi. Tidak perlu variabel baru — nilai awalnya sudah diberikan lewat argumen."
+    },
+    {
+      "id": "S5",
+      "name": "Permainan tebak angka",
+      "type": "code",
+      "prompt": "Aturannya: kalau angkanya genap, bagi dua. Kalau ganjil, kalikan tiga lalu tambah satu. Ulangi sampai angkanya menjadi 1.\n\nTulis `langkah_collatz(n)` yang mengembalikan **berapa langkah** yang dibutuhkan sampai `n` menjadi 1. Kalau `n` sudah 1 sejak awal, jawabannya `0`.",
+      "starter": "def langkah_collatz(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "langkah_collatz(6) == 8",
+        "langkah_collatz(3) == 7",
+        "langkah_collatz(2) == 1",
+        "langkah_collatz(1) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def langkah_collatz(n):\n    langkah = 0\n    while n != 1:\n        if n % 2 == 0:\n            n = n // 2\n        else:\n            n = 3 * n + 1\n        langkah += 1\n    return langkah</pre>\n\n`while`, bukan `for`, karena kamu **tidak tahu** berapa putaran yang dibutuhkan sebelum menjalankannya. Itulah bedanya: `for` untuk \"sebanyak sekian kali\", `while` untuk \"sampai sesuatu terjadi\".\n\n`langkah += 1` ada di **dalam** `while` dan **setelah** perubahan, jadi yang dihitung adalah banyaknya perubahan. Uji `langkah_collatz(1) == 0` memastikannya: `n` sudah 1, syaratnya langsung gagal, perulangan tidak pernah jalan, jawabannya 0.\n\nYang wajib diperhatikan: sesuatu **harus** mengubah `n` di setiap putaran, kalau tidak `while n != 1` berputar selamanya. Coba saja hapus baris `n = n // 2` dan jalankan — halaman ini akan menghentikanmu setelah 5 detik. Melihatnya sekali jauh lebih berguna daripada dinasihati.\n\nPakai `//`, bukan `/`. Dengan `/`, `n` berubah menjadi pecahan (`6/2` = `3.0`), dan walaupun untuk kasus ini masih kebetulan berhasil, kamu sudah kehilangan jaminan bahwa `n` tetap bilangan bulat."
+    },
+    {
+      "id": "S6",
+      "name": "Jumlah digit",
+      "type": "code",
+      "prompt": "Petugas loket menjumlahkan angka-angka penyusun nomor antrean untuk mencari kode acak harian.\n\nTulis `jumlah_digit(n)` yang mengembalikan jumlah semua digit `n`. Contoh: `3725` → 3+7+2+5 = 17. `n` tidak pernah negatif.",
+      "starter": "def jumlah_digit(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_digit(3725) == 17",
+        "jumlah_digit(9) == 9",
+        "jumlah_digit(100) == 1",
+        "jumlah_digit(0) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_digit(n):\n    total = 0\n    while n &gt; 0:\n        total += n % 10\n        n = n // 10\n    return total</pre>\n\nPasangan `%` dan `//` lagi, tetapi kali ini sebagai alat pengupas: `n % 10` mengambil digit terakhir, `n // 10` membuangnya. Ulangi sampai tidak ada yang tersisa.\n\nUntuk 3725:\n\n| `n` | `n % 10` | `total` | `n // 10` |\n|---|---|---|---|\n| 3725 | 5 | 5 | 372 |\n| 372 | 2 | 7 | 37 |\n| 37 | 7 | 14 | 3 |\n| 3 | 3 | 17 | 0 |\n\n`n` menjadi 0, syarat `n > 0` gagal, selesai. **17**.\n\nUji `jumlah_digit(0) == 0` gratis lagi: perulangannya tidak pernah jalan. Kalau kamu memakai `while n >= 0`, kodemu berputar selamanya di angka 0 — dan halaman ini akan menghentikanmu.\n\nAda jalan lain lewat teks: `sum(int(d) for d in str(n))`. Itu juga benar dan lolos semua uji. Tapi versi `%`/`//` lebih layak dikuasai, karena pola \"kupas satu bagian, buang, ulangi\" muncul di mana-mana — termasuk saat mengubah bilangan ke basis lain."
+    }
+  ],
+  "number": 16
+}

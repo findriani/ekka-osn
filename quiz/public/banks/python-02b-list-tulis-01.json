@@ -1,0 +1,90 @@
+{
+  "id": "python-02b-list-tulis-01",
+  "group": "Latihan Python",
+  "title": "List & Penyalinan — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 2, menulis kode, tingkat **mudah**. Semua jawabannya **satu baris**, dan tidak ada satu pun perulangan. Yang dilatih hanya cara mengambil sesuatu dari list: lewat indeks, lewat irisan, lewat `len`, lewat `in`.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `data[0]` isi pertama · `data[-1]` isi terakhir\n- `data[:3]` tiga isi pertama · `data[2:]` dari indeks 2 sampai habis\n- `data[::-1]` list baru dengan urutan terbalik\n- `len(data)` banyaknya isi\n- `x in data` bernilai `True` atau `False` — itu sudah jawaban, tidak perlu `if`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Yang paling depan",
+      "type": "code",
+      "prompt": "Panitia memanggil peserta paling depan di antrean.\n\nTulis `ambil_pertama(data)` yang mengembalikan isi **pertama** dari `data`. Dijamin `data` tidak pernah kosong.",
+      "starter": "def ambil_pertama(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ambil_pertama([7, 8, 9]) == 7",
+        "ambil_pertama([5]) == 5",
+        "ambil_pertama([\"nasi\", \"soto\"]) == \"nasi\""
+      ],
+      "solution": "<pre class=\"kunci\">def ambil_pertama(data):\n    return data[0]</pre>\n\nIndeks mulai dari **0**, jadi isi pertama adalah `data[0]`, bukan `data[1]`.\n\nKalau kamu menulis `data[1]`, uji pertama memberi `8` dan gagal. Lebih menarik: uji `ambil_pertama([5])` akan melempar `IndexError` — list itu cuma punya indeks 0. Pesan error itu sendiri adalah petunjuknya.\n\nPerhatikan uji ketiga memakai teks, bukan angka. Indeks bekerja sama saja apa pun isinya; list tidak peduli."
+    },
+    {
+      "id": "S2",
+      "name": "Yang paling belakang",
+      "type": "code",
+      "prompt": "Sekarang yang paling buncit.\n\nTulis `ambil_terakhir(data)` yang mengembalikan isi **terakhir** dari `data`. Dijamin `data` tidak pernah kosong.",
+      "starter": "def ambil_terakhir(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ambil_terakhir([7, 8, 9]) == 9",
+        "ambil_terakhir([5]) == 5",
+        "ambil_terakhir([\"nasi\", \"soto\"]) == \"soto\""
+      ],
+      "solution": "<pre class=\"kunci\">def ambil_terakhir(data):\n    return data[-1]</pre>\n\n`data[-1]` selalu isi terakhir, berapa pun panjangnya. Itu sebabnya ia lebih baik daripada `data[len(data) - 1]`, yang benar tetapi lebih panjang dan lebih mudah salah tulis.\n\nKalau kamu menulis `data[2]`, uji pertama lolos secara kebetulan — `[7, 8, 9]` memang punya isi terakhir di indeks 2. Lalu uji kedua, `ambil_terakhir([5])`, langsung melempar `IndexError`. Sekali lagi: satu uji tidak pernah cukup.\n\nIngat ini baik-baik. Indeks negatif adalah alasan kenapa bug grid di Topik 6 tidak pernah melempar error — Python dengan senang hati membaca `grid[-1]` sebagai baris terakhir."
+    },
+    {
+      "id": "S3",
+      "name": "Tiga besar",
+      "type": "code",
+      "prompt": "Papan skor hanya muat menampilkan tiga nama teratas. Kalau pesertanya kurang dari tiga, tampilkan seadanya.\n\nTulis `tiga_awal(data)` yang mengembalikan **list baru** berisi paling banyak tiga isi pertama dari `data`.",
+      "starter": "def tiga_awal(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tiga_awal([1, 2, 3, 4, 5]) == [1, 2, 3]",
+        "tiga_awal([1, 2]) == [1, 2]",
+        "tiga_awal([]) == []"
+      ],
+      "solution": "<pre class=\"kunci\">def tiga_awal(data):\n    return data[:3]</pre>\n\nYang perlu disadari: **irisan tidak pernah error karena kepanjangan**. `[1, 2][:3]` tidak protes bahwa isinya cuma dua — ia memberi apa adanya.\n\nKarena itu kamu **tidak perlu** `if len(data) < 3`. Uji kedua dan ketiga ada khusus untuk memperlihatkan hal ini: irisan sudah menangani keduanya sendiri.\n\nBandingkan dengan `data[2]`, yang **akan** error kalau isinya kurang. Indeks tunggal galak; irisan pemaaf. Perbedaan itu berguna: banyak kasus tepi hilang sendiri kalau kamu memakai irisan."
+    },
+    {
+      "id": "S4",
+      "name": "Urutan mundur",
+      "type": "code",
+      "prompt": "Panggilan diumumkan dari nomor terbesar ke terkecil, jadi urutannya perlu dibalik.\n\nTulis `dibalik(data)` yang mengembalikan **list baru** dengan urutan terbalik.",
+      "starter": "def dibalik(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "dibalik([1, 2, 3]) == [3, 2, 1]",
+        "dibalik([7]) == [7]",
+        "dibalik([]) == []"
+      ],
+      "solution": "<pre class=\"kunci\">def dibalik(data):\n    return data[::-1]</pre>\n\n`data[::-1]` berarti \"dari awal sampai akhir, dengan langkah −1\" — yaitu mundur. Hasilnya **list baru**; aslinya tidak tersentuh.\n\nYang sering ditulis: `data.reverse()`. Itu membalik list aslinya **di tempat** dan mengembalikan `None`, jadi fungsimu mengembalikan `None` dan semua uji gagal. Persis seperti `.sort()` di Baca Kode 01 Soal 4 — dan tidak kebetulan: semua method list yang mengubah isinya mengembalikan `None`.\n\nKalau kamu memang mau memakai `reverse`, harus dua langkah dan menyalin dulu:\n\n<pre class=\"code\">def dibalik(data):\n    baru = data[:]\n    baru.reverse()\n    return baru</pre>\n\nTiga baris untuk pekerjaan satu baris — tapi perhatikan `data[:]` di situ. Tanpanya, kamu merusak list milik pemanggil. Itu isi Tulis Kode 02."
+    },
+    {
+      "id": "S5",
+      "name": "Ada di daftar tamu?",
+      "type": "code",
+      "prompt": "Satpam memeriksa apakah sebuah nama tercantum di daftar tamu.\n\nTulis `ada_tidak(data, x)` yang mengembalikan `True` kalau `x` ada di dalam `data`, dan `False` kalau tidak.",
+      "starter": "def ada_tidak(data, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ada_tidak([1, 2], 2) is True",
+        "ada_tidak([1, 2], 9) is False",
+        "ada_tidak([], 1) is False",
+        "ada_tidak([\"ani\", \"budi\"], \"ani\") is True"
+      ],
+      "solution": "<pre class=\"kunci\">def ada_tidak(data, x):\n    return x in data</pre>\n\n`x in data` **sudah** bernilai `True` atau `False`. Tidak perlu perulangan, tidak perlu `if`.\n\nIni pengulangan pelajaran dari Topik 1 Soal 5 (`n % 2 == 0`), dengan alat yang berbeda: sebuah perbandingan adalah **nilai**, dan nilai bisa langsung dikembalikan.\n\nUji `ada_tidak([], 1) is False` gratis: tidak ada apa pun di list kosong."
+    },
+    {
+      "id": "S6",
+      "name": "Berapa banyak",
+      "type": "code",
+      "prompt": "Panitia menghitung isi kotak.\n\nTulis `banyaknya(data)` yang mengembalikan berapa isi yang ada di dalam `data`.",
+      "starter": "def banyaknya(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "banyaknya([1, 2, 3]) == 3",
+        "banyaknya([]) == 0",
+        "banyaknya([[1, 2], [3]]) == 2"
+      ],
+      "solution": "<pre class=\"kunci\">def banyaknya(data):\n    return len(data)</pre>\n\nUji ketiga yang menarik: `banyaknya([[1, 2], [3]]) == 2`.\n\nList itu berisi **dua** isi — dan kebetulan kedua isinya sendiri berupa list. `len` hanya menghitung lapisan **paling luar**; ia tidak mengintip ke dalam. Ada tiga angka di sana, tetapi hanya dua isi.\n\nIni persis cara kerja grid nanti: `len(grid)` memberi banyaknya **baris**, dan `len(grid[0])` memberi banyaknya **kolom** di baris pertama. Dua panggilan `len` yang berbeda, dua arti yang berbeda."
+    }
+  ],
+  "number": 19
+}

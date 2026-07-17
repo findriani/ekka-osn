@@ -1,0 +1,91 @@
+{
+  "id": "meeting-01-latihan-probabilitas-isian-03",
+  "group": "Pertemuan 1",
+  "title": "Probabilitas 03",
+  "summary": "Fokus set ini: struktur soal probabilitas yang **belum** muncul di Isian 01 dan 02 — membaca tabel silang, komplemen, penarikan berurutan, mencari nilai yang belum diketahui, dan tiga hipotesis sekaligus.",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Bacalah format itu sebelum menulis jawaban — jawaban yang benar tetapi salah format dianggap salah.",
+  "formulas": "\\[\nP(A^c)=1-P(A),\\qquad P(A\\cap B)=P(A)P(B\\mid A).\n\\]\n\n\\[\nP(E)=\\sum_i P(E\\mid H_i)P(H_i).\n\\]\n\nGunakan Bayes bila yang dicari adalah penyebab \\(H_i\\) setelah bukti \\(E\\) diketahui.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Pesanan toko online",
+      "type": "fill",
+      "prompt": "Sebuah toko online mencatat 500 pesanan pada bulan ini:\n\n| Kategori | Dibayar Lunas | COD | Jumlah |\n|---|---:|---:|---:|\n| Elektronik | 120 | 80 | 200 |\n| Pakaian | 90 | 115 | 205 |\n| Buku | 70 | 25 | 95 |\n| **Jumlah** | **280** | **220** | **500** |\n\nSebuah pesanan dipilih secara acak dan diketahui menggunakan COD. Berapa probabilitas pesanan itu berasal dari kategori Pakaian?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen, dibulatkan ke bawah.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 52,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Penyebutnya adalah **kolom** COD (220), bukan total pesanan (500) dan bukan baris Pakaian (205).\n\n\\[\nP(\\text{Pakaian}\\mid\\text{COD})=\\frac{115}{220}\\approx52.27\\%.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Kamera CCTV",
+      "type": "fill",
+      "prompt": "Sebuah sekolah memasang 3 kamera CCTV yang bekerja secara independen satu sama lain. Setiap kamera memiliki probabilitas 0.15 mengalami gangguan pada suatu hari.\n\nBerapa probabilitas bahwa pada hari itu **minimal ada satu** kamera yang mengalami gangguan?",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 3 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.386,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Hitung lewat komplemen — jauh lebih pendek daripada menjumlahkan kasus \"tepat satu\", \"tepat dua\", dan \"tepat tiga\".\n\n\\[\nP(\\text{tidak ada gangguan})=(0.85)^3=0.614125.\n\\]\n\n\\[\nP(\\text{minimal satu})=1-0.614125=0.385875.\n\\]"
+    },
+    {
+      "id": "S3",
+      "name": "Pemilihan pengurus",
+      "type": "fill",
+      "prompt": "Sebuah tim beranggotakan 7 siswa kelas XI dan 5 siswa kelas XII. Dua siswa dipilih secara acak berturut-turut sebagai ketua dan wakil ketua. Seorang siswa tidak boleh merangkap kedua jabatan.\n\nBerapa probabilitas kedua siswa terpilih berasal dari kelas XI?",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 3 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.318,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Setelah siswa pertama terpilih, jumlah anggota berkurang. Ini adalah probabilitas bersyarat berantai \\(P(A\\cap B)=P(A)\\,P(B\\mid A)\\).\n\n\\[\n\\frac{7}{12}\\times\\frac{6}{11}=\\frac{42}{132}\\approx0.31818.\n\\]"
+    },
+    {
+      "id": "S4",
+      "name": "Dua mesin pabrik",
+      "type": "fill",
+      "prompt": "Sebuah pabrik menggunakan dua mesin.\n\n- Mesin lama memproduksi 40% barang, dengan tingkat cacat 6%.\n- Mesin baru memproduksi sisanya, dengan tingkat cacat \\(p\\) yang belum diketahui.\n\nSecara keseluruhan, 4.2% barang yang diproduksi pabrik ini cacat.\n\nBerapa nilai \\(p\\)?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen. Misalkan, jika \\(p=7\\%\\) maka ditulis `7`.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Bangun persamaan probabilitas total, lalu selesaikan untuk \\(p\\).\n\n\\[\n0.40(0.06)+0.60p=0.042\n\\]\n\n\\[\n0.024+0.6p=0.042\n\\]\n\n\\[\np=\\frac{0.018}{0.6}=0.03=3\\%.\n\\]"
+    },
+    {
+      "id": "S5",
+      "name": "Prakiraan cuaca",
+      "type": "fill",
+      "prompt": "Sebuah aplikasi cuaca memperkirakan kondisi hari ini. Berdasarkan data historis bulan ini:\n\n\\[\nP(\\text{cerah})=0.50,\\qquad\nP(\\text{berawan})=0.30,\\qquad\nP(\\text{hujan})=0.20.\n\\]\n\nProbabilitas langit terlihat mendung tebal pada pagi hari untuk tiap kondisi:\n\n\\[\nP(\\text{mendung tebal}\\mid\\text{cerah})=0.05,\n\\]\n\n\\[\nP(\\text{mendung tebal}\\mid\\text{berawan})=0.40,\n\\]\n\n\\[\nP(\\text{mendung tebal}\\mid\\text{hujan})=0.80.\n\\]\n\nPagi ini langit terlihat mendung tebal. Berapa probabilitas hari ini akan hujan?",
+      "hint": "Tuliskan jawaban dalam bentuk bilangan bulat tanpa tanda persen, dibulatkan ke bawah.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 52,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\text{cerah}:\\;0.50(0.05)=0.025\n\\]\n\n\\[\n\\text{berawan}:\\;0.30(0.40)=0.120\n\\]\n\n\\[\n\\text{hujan}:\\;0.20(0.80)=0.160\n\\]\n\n\\[\nP(\\text{mendung tebal})=0.025+0.120+0.160=0.305\n\\]\n\n\\[\nP(\\text{hujan}\\mid\\text{mendung tebal})=\\frac{0.160}{0.305}\\approx52.46\\%.\n\\]\n\nPerhatikan bahwa cerah adalah kondisi paling umum (50%), tetapi setelah melihat langit mendung tebal, probabilitasnya jatuh menjadi \\(0.025/0.305\\approx8\\%\\)."
+    }
+  ],
+  "number": 3
+}

@@ -1,0 +1,100 @@
+{
+  "id": "python-02a-list-baca-01",
+  "group": "Latihan Python",
+  "title": "List & Penyalinan — Baca Kode 01",
+  "summary": "Topik 2, membaca kode. Semua data di soal seleksi disimpan di dalam **list**: nilai, urutan DNA, koordinat, baris grid. Set ini melatih membacanya — mengambil isi lewat indeks, memotong dengan irisan, dan mengenali kapan sebuah list berubah tanpa kamu sadari.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal list, cara paling cepat adalah menggambar isinya di kertas beserta nomor indeksnya, lalu mencoret dan menulis ulang tiap kali ada yang berubah.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- Indeks mulai dari **0**. `data[0]` isi pertama, `data[-1]` isi terakhir.\n- `data[a:b]` mengambil dari indeks `a` sampai **sebelum** `b`.\n- `data[a:]` sampai habis; `data[:b]` dari awal.\n- `.append(x)` menambah di akhir. `.pop()` mengambil yang terakhir; `.pop(0)` yang pertama.\n- `b = a` **bukan** menyalin — ia hanya memberi nama kedua pada list yang sama.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menu warung",
+      "type": "fill",
+      "prompt": "Pak Toni menuliskan menunya dan harganya di dua list sejajar. Ia menjumlahkan harga menu pertama, menu terakhir, dan menu ketiga. Cocokkan posisi setiap menu dengan indeks harganya: isi pertama berindeks 0, sedangkan isi terakhir dapat diambil dengan indeks `-1`.\n\n<pre class=\"code\">menu = [\"nasi\", \"soto\", \"sate\", \"bakso\", \"es\"]\nharga = [8000, 10000, 3000, 12000, 5000]\ntotal = harga[0] + harga[-1] + harga[2]\nprint(total)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 16000,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Gambar indeksnya dulu:\n\n| indeks | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| `menu` | nasi | soto | sate | bakso | es |\n| `harga` | 8000 | 10000 | 3000 | 12000 | 5000 |\n\n- `harga[0]` = **8000** (yang pertama)\n- `harga[-1]` = **5000** (yang terakhir — indeks negatif menghitung dari belakang)\n- `harga[2]` = **3000** (sate)\n\n8000 + 5000 + 3000 = **16000**.\n\nJebakan yang paling sering: mengira `harga[2]` adalah menu **kedua**. Indeks 2 adalah isi **ketiga**, karena hitungannya mulai dari 0. Kalau kamu terjebak di sini, kamu akan terjebak lagi di setiap soal grid — biasakan menulis nomor indeksnya di atas datanya."
+    },
+    {
+      "id": "S2",
+      "name": "Suhu sepekan",
+      "type": "fill",
+      "prompt": "Stasiun cuaca mencatat suhu enam hari berturut-turut, lalu menjumlahkan suhu hari ke-2 sampai hari ke-4. Irisan `suhu[1:4]` dimulai dari indeks 1 dan berhenti sebelum indeks 4, sehingga tiga suhu di tengah itulah yang dijumlahkan.\n\n<pre class=\"code\">suhu = [28, 30, 33, 31, 29, 27]\nprint(sum(suhu[1:4]))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 94,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`suhu[1:4]` mengambil dari indeks 1 sampai **sebelum** indeks 4:\n\n| indeks | 0 | 1 | 2 | 3 | 4 | 5 |\n|---|---|---|---|---|---|---|\n| `suhu` | 28 | **30** | **33** | **31** | 29 | 27 |\n\n30 + 33 + 31 = **94**. Tiga angka, bukan empat — inilah arti \"berhenti sebelum\".\n\nCara cepat mengingat banyaknya: `data[a:b]` berisi \\(b - a\\) isi. Di sini \\(4 - 1 = 3\\)."
+    },
+    {
+      "id": "S3",
+      "name": "Memotong yang tepat",
+      "type": "mc",
+      "prompt": "Bu Sari punya list nomor undian. Ia ingin mengambil dua nomor di tengah secara berurutan, tanpa mengambil nomor sebelum atau sesudahnya.\n\n<pre class=\"code\">angka = [10, 20, 30, 40, 50]</pre>\n\nManakah yang menghasilkan **tepat** `[20, 30]`?",
+      "choices": [
+        "`angka[1:3]`",
+        "`angka[1:2]`",
+        "`angka[2:4]`",
+        "`angka[-3:-1]`"
+      ],
+      "answer": 0,
+      "solution": "| pilihan | hasil |\n|---|---|\n| **A.** `angka[1:3]` | `[20, 30]` ✓ |\n| **B.** `angka[1:2]` | `[20]` |\n| **C.** `angka[2:4]` | `[30, 40]` |\n| **D.** `angka[-3:-1]` | `[30, 40]` |\n\nC dan D memberi hasil yang sama lewat dua jalan berbeda — bukti bahwa indeks negatif hanyalah cara lain menyebut posisi yang sama. `angka[-3]` adalah `angka[2]`, dan `angka[-1]` adalah `angka[4]`."
+    },
+    {
+      "id": "S4",
+      "name": "Tiga nilai tertinggi",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya mengembalikan tiga nilai tertinggi. Alih-alih memberi jawaban, ia justru melempar error `TypeError`. Ingat bahwa `sort()` mengurutkan list di tempatnya, tetapi nilai yang dikembalikannya bukan list hasil urutan.\n\n<pre class=\"code\">1  def tiga_tertinggi(nilai):\n2      urut = nilai.sort()\n3      return urut[-3:]</pre>\n\nBaris nomor berapa yang menjadi penyebabnya?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`.sort()` mengurutkan list **di tempat** dan mengembalikan `None`. Jadi `urut` bernilai `None`, dan baris 3 mencoba `None[-3:]` — yang melempar `TypeError`.\n\nIni salah satu keputusan Python yang paling sering menjebak. Aturannya:\n\n| yang kamu tulis | mengubah aslinya? | mengembalikan |\n|---|---|---|\n| `nilai.sort()` | **ya** | `None` |\n| `sorted(nilai)` | tidak | list baru yang terurut |\n\nKalau kamu ingin hasilnya, pakai `sorted`. Kalau kamu ingin mengubah list aslinya, pakai `.sort()` dan **jangan** ditampung ke variabel.\n\nPola yang sama berlaku untuk `.reverse()`, `.append()`, dan `.remove()` — semuanya mengembalikan `None`. Kalau kodemu tiba-tiba bilang `'NoneType' object is not subscriptable`, hampir pasti inilah sebabnya."
+    },
+    {
+      "id": "S5",
+      "name": "Titip belanja",
+      "type": "fill",
+      "prompt": "Ani menulis daftar belanjanya. Budi bilang \"titip, samain aja sama punyamu\", lalu menambahkan satu barang. Ia tidak membuat salinan baru; kedua nama pada kode di bawah menunjuk ke daftar belanja yang sama.\n\n<pre class=\"code\">belanja_ani = [\"gula\", \"teh\"]\nbelanja_budi = belanja_ani\nbelanja_budi.append(\"kopi\")\nprint(len(belanja_ani))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Baris `belanja_budi = belanja_ani` **tidak** membuat list baru. Ia hanya menempelkan nama kedua pada list yang sudah ada. Setelah itu, `belanja_ani` dan `belanja_budi` adalah **benda yang sama** dengan dua nama.\n\nJadi `belanja_budi.append(\"kopi\")` mengubah list yang juga dilihat oleh `belanja_ani`, dan panjangnya menjadi **3**.\n\nBayangkan begini: kamu tidak memfotokopi daftarnya, kamu cuma menempelkan sticky note kedua di kertas yang sama. Siapa pun yang menulis di kertas itu, keduanya melihat perubahannya.\n\nKalau Budi mau daftarnya sendiri, ia harus menyalin: `belanja_budi = belanja_ani[:]` atau `list(belanja_ani)`.\n\nInilah inti topik ini, dan alasan kata \"Penyalinan\" ada di judulnya."
+    },
+    {
+      "id": "S6",
+      "name": "Antrean loket",
+      "type": "fill",
+      "prompt": "Satu orang baru datang, lalu yang paling depan dilayani, lalu yang paling belakang pulang karena bosan. Gambarkan isi antrean setelah setiap operasi agar terlihat siapa yang tersisa sebelum nilainya dijumlahkan.\n\n<pre class=\"code\">antrean = [1, 2, 3, 4]\nantrean.append(5)\nantrean.pop(0)\nantrean.pop()\nprint(sum(antrean))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 9,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Tulis ulang list-nya di tiap langkah:\n\n| perintah | isi `antrean` |\n|---|---|\n| awal | `[1, 2, 3, 4]` |\n| `.append(5)` | `[1, 2, 3, 4, 5]` |\n| `.pop(0)` | `[2, 3, 4, 5]` |\n| `.pop()` | `[2, 3, 4]` |\n\n2 + 3 + 4 = **9**.\n\nBedanya: `.pop()` tanpa isi mengambil yang **terakhir**; `.pop(0)` mengambil yang di indeks 0, yaitu yang **pertama**. Keduanya mengubah list aslinya dan mengembalikan isi yang diambil."
+    }
+  ],
+  "number": 17
+}

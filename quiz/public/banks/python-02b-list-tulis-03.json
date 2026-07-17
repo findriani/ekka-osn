@@ -1,0 +1,93 @@
+{
+  "id": "python-02b-list-tulis-03",
+  "group": "Latihan Python",
+  "title": "List & Penyalinan — Tulis Kode 03 (Sedang)",
+  "summary": "Topik 2, menulis kode, tingkat **sedang**. List di dalam list — dan dengan itu, jembatan menuju Topik 6. Setiap grid di soal seleksi, termasuk grid 7×7 pada soal menghitung lintasan, adalah list yang isinya list. Kalau kamu bisa membuat, membaca, dan menyalin grid dengan benar, separuh soal terberat di arsip tinggal soal berpikir.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**.\n\nBeberapa uji memakai `is not`, bukan `==`. Keduanya berbeda dan bedanya penting:\n\n- `==` bertanya **\"isinya sama?\"**\n- `is` bertanya **\"benda yang sama?\"**\n\nDua list bisa `==` tetapi bukan benda yang sama. Justru di situlah seluruh soal ini berada — dan uji `==` saja **tidak akan** menangkap kesalahannya.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `grid[r][k]` → baris `r` dulu, baru kolom `k`.\n- `len(grid)` banyaknya **baris** · `len(grid[0])` banyaknya **kolom**\n- `[[0] * k] * b` → **satu** baris, ditunjuk `b` kali. Hampir selalu salah.\n- `[[0] * k for _ in range(b)]` → `b` baris yang berbeda. Hampir selalu benar.\n- Menelusuri semua sel: `for r in range(len(grid)): for k in range(len(grid[0])):`",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Membuat papan kosong",
+      "type": "code",
+      "prompt": "Panitia butuh papan permainan berukuran `baris` × `kolom`, semuanya berisi 0. Nanti tiap petak akan diisi satu per satu.\n\nTulis `buat_grid(baris, kolom)` yang mengembalikan grid berisi `0` semua.",
+      "starter": "def buat_grid(baris, kolom):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "buat_grid(2, 3) == [[0, 0, 0], [0, 0, 0]]",
+        "buat_grid(1, 1) == [[0]]",
+        "(_g := buat_grid(2, 3))[0] is not _g[1]",
+        "(_h := buat_grid(3, 2))[0] is not _h[2]"
+      ],
+      "solution": "<pre class=\"kunci\">def buat_grid(baris, kolom):\n    return [[0] * kolom for _ in range(baris)]</pre>\n\nInilah soal terpenting di seluruh Topik 2, dan alasannya ada di dua uji terakhir.\n\nKode yang salah adalah:\n\n<pre class=\"code\">return [[0] * kolom] * baris</pre>\n\nSekarang lihat apa yang terjadi:\n\n| uji | dengan `[[0] * kolom] * baris` |\n|---|---|\n| `buat_grid(2, 3) == [[0, 0, 0], [0, 0, 0]]` | **lolos** |\n| `buat_grid(1, 1) == [[0]]` | **lolos** |\n| `(_g := buat_grid(2, 3))[0] is not _g[1]` | gagal |\n| `(_h := buat_grid(3, 2))[0] is not _h[2]` | gagal |\n\nKode yang salah **lolos setiap uji `==`**. Isinya memang benar. Yang salah adalah barisnya bukan baris-baris yang berbeda — ketiganya satu benda yang sama, ditunjuk berkali-kali. Ubah satu, berubah semua.\n\nItu sebabnya dua uji terakhir memakai `is not`: hanya pertanyaan **\"benda yang sama?\"** yang bisa membedakannya. Tidak ada uji `==` yang bisa, seberapa banyak pun kamu menambahkannya.\n\n`[[0] * kolom for _ in range(baris)]` menjalankan `[0] * kolom` **sekali untuk tiap baris**, jadi benar-benar lahir list yang berbeda-beda. `_` cuma nama variabel yang artinya \"aku tidak memakainya\".\n\nKalau kamu ingat satu hal saja dari Topik 2, ingat ini. Kamu akan memakainya di tiap soal grid."
+    },
+    {
+      "id": "S2",
+      "name": "Jumlah satu baris",
+      "type": "code",
+      "prompt": "Panitia menjumlahkan nilai satu baris tempat duduk.\n\nTulis `jumlah_baris(grid, r)` yang mengembalikan jumlah semua angka di baris ke-`r`.",
+      "starter": "def jumlah_baris(grid, r):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_baris([[1, 2], [3, 4]], 0) == 3",
+        "jumlah_baris([[1, 2], [3, 4]], 1) == 7",
+        "jumlah_baris([[5]], 0) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_baris(grid, r):\n    return sum(grid[r])</pre>\n\n`grid[r]` **sudah** berupa list — satu baris utuh. Jadi `sum` bisa langsung dipakai; tidak perlu perulangan.\n\nIni yang membuat baris \"murah\" dan kolom \"mahal\", dan itulah inti Soal 3."
+    },
+    {
+      "id": "S3",
+      "name": "Jumlah satu kolom",
+      "type": "code",
+      "prompt": "Sekarang arah yang lain — dan ini jauh lebih menarik daripada kelihatannya.\n\nTulis `jumlah_kolom(grid, k)` yang mengembalikan jumlah semua angka di kolom ke-`k`.",
+      "starter": "def jumlah_kolom(grid, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_kolom([[1, 2], [3, 4]], 0) == 4",
+        "jumlah_kolom([[1, 2], [3, 4]], 1) == 6",
+        "jumlah_kolom([[5]], 0) == 5",
+        "jumlah_kolom([[1, 2, 3], [4, 5, 6]], 2) == 9"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_kolom(grid, k):\n    total = 0\n    for baris in grid:\n        total += baris[k]\n    return total</pre>\n\nBandingkan dengan Soal 2 dan rasakan bedanya.\n\nSebuah baris tersimpan **sebagai satu list**, jadi `sum(grid[r])` selesai. Sebuah kolom **tidak tersimpan di mana pun** — angka-angkanya terserak, satu di tiap baris. Kamu harus mendatanginya satu per satu dan mengambil isi ke-`k` dari masing-masing.\n\nVersi ringkasnya: `return sum(baris[k] for baris in grid)`.\n\nYang salah: `sum(grid[k])`. Itu menjumlahkan **baris** ke-`k`, bukan kolom. Menariknya, uji pertama `jumlah_kolom([[1, 2], [3, 4]], 0)` akan memberi 3, bukan 4 — jadi langsung ketahuan. Tapi kalau gridnya kebetulan simetris, kesalahan ini bisa lolos tanpa jejak.\n\nIngat asimetri ini. Grid terlihat seperti kotak yang rapi, padahal di dalam Python ia adalah **tumpukan baris**. Baris itu benda; kolom cuma gagasan."
+    },
+    {
+      "id": "S4",
+      "name": "Meratakan grid",
+      "type": "code",
+      "prompt": "Untuk dihitung rata-ratanya, semua angka di grid perlu dijadikan satu list panjang, dibaca baris demi baris dari kiri ke kanan.\n\nTulis `ratakan(grid)` yang mengembalikan satu list berisi semua angka di `grid`.",
+      "starter": "def ratakan(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ratakan([[1, 2], [3]]) == [1, 2, 3]",
+        "ratakan([[5]]) == [5]",
+        "ratakan([[], [1]]) == [1]",
+        "ratakan([]) == []"
+      ],
+      "solution": "<pre class=\"kunci\">def ratakan(grid):\n    hasil = []\n    for baris in grid:\n        for x in baris:\n            hasil.append(x)\n    return hasil</pre>\n\nPola akumulasi dengan perulangan bersarang: untuk tiap baris, untuk tiap isi baris itu, tambahkan ke wadah.\n\nYang sering dicoba: `sum(grid, [])` — dan itu memang berhasil, karena `+` pada list menyambung. Tapi jangan dibiasakan; untuk grid besar ia lambat, sebab tiap penyambungan membuat list baru.\n\nVersi comprehension: `return [x for baris in grid for x in baris]`. Urutan `for`-nya sama dengan versi panjangnya — luar dulu, baru dalam. Ini satu-satunya tempat di Python yang urutannya terasa terbalik, dan cara mengingatnya adalah: tulis versi panjangnya dulu, lalu ratakan ke satu baris.\n\nUji `[[], [1]]` memastikan baris kosong tidak merusak apa pun — perulangan dalam tidak jalan, dan tidak ada yang perlu ditambal."
+    },
+    {
+      "id": "S5",
+      "name": "Menyalin papan",
+      "type": "code",
+      "prompt": "Sebelum mencoba sebuah langkah, panitia menyalin papannya dulu supaya papan asli bisa dikembalikan kalau langkahnya gagal.\n\nTulis `salin_grid(grid)` yang mengembalikan grid **baru** — yang mengubah salinannya **tidak** boleh mengubah aslinya, sampai ke tiap barisnya.",
+      "starter": "def salin_grid(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "salin_grid([[1, 2], [3, 4]]) == [[1, 2], [3, 4]]",
+        "salin_grid([]) == []",
+        "salin_grid(_p := [[1, 2]]) is not _p",
+        "salin_grid(_r := [[1, 2]])[0] is not _r[0]"
+      ],
+      "solution": "<pre class=\"kunci\">def salin_grid(grid):\n    return [baris[:] for baris in grid]</pre>\n\nDi sinilah Soal 1 dan Tulis Kode 02 bertemu.\n\nMenyalin list biasa cukup `data[:]`. Untuk grid, itu **tidak cukup**:\n\n<pre class=\"code\">return grid[:]      # SALAH</pre>\n\n`grid[:]` membuat list luar yang baru — jadi uji `salin_grid(_p := [[1, 2]]) is not _p` **lolos**. Tapi isinya tetap panah-panah yang menunjuk ke **baris yang sama**. Mengubah `salinan[0][0]` ikut mengubah `asli[0][0]`.\n\nUji terakhir, `salin_grid(_r := [[1, 2]])[0] is not _r[0]`, adalah satu-satunya yang menangkapnya. Perhatikan bedanya dengan uji ketiga: yang satu memeriksa list **luar**, yang satu memeriksa **barisnya**.\n\nNamanya \"salinan dangkal\" lawan \"salinan dalam\". `grid[:]` menyalin satu lapis. Grid punya dua lapis, jadi kamu harus menyalin tiap baris juga — dan itulah arti `baris[:]` di dalam comprehension.\n\nKalau kamu paham kenapa `grid[:]` gagal di sini padahal `data[:]` cukup di Tulis Kode 02, kamu sudah paham penyalinan."
+    },
+    {
+      "id": "S6",
+      "name": "Memutar denah",
+      "type": "code",
+      "prompt": "Denah kelas perlu dilihat dari samping: baris menjadi kolom, kolom menjadi baris.\n\nTulis `transpose(grid)` yang mengembalikan grid baru dengan baris dan kolom bertukar. Dijamin `grid` tidak pernah kosong dan semua barisnya sama panjang.",
+      "starter": "def transpose(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "transpose([[1, 2], [3, 4]]) == [[1, 3], [2, 4]]",
+        "transpose([[1, 2, 3]]) == [[1], [2], [3]]",
+        "transpose([[5]]) == [[5]]"
+      ],
+      "solution": "<pre class=\"kunci\">def transpose(grid):\n    baris = len(grid)\n    kolom = len(grid[0])\n    return [[grid[r][k] for r in range(baris)] for k in range(kolom)]</pre>\n\nBacalah dari dalam ke luar. Untuk tiap kolom `k` di grid lama, kumpulkan `grid[r][k]` dari **semua** baris `r` — itu menjadi satu baris di grid baru.\n\nPerhatikan hasilnya berganti ukuran: `transpose([[1, 2, 3]])` mengubah 1×3 menjadi 3×1. Karena itu comprehension luar berjalan atas `kolom`, bukan `baris`. Kalau kamu tertukar, `transpose([[1, 2, 3]])` akan memberi `IndexError` — dan uji kedua ada khusus untuk menangkap itu.\n\nVersi panjangnya, kalau comprehension bersarang terasa terlalu padat:\n\n<pre class=\"code\">def transpose(grid):\n    hasil = []\n    for k in range(len(grid[0])):\n        baris_baru = []\n        for r in range(len(grid)):\n            baris_baru.append(grid[r][k])\n        hasil.append(baris_baru)\n    return hasil</pre>\n\nSama benarnya. Tulis versi ini dulu kalau ragu, baru padatkan.\n\nSoal ini adalah gabungan semua yang ada di Topik 2: indeks dua lapis, membangun list baru, dan `len(grid)` lawan `len(grid[0])`."
+    }
+  ],
+  "number": 21
+}

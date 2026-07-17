@@ -1,0 +1,100 @@
+{
+  "id": "python-03a-fungsi-baca-01",
+  "group": "Latihan Python",
+  "title": "Fungsi & Rumus — Baca Kode 01",
+  "summary": "Topik 3, membaca kode. Sebuah fungsi adalah rumus yang diberi nama. Kamu memberinya masukan, ia memberimu satu jawaban kembali — dan sesudah itu ia lupa segalanya.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal fungsi, cara paling cepat adalah mengerjakan yang **paling dalam dulu** — persis seperti kurung di pelajaran matematika.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- `def nama(a, b):` membuat fungsi. `return` mengirim jawaban keluar.\n- `return` **langsung menghentikan** fungsinya. Baris sesudahnya tidak dijalankan.\n- `print` **menampilkan** ke layar; `return` **mengirim nilai** ke pemanggil. Keduanya sangat berbeda.\n- Fungsi tanpa `return` mengembalikan `None`.\n- `f(g(x))` → kerjakan `g(x)` dulu, hasilnya masuk ke `f`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Mesin bertingkat",
+      "type": "fill",
+      "prompt": "Dua mesin dipasang berurutan. Barang masuk ke mesin yang di dalam dulu. Jadi, kerjakan `tambah_tiga(4)` terlebih dahulu, lalu gunakan hasilnya sebagai masukan untuk mesin pengali.\n\n<pre class=\"code\">def kali_dua(n):\n    return n * 2\n\ndef tambah_tiga(n):\n    return n + 3\n\nprint(kali_dua(tambah_tiga(4)))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 14,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Kerjakan dari **dalam ke luar**, persis seperti kurung di matematika:\n\n1. `tambah_tiga(4)` → 4 + 3 = **7**\n2. `kali_dua(7)` → 7 × 2 = **14**\n\nJebakannya adalah membaca dari kiri ke kanan seperti kalimat biasa: \"kali dua dulu, baru tambah tiga\" → 4 × 2 = 8, lalu 8 + 3 = **11**. Salah.\n\nYang di dalam kurung **selalu** selesai lebih dulu, karena `kali_dua` tidak bisa mulai bekerja sebelum tahu apa yang harus dikalikannya. Kamu sudah tahu aturan ini dari \\(2 \\times (3 + 4)\\); fungsi tidak menambahkan aturan baru, ia hanya memakai aturan yang sama."
+    },
+    {
+      "id": "S2",
+      "name": "Berhenti di yang pertama",
+      "type": "fill",
+      "prompt": "Petugas memeriksa catatan satu per satu dari depan, dan berhenti begitu menemukan angka negatif. Nilai `hitung` menyatakan berapa catatan yang sudah dilewati sebelum angka negatif pertama ditemukan.\n\n<pre class=\"code\">def cari_negatif(data):\n    hitung = 0\n    for n in data:\n        if n &lt; 0:\n            return hitung\n        hitung += 1\n    return hitung\n\nprint(cari_negatif([4, 7, 1, -3, 9]))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Telusuri:\n\n| `n` | `hitung` sebelum | negatif? | tindakan |\n|---|---|---|---|\n| 4 | 0 | tidak | `hitung` → 1 |\n| 7 | 1 | tidak | `hitung` → 2 |\n| 1 | 2 | tidak | `hitung` → 3 |\n| −3 | 3 | **ya** | `return 3` — selesai |\n\nFungsi berhenti **saat itu juga**. Angka 9 tidak pernah dilihat, dan `return hitung` di baris terakhir tidak pernah dijalankan.\n\nJadi yang dikembalikan bukan \"banyaknya angka negatif\" (yang jumlahnya 1), melainkan **posisi negatif pertama** — yaitu berapa banyak angka yang sempat dilewati sebelum berhenti.\n\nInilah gunanya `return` di dalam perulangan: ia adalah `break` yang sekaligus membawa pulang jawabannya. Kamu akan memakai pola ini untuk \"cari yang pertama memenuhi syarat\"."
+    },
+    {
+      "id": "S3",
+      "name": "Yang ditampilkan dan yang dikembalikan",
+      "type": "mc",
+      "prompt": "Bu Rina menulis fungsi penghitung luas. Fungsi itu memang menampilkan hasil perhitungan, tetapi perhatikan apakah hasil tersebut juga dikirim kembali kepada variabel `hasil`.\n\n<pre class=\"code\">def luas(p, l):\n    print(p * l)\n\nhasil = luas(3, 4)</pre>\n\nApa isi `hasil`?",
+      "choices": [
+        "`12`",
+        "`None`",
+        "Error, karena fungsinya tidak punya `return`",
+        "`\"12\"`"
+      ],
+      "answer": 1,
+      "solution": "Fungsi `luas` **menampilkan** hasilnya, lalu selesai tanpa `return`. Fungsi yang tidak pernah `return` mengembalikan `None` — selalu, tanpa kecuali.\n\nJadi layar memang menampilkan `12`, tetapi `hasil` berisi `None`. Angka 12 itu sudah menguap; ia dicetak ke layar dan tidak pernah dikirim ke mana pun.\n\n| | `print(p * l)` | `return p * l` |\n|---|---|---|\n| muncul di layar | ya | tidak |\n| bisa ditampung ke variabel | **tidak** | ya |\n| bisa dipakai fungsi lain | **tidak** | ya |\n\nIngat baik-baik. Di set **Tulis Kode**, uji-ujinya memeriksa nilai yang **dikembalikan**. Kalau kamu menulis `print` alih-alih `return`, jawabanmu akan tampak benar di layar dan **seluruh ujimu gagal** — dan itu perasaan yang paling membingungkan di dunia sampai kamu tahu sebabnya.\n\nKenapa bukan C? Karena tidak ada yang salah di sini menurut Python. Fungsi tanpa `return` itu sah; ia cuma tidak berguna kalau kamu butuh jawabannya."
+    },
+    {
+      "id": "S4",
+      "name": "Menabung di dalam fungsi",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya menambahkan `n` ke `total`, tetapi ia justru melempar `UnboundLocalError`. Cari baris yang membuat Python menganggap `total` di dalam fungsi sebagai variabel baru, bukan memakai `total` yang sudah ada di luar fungsi.\n\n<pre class=\"code\">1  total = 0\n2  def tambahkan(n):\n3      total = total + n\n4      return total\n5  print(tambahkan(5))</pre>\n\nBaris nomor berapa yang menjadi penyebabnya?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Baris 3 adalah `total = total + n`. Karena di baris itu ada **penugasan** ke `total`, Python memutuskan bahwa `total` adalah variabel **milik fungsi ini sendiri** — bukan `total` yang di luar.\n\nLalu ia mencoba menghitung `total + n` di ruas kanan, dan mendapati `total` miliknya belum pernah diisi apa-apa. Dari situlah `UnboundLocalError`.\n\nYang aneh: keputusan itu diambil untuk **seluruh fungsi sekaligus**, sebelum satu baris pun jalan. Jadi bukan \"ambil yang di luar dulu, nanti timpa\". Sekali sebuah nama ditugasi di dalam fungsi, nama itu jadi milik fungsi tersebut dari awal sampai akhir.\n\nBandingkan — ini **berjalan** dan mencetak 0:\n\n<pre class=\"code\">total = 0\ndef lihat():\n    return total\nprint(lihat())</pre>\n\nMembaca dari luar boleh. **Menulis** yang membuatnya jadi milik sendiri.\n\nCara benarnya bukan menambal ruang lingkup, melainkan memakai fungsi sebagaimana mestinya — masukan lewat parameter, jawaban lewat `return`:\n\n<pre class=\"code\">def tambahkan(total, n):\n    return total + n\ntotal = tambahkan(total, 5)</pre>"
+    },
+    {
+      "id": "S5",
+      "name": "Titipan angka",
+      "type": "fill",
+      "prompt": "Perhatikan baik-baik apa yang terjadi pada `angka`. Fungsi menerima nilai 5 sebagai masukan, tetapi tidak ada kode yang menyimpan nilai hasil fungsi itu kembali ke variabel `angka`.\n\n<pre class=\"code\">def naikkan(n):\n    n = n + 10\n    return n\n\nangka = 5\nnaikkan(angka)\nprint(angka)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Ini pasangan yang mengejutkan untuk Topik 2.\n\n`naikkan(angka)` menyalin **nilai** 5 ke dalam parameter `n`. Baris `n = n + 10` mengganti isi `n` — sebuah nama yang cuma hidup di dalam fungsi. `angka` di luar tidak tersentuh sama sekali. Dan hasil `return`-nya pun dibuang, karena tidak ditampung.\n\nSekarang bandingkan dengan Topik 2 Soal 5:\n\n| | `naikkan(angka)` dengan angka | `.append` pada list |\n|---|---|---|\n| yang dikirim | angka 5 | list-nya |\n| aslinya berubah? | **tidak** | **ya** |\n\nKenapa berbeda? Karena `n = n + 10` **memberi `n` benda baru**, sedangkan `data.append(x)` **mengubah benda yang sudah ada**. Yang pertama cuma memindahkan nama; yang kedua mencorat-coret kertasnya.\n\nAturan praktisnya: `nama = ...` tidak pernah mengubah apa pun di luar fungsi. `nama.sesuatu(...)` bisa. Itu satu kalimat yang menjelaskan seluruh kebingungan ini."
+    },
+    {
+      "id": "S6",
+      "name": "Tiga kali sebuah rumus",
+      "type": "fill",
+      "prompt": "Rumus ini akan sering kamu temui lagi: kuadrat dari selisih. Hitung galat untuk ketiga pasangan nilai secara terpisah, lalu jumlahkan ketiga hasil kuadratnya.\n\n<pre class=\"code\">def kuadrat_galat(y, p):\n    return (y - p) ** 2\n\ntotal = kuadrat_galat(10, 8) + kuadrat_galat(3, 6) + kuadrat_galat(5, 5)\nprint(total)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 13,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "| panggilan | selisih | kuadrat |\n|---|---|---|\n| `kuadrat_galat(10, 8)` | 2 | **4** |\n| `kuadrat_galat(3, 6)` | −3 | **9** |\n| `kuadrat_galat(5, 5)` | 0 | **0** |\n\n4 + 9 + 0 = **13**.\n\nPerhatikan yang kedua: selisihnya **negatif**, tetapi kuadratnya positif. Itu bukan efek samping — itu justru alasan kuadratnya ada. Rumus ini tidak peduli kamu meleset ke atas atau ke bawah, ia cuma peduli **seberapa jauh**.\n\nIngat baik-baik, karena kamu baru saja menghitung inti dari MSE. Bagi 13 dengan 3 dan kamu mendapatkan MSE-nya. Seluruh Tulis Kode 02 dibangun di atas satu baris ini."
+    }
+  ],
+  "number": 22
+}

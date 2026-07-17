@@ -1,0 +1,103 @@
+{
+  "id": "meeting-02b-latihan-evaluasi-01",
+  "group": "Pertemuan 2",
+  "title": "Evaluasi 01",
+  "summary": "Fokus set ini: memilih model berdasarkan kolom yang **tepat**, merata-ratakan skor lipatan, menghitung akibat satu angka yang salah catat, dan mengenali ekstrapolasi.",
+  "instructions": "Setiap soal menyebutkan **format jawabannya sendiri**. Untuk soal pilihan ganda, pilih tombol jawaban yang benar.",
+  "formulas": "\\[\n\\operatorname{MSE}_{CV}=\\frac{\\operatorname{MSE}_1+\\cdots+\\operatorname{MSE}_k}{k}.\n\\]\n\nPilih model dengan MSE **validasi** terkecil, bukan MSE data latih terkecil.\n\nOverfitting sering tampak sebagai MSE latih kecil tetapi MSE validasi jauh lebih besar.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Debit Sungai Martapura",
+      "type": "mc",
+      "prompt": "Tiga model dikembangkan untuk memprediksi debit air sungai. Skornya:\n\n| Model | MSE data latih | MSE data validasi |\n|---|---:|---:|\n| P | 8 | 9 |\n| Q | 2 | 21 |\n| R | 11 | 12 |\n\nModel mana yang seharusnya dipilih?",
+      "choices": [
+        "Model P",
+        "Model Q, karena MSE data latihnya jauh paling kecil.",
+        "Model R, karena kedua skornya paling seimbang.",
+        "Tidak dapat ditentukan tanpa melihat data uji."
+      ],
+      "answer": 0,
+      "solution": "Model dipilih berdasarkan **kolom validasi**, bukan kolom data latih. MSE validasi terkecil adalah 9, milik model P.\n\nModel Q menang telak pada data latih (2 lawan 8), dan justru itulah tanda bahaya: ia unggul pada data yang dipakai untuk memilih parameternya sendiri, lalu gagal pada data yang belum pernah dilihatnya.\n\nPilihan **D** keliru karena data uji **tidak boleh** dipakai untuk memilih model. Kalau data uji dibuka untuk memilih, ia berhenti menjadi data uji."
+    },
+    {
+      "id": "S2",
+      "name": "Debit Sungai Martapura (lanjutan)",
+      "type": "fill",
+      "prompt": "Gunakan tabel yang sama dengan Soal 1.\n\nSalah satu model menunjukkan pola khas **overfitting**: skor data latih sangat baik, tetapi skor validasinya paling buruk.\n\nBerapa selisih antara MSE validasi dan MSE data latih untuk model tersebut?",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 19,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Model **Q** menunjukkan pola tersebut: data latih terbaik (2), validasi terburuk (21).\n\n\\[\n21 - 2 = 19.\n\\]\n\nSebagai pembanding, jurang model P hanya \\(9-8=1\\), dan model R hanya \\(12-11=1\\). Keduanya memiliki jurang yang kecil.\n\nPerlu dicatat: jurang selebar 19 adalah **tanda peringatan yang kuat dan konsisten dengan overfitting**, tetapi bukan bukti. Pola yang sama bisa muncul bila data validasinya kecil dan kebetulan sial. Untuk **memilih** P, kita tidak perlu memastikan diagnosisnya."
+    },
+    {
+      "id": "S3",
+      "name": "Prediksi harga cabai",
+      "type": "fill",
+      "prompt": "Sebuah tim memakai **validasi silang 5 lipatan** (5-fold cross-validation) untuk menilai modelnya. Setiap lipatan bergiliran menjadi data validasi, dan menghasilkan skor MSE berikut:\n\n| Lipatan | 1 | 2 | 3 | 4 | 5 |\n|---|---:|---:|---:|---:|---:|\n| MSE | 12 | 9 | 15 | 10 | 14 |\n\nBerapa skor validasi silang model ini?",
+      "hint": "Tuliskan jawaban sebagai bilangan bulat.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 12,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Skor validasi silang adalah **rata-rata** skor semua lipatan.\n\n\\[\n\\frac{12+9+15+10+14}{5} = \\frac{60}{5} = 12.\n\\]\n\nGunanya: satu data validasi tunggal bisa kecil dan tidak beruntung. Dengan 5 lipatan, setiap contoh dipakai sebagai data validasi **tepat sekali**, sehingga taksirannya tidak bergantung pada satu pembagian yang kebetulan."
+    },
+    {
+      "id": "S4",
+      "name": "Salah ketik di buku sadap karet",
+      "type": "fill",
+      "prompt": "Seorang mandor kebun karet mencatat getah yang terkumpul dari empat blok:\n\n| Pohon disadap \\(x\\) (puluhan) | Getah \\(y\\) (kg) |\n|---:|---:|\n| 1 | 8 |\n| 2 | 11 |\n| 3 | 14 |\n| 4 | 41 |\n\nKeempat blok sebenarnya mengikuti pola yang sangat rapi. Namun catatan blok keempat **salah diketik**: seharusnya 17, tertulis 41. Satu digit saja yang salah.\n\nHitunglah nilai \\(\\beta\\) (kemiringan) yang menghasilkan MSE terkecil berdasarkan tabel **sebagaimana tertulis** (dengan angka 41).",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 10.2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\bar x = \\frac{1+2+3+4}{4} = 2.5,\n\\qquad\n\\bar y = \\frac{8+11+14+41}{4} = \\frac{74}{4} = 18.5.\n\\]\n\n| \\(x_i\\) | \\(y_i\\) | \\(x_i-\\bar x\\) | \\(y_i-\\bar y\\) | Hasil kali | \\((x_i-\\bar x)^2\\) |\n|---:|---:|---:|---:|---:|---:|\n| 1 | 8 | \\(-1.5\\) | \\(-10.5\\) | \\(+15.75\\) | 2.25 |\n| 2 | 11 | \\(-0.5\\) | \\(-7.5\\) | \\(+3.75\\) | 0.25 |\n| 3 | 14 | \\(+0.5\\) | \\(-4.5\\) | \\(-2.25\\) | 0.25 |\n| 4 | 41 | \\(+1.5\\) | \\(+22.5\\) | \\(+33.75\\) | 2.25 |\n| **Jumlah** | | | | **51** | **5** |\n\n\\[\n\\beta = \\frac{51}{5} = 10.2.\n\\]\n\n**Bandingkan dengan data yang benar** (41 diganti 17): keempat titik jatuh persis pada \\(\\hat y = 5+3x\\), sehingga \\(\\beta = 3\\) dan MSE-nya nol.\n\nSatu digit yang salah mengubah kemiringan dari **3 menjadi 10.2** — lebih dari tiga kali lipat. Intersepnya pun ikut jatuh menjadi\n\n\\[\n\\alpha = 18.5 - 10.2(2.5) = -7,\n\\]\n\nsehingga garisnya sekarang memprediksi getah **negatif 7 kg** untuk blok tanpa pohon sadapan. Prediksi yang mustahil itu adalah gejalanya, bukan penyakitnya.\n\n**Penyebabnya.** Angka yang salah dicatat berbeda \\(41-17=24\\) dari nilai yang benar. Angka 24 itu adalah **kesalahan pencatatan**, bukan residual garis yang baru.\n\nJika garis awal \\(\\hat y = 5+3x\\) tetap dipakai, kesalahan pencatatan itu muncul sebagai residual \\(24\\) dengan kontribusi kuadrat \\(24^2 = 576\\) — dan itulah satu-satunya sumbangan, karena tiga titik lainnya tepat pada garis:\n\n\\[\n\\text{jumlah kuadrat garis awal} = 0+0+0+576 = 576.\n\\]\n\nAngka 576 itulah yang tidak bisa ditoleransi oleh kuadrat terkecil. Saat garis dicocokkan ulang, ia **memutar garis untuk membagi pengaruh kesalahan tersebut ke seluruh titik**:\n\n| \\(x\\) | \\(y\\) | \\(\\hat y = -7+10.2x\\) | \\(r\\) | \\(r^2\\) |\n|---:|---:|---:|---:|---:|\n| 1 | 8 | 3.2 | \\(+4.8\\) | 23.04 |\n| 2 | 11 | 13.4 | \\(-2.4\\) | 5.76 |\n| 3 | 14 | 23.6 | \\(-9.6\\) | 92.16 |\n| 4 | 41 | 33.8 | \\(+7.2\\) | 51.84 |\n| | | | **Jumlah** | **172.8** |\n\nPerhatikan hasilnya: satu kuadrat raksasa (576) ditukar menjadi empat kuadrat sedang (total 172.8). Residual titik keempat sekarang hanya \\(7.2\\), **bukan** 24 — garisnya sudah bergerak mendekatinya. Harganya dibayar oleh tiga titik yang tadinya sempurna: titik ketiga kini meleset \\(-9.6\\).\n\nItulah arti \"satu titik menarik seluruh garis\". Kuadrat terkecil memang bersedia menukar banyak kesalahan kecil demi mengecilkan satu kesalahan raksasa.\n\nPerhatikan juga tanda hasil kali blok ketiga: \\(-2.25\\), **negatif**. Blok yang sebelumnya sangat wajar kini \"memilih\" agar garis turun, semata-mata karena \\(\\bar y\\) sudah terseret naik oleh angka salah ketik itu."
+    },
+    {
+      "id": "S5",
+      "name": "Genset balai desa",
+      "type": "fill",
+      "prompt": "Sebuah balai desa mencatat pemakaian solar pada gensetnya. Semua pencatatan dilakukan pada durasi nyala **antara 2 sampai 5 jam**. Dari data itu diperoleh model\n\n\\[\n\\hat y = 1.5 + 0.8x,\n\\]\n\ndengan \\(x\\) = lama nyala (jam) dan \\(\\hat y\\) = solar terpakai (liter).\n\nPanitia hajatan berencana menyalakan genset selama **40 jam** berturut-turut, dan ingin memakai model ini untuk memperkirakan kebutuhan solar.\n\nBerapa liter yang diprediksi model untuk 40 jam?",
+      "hint": "Tuliskan jawaban dalam bentuk desimal dengan 1 angka di belakang koma.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 33.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\hat y = 1.5 + 0.8(40) = 1.5 + 32 = 33.5.\n\\]\n\nAritmetikanya benar. Asumsinya yang bermasalah: 40 jam adalah **delapan kali** batas atas data yang pernah tercatat (5 jam). Model ini tidak pernah melihat bukti apa pun tentang perilaku genset di luar rentang 2–5 jam — soal panas mesin, pengisian ulang, atau efisiensi pada pemakaian panjang.\n\nAngka 33.5 adalah **pendapat garis**, bukan pendapat data."
+    },
+    {
+      "id": "S6",
+      "name": "Genset balai desa (lanjutan)",
+      "type": "mc",
+      "prompt": "Gunakan model dan rentang data yang sama dengan Soal 5 (data tercatat pada 2–5 jam).\n\nManakah di antara prediksi berikut yang merupakan **interpolasi**?",
+      "choices": [
+        "Prediksi untuk 40 jam.",
+        "Prediksi untuk 0 jam.",
+        "Prediksi untuk 12 jam.",
+        "Prediksi untuk 3.5 jam."
+      ],
+      "answer": 3,
+      "solution": "Data tercatat pada rentang 2–5 jam.\n\n- **D (3.5 jam)** berada **di dalam** rentang → interpolasi. ✔\n- **B (0 jam)** di luar rentang (di bawah 2) → ekstrapolasi. Nilai \\(\\hat y = 1.5\\) liter di sini adalah intersepnya, dan intersep tidak wajib menggambarkan keadaan nyata.\n- **C (12 jam)** dan **A (40 jam)** di atas 5 → ekstrapolasi.\n\nEkstrapolasi tidak hanya terjadi ke kanan. Nilai \\(x=0\\) juga di luar rentang bukti."
+    }
+  ],
+  "number": 10
+}

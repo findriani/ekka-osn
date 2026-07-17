@@ -1,0 +1,99 @@
+{
+  "id": "python-04b-string-tulis-02",
+  "group": "Latihan Python",
+  "title": "String & DNA — Tulis Kode 02 (Sedang)",
+  "summary": "Topik 4, menulis kode, tingkat **sedang**. Sekarang DNA yang sebenarnya.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Pasangan basa: **A↔T**, **G↔C**. Selalu berpasangan, selalu begitu.\n- Kandungan GC: \\(\\dfrac{\\text{banyaknya G} + \\text{banyaknya C}}{\\text{panjang}} \\times 100\\)\n- Menyusun teks: mulai dari `hasil = \"\"`, lalu `hasil += basa`\n- `basa not in \"AGCT\"` memeriksa apakah sebuah huruf **bukan** salah satu dari keempatnya\n- **Selalu `/`, jangan `//`.**",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menghitung G dan C",
+      "type": "code",
+      "prompt": "Tulis `hitung_gc(dna)` yang mengembalikan banyaknya basa G ditambah banyaknya basa C.",
+      "starter": "def hitung_gc(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_gc(\"AGGC\") == 3",
+        "hitung_gc(\"AT\") == 0",
+        "hitung_gc(\"\") == 0",
+        "hitung_gc(\"GCGC\") == 4"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_gc(dna):\n    return dna.count(\"G\") + dna.count(\"C\")</pre>\n\nDua `.count`, dijumlahkan. Aman, karena polanya cuma satu huruf — jebakan tumpang tindih dari Baca Kode 01 Soal 6 tidak bisa terjadi.\n\nVersi perulangannya juga benar, dan itu yang kamu lacak di Baca Kode 01 Soal 5:\n\n<pre class=\"code\">def hitung_gc(dna):\n    hitung = 0\n    for basa in dna:\n        if basa == \"G\" or basa == \"C\":\n            hitung += 1\n    return hitung</pre>\n\nAda juga bentuk ketiga yang lebih rapi: `sum(1 for basa in dna if basa in \"GC\")`. Perhatikan `basa in \"GC\"` — memeriksa keanggotaan pada teks pendek adalah cara singkat menulis \"salah satu dari huruf-huruf ini\". Kamu akan memakainya lagi di Soal 6.\n\nUji `hitung_gc(\"\") == 0` gratis untuk ketiga bentuk. Itu bukan kebetulan — menghitung selalu berangkat dari nol."
+    },
+    {
+      "id": "S2",
+      "name": "Kandungan GC dalam persen",
+      "type": "code",
+      "prompt": "Tulis `persen_gc(dna)` yang mengembalikan kandungan GC sebagai persentase. **Jangan dibulatkan.** Dijamin `dna` tidak pernah kosong.",
+      "starter": "def persen_gc(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "persen_gc(\"AGGC\") == 75",
+        "persen_gc(\"AT\") == 0",
+        "persen_gc(\"GC\") == 100",
+        "persen_gc(\"AGGCCTGA\") == 62.5"
+      ],
+      "solution": "<pre class=\"kunci\">def persen_gc(dna):\n    return (dna.count(\"G\") + dna.count(\"C\")) / len(dna) * 100</pre>\n\nKalau kamu sudah menulis `hitung_gc`, tulis ulang di editor ini dan pakai: `return hitung_gc(dna) / len(dna) * 100`.\n\n**Kurungnya wajib.** Tanpa kurung, `dna.count(\"G\") + dna.count(\"C\") / len(dna) * 100` berarti \"banyaknya G, ditambah persentase C\" — karena pembagian dikerjakan sebelum penjumlahan. Untuk `\"AGGC\"` hasilnya \\(2 + 25 = 27\\), bukan 75. Kodenya berjalan mulus.\n\nDan **`/`, bukan `//`**. Dengan `//`, uji pertama memberi `3 // 4` = 0, dikali 100 → **0**. Kandungan GC 75 persen dilaporkan sebagai nol persen, tanpa satu pun error.\n\nKode itu **lolos 2 dari 4 uji**:\n\n| uji | dengan `//` | |\n|---|---|---|\n| `persen_gc(\"AGGC\") == 75` | `3 // 4` = 0 → **0** | gagal |\n| `persen_gc(\"AT\") == 0` | `0 // 2` = 0 → **0** | **lolos** |\n| `persen_gc(\"GC\") == 100` | `2 // 2` = 1 → **100** | **lolos** |\n| `persen_gc(\"AGGCCTGA\") == 62.5` | `5 // 8` = 0 → **0** | gagal |\n\nPerhatikan pola dua yang lolos: satu untai **tanpa GC sama sekali**, satu untai **GC semuanya**. Pembagian bulat hanya benar kalau pecahannya kebetulan tepat 0 atau tepat 1 — yaitu di dua ujung yang paling ekstrem. Segala sesuatu di antaranya, yang berarti hampir semua untai sungguhan, dilaporkan **nol persen**.\n\nRenungkan sebentar: satu garis miring yang hilang mengubah 75 menjadi 0, dan kedua uji yang lolos adalah uji yang lolos **karena alasan yang salah**.\n\nUji terakhir memberi **62.5** — bukan 62. Soal ini melarang pembulatan dengan sengaja. Kalau kamu membungkusnya dengan `round`, uji itu gagal, dan gagalnya benar: fungsi yang **menghitung** tidak boleh membulatkan. Bulatkan hanya saat **menuliskan** jawaban, di paling akhir, sekali. Itu Baca Kode 02 Soal 4, dan alasan `round(62.5)` memberi 62 ada di Baca Kode 02 Soal 6."
+    },
+    {
+      "id": "S3",
+      "name": "Untai pasangan",
+      "type": "code",
+      "prompt": "Setiap basa punya pasangannya: A berpasangan dengan T, G berpasangan dengan C — dan sebaliknya.\n\nTulis `komplemen(dna)` yang mengembalikan untai baru, tiap basanya diganti pasangannya. Urutannya **tetap**.",
+      "starter": "def komplemen(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "komplemen(\"AAGC\") == \"TTCG\"",
+        "komplemen(\"AGCT\") == \"TCGA\"",
+        "komplemen(\"A\") == \"T\"",
+        "komplemen(\"\") == \"\"",
+        "komplemen(\"GGCC\") == \"CCGG\""
+      ],
+      "solution": "<pre class=\"kunci\">def komplemen(dna):\n    hasil = \"\"\n    for basa in dna:\n        if basa == \"A\":\n            hasil += \"T\"\n        elif basa == \"T\":\n            hasil += \"A\"\n        elif basa == \"G\":\n            hasil += \"C\"\n        else:\n            hasil += \"G\"\n    return hasil</pre>\n\nInilah tagihan dari Baca Kode 02 Soal 4.\n\nYang **hampir semua orang** coba pertama kali:\n\n<pre class=\"code\">return dna.replace(\"A\", \"T\").replace(\"T\", \"A\").replace(\"G\", \"C\").replace(\"C\", \"G\")</pre>\n\nTerlihat masuk akal — empat penggantian, empat basa. Telusuri `\"AAGC\"`:\n\n| langkah | hasil | |\n|---|---|---|\n| awal | `\"AAGC\"` | |\n| `.replace(\"A\", \"T\")` | `\"TTGC\"` | A jadi T |\n| `.replace(\"T\", \"A\")` | `\"AAGC\"` | **T yang barusan dibuat ikut jadi A lagi** |\n| `.replace(\"G\", \"C\")` | `\"AACC\"` | |\n| `.replace(\"C\", \"G\")` | `\"AAGG\"` | C yang barusan dibuat ikut jadi G |\n\nHasilnya `\"AAGG\"`, bukan `\"TTCG\"`. Rantai itu **lolos 1 dari 5 uji** — hanya `komplemen(\"\") == \"\"`.\n\nPenyebabnya persis Baca Kode 02 Soal 4: penggantian kedua tidak bisa membedakan T asli dari T yang baru dibuat penggantian pertama. Setiap basa diputuskan **dua kali**, dan keputusan kedua membatalkan yang pertama.\n\nPerulangan tidak punya masalah itu, karena tiap basa diputuskan **sekali** berdasarkan aslinya, lalu ditulis ke untai baru yang tidak diperiksa lagi. `hasil` dan `dna` adalah dua teks yang berbeda; itulah yang menyelamatkannya.\n\nPerhatikan `elif`, **bukan** `if` berulang. Dengan `if` terpisah semua, `basa` tetap aman — karena kamu memeriksa `basa`, bukan `hasil` — jadi di sini kebetulan tidak apa-apa. Tapi biasakan `elif`: kalau syaratnya saling meniadakan, `elif` yang benar, dan ia berhenti memeriksa begitu ketemu.\n\nKalau kamu merasa lima cabang ini bertele-tele, kamu benar. Di Topik 5 ada `dictionary`, dan seluruh fungsi ini menjadi satu baris:\n\n<pre class=\"code\">pasangan = {\"A\": \"T\", \"T\": \"A\", \"G\": \"C\", \"C\": \"G\"}\nreturn \"\".join(pasangan[basa] for basa in dna)</pre>\n\nItu bukan sekadar lebih pendek — ia juga tidak bisa salah dengan cara yang sama, karena tabelnya dibaca sekali per basa. Tapi tulis versi `if` dulu; kamu perlu tahu apa yang sedang diringkas."
+    },
+    {
+      "id": "S4",
+      "name": "Untai seberang",
+      "type": "code",
+      "prompt": "Untai DNA yang kedua bukan cuma pasangan tiap basanya — ia juga terbaca dari **arah berlawanan**. Jadi: pasangkan semuanya, lalu balik urutannya.\n\nTulis `komplemen_balik(dna)`.",
+      "starter": "def komplemen_balik(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "komplemen_balik(\"AAGC\") == \"GCTT\"",
+        "komplemen_balik(\"ATGC\") == \"GCAT\"",
+        "komplemen_balik(\"AGCT\") == \"AGCT\"",
+        "komplemen_balik(\"A\") == \"T\"",
+        "komplemen_balik(\"\") == \"\""
+      ],
+      "solution": "<pre class=\"kunci\">def komplemen_balik(dna):\n    hasil = \"\"\n    for basa in dna:\n        if basa == \"A\":\n            hasil += \"T\"\n        elif basa == \"T\":\n            hasil += \"A\"\n        elif basa == \"G\":\n            hasil += \"C\"\n        else:\n            hasil += \"G\"\n    return hasil[::-1]</pre>\n\nKalau `komplemen` kamu tulis ulang di editor ini, jawabannya satu baris:\n\n<pre class=\"code\">def komplemen_balik(dna):\n    return komplemen(dna)[::-1]</pre>\n\nPasangkan dulu, lalu balik. Dua langkah, keduanya sudah kamu punya.\n\nUrutannya tidak masalah — `komplemen(dna[::-1])` memberi hasil yang sama persis. Balik-lalu-pasangkan dan pasangkan-lalu-balik menghasilkan untai yang identik, karena tiap basa dipasangkan sendiri-sendiri tanpa melihat tetangganya.\n\nSekarang perhatikan uji ketiga: **`komplemen_balik(\"AGCT\") == \"AGCT\"`**.\n\nUntai itu adalah komplemen-balik dari dirinya sendiri. Bukan kebetulan dan bukan bug:\n\n| | |\n|---|---|\n| `\"AGCT\"` | untai asli |\n| komplemennya | `\"TCGA\"` |\n| dibalik | `\"AGCT\"` ← kembali ke asal |\n\nIni disebut **palindrom** dalam arti DNA, dan ia nyata: enzim yang memotong DNA hampir selalu mengenali urutan seperti ini, justru karena kedua untai seberangnya membaca hal yang sama. `GAATTC` adalah contoh yang terkenal.\n\nUji itu juga menjaga sesuatu yang licik. Kalau kamu **lupa membalik** dan cuma menulis `komplemen(dna)`, uji ketiga tetap lolos — karena untuk untai ini komplemen dan komplemen-balik kebetulan sama. Uji pertama dan kedua yang menangkapnya. Sekali lagi: untai yang rapi tidak bisa membedakan apa pun, dan itulah kenapa `\"AAGC\"` ada di daftar."
+    },
+    {
+      "id": "S5",
+      "name": "Berapa basa yang berbeda",
+      "type": "code",
+      "prompt": "Dua untai sama panjang dibandingkan posisi per posisi.\n\nTulis `jarak_hamming(a, b)` yang mengembalikan banyaknya posisi yang isinya berbeda.",
+      "starter": "def jarak_hamming(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jarak_hamming(\"AGCT\", \"AGGT\") == 1",
+        "jarak_hamming(\"AGCT\", \"AGCT\") == 0",
+        "jarak_hamming(\"AAA\", \"TTT\") == 3",
+        "jarak_hamming(\"\", \"\") == 0",
+        "jarak_hamming(\"AGCTA\", \"AGGTT\") == 2"
+      ],
+      "solution": "<pre class=\"kunci\">def jarak_hamming(a, b):\n    beda = 0\n    for i in range(len(a)):\n        if a[i] != b[i]:\n            beda += 1\n    return beda</pre>\n\nVersi `zip`-nya lebih rapi: `return sum(1 for x, y in zip(a, b) if x != y)`.\n\nKenapa `range(len(a))` dan bukan `for basa in a`? Karena kamu butuh **posisi**. `a[i]` harus dibandingkan dengan basa yang **posisinya sama** di `b`. Menelusuri hurufnya saja tidak cukup — kamu tidak akan tahu sedang berdiri di mana. Ini soal pertama di topik ini yang benar-benar memerlukan indeks.\n\n`!=` berarti \"tidak sama\". Kalau kamu memakai `==`, kamu menghitung yang **cocok** — uji pertama memberi 3 alih-alih 1, uji kedua memberi 4 alih-alih 0. Kode itu **lolos 1 dari 5 uji**: hanya `jarak_hamming(\"\", \"\")`, yang nol dari dua arah.\n\nJarak Hamming mengukur seberapa mirip dua untai, dan ia dasar dari hampir semua pencocokan DNA. Dua untai dengan jarak 1 kemungkinan besar kerabat dekat dengan satu mutasi; jarak 3 dari untai sepanjang 3 berarti tidak ada satu pun yang sama.\n\nSatu batasnya: ia **hanya** untuk untai yang sama panjang. Kalau `b` lebih pendek, kode di kunci akan melempar `IndexError`, sedangkan versi `zip` diam-diam berhenti di yang terpendek dan memberi jawaban yang salah. Perhatikan bahwa versi yang lebih rapi justru gagal lebih diam-diam — itu bukan alasan menghindarinya, tapi alasan mengetahuinya."
+    },
+    {
+      "id": "S6",
+      "name": "Apakah datanya waras",
+      "type": "code",
+      "prompt": "Untai yang sah hanya boleh berisi A, G, C, dan T. Basa yang tidak terbaca ditulis `N`, dan huruf lain berarti datanya rusak.\n\nTulis `dna_valid(dna)` yang mengembalikan `True` kalau **semua** basanya sah, dan `False` kalau ada satu saja yang tidak. Untai kosong dianggap sah.",
+      "starter": "def dna_valid(dna):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "dna_valid(\"AGCT\") is True",
+        "dna_valid(\"AGXT\") is False",
+        "dna_valid(\"\") is True",
+        "dna_valid(\"N\") is False",
+        "dna_valid(\"AAAA\") is True"
+      ],
+      "solution": "<pre class=\"kunci\">def dna_valid(dna):\n    for basa in dna:\n        if basa not in \"AGCT\":\n            return False\n    return True</pre>\n\nPola **\"cari satu pelanggar\"**, dan bentuknya patut diperhatikan.\n\nKamu tidak memeriksa \"apakah semuanya sah\". Kamu mencari **satu** yang tidak sah, dan begitu ketemu, langsung pulang dengan `False`. Kalau perulangannya sampai habis tanpa menemukan apa pun, barulah `True`.\n\n`return` di dalam perulangan menghentikan seluruh fungsi saat itu juga — Topik 3 Baca Kode 01 Soal 2. Untuk untai sepanjang sejuta dengan huruf rusak di posisi kedua, fungsi ini berhenti di posisi kedua.\n\nPerhatikan letak `return True`: **di luar** perulangan, sejajar dengan `for`. Kalau kamu menaruhnya di dalam:\n\n<pre class=\"code\">for basa in dna:\n    if basa not in \"AGCT\":\n        return False\n    return True          # SALAH — di dalam perulangan</pre>\n\nfungsinya pulang di putaran **pertama**, jadi ia cuma memeriksa basa pertama. Kode itu **lolos 3 dari 5 uji**, dan dua yang gagal gagal karena alasan yang sama sekali berbeda:\n\n| uji | apa yang terjadi | |\n|---|---|---|\n| `dna_valid(\"AGCT\") is True` | `A` sah → `True` | **lolos** |\n| `dna_valid(\"AGXT\") is False` | `A` sah → `True`; `X` tidak pernah dilihat | gagal |\n| `dna_valid(\"\") is True` | perulangan tidak jalan → **`None`** | gagal |\n| `dna_valid(\"N\") is False` | `N` tidak sah → `False` | **lolos** |\n| `dna_valid(\"AAAA\") is True` | `A` sah → `True` | **lolos** |\n\nUji `\"AGXT\"` gagal karena fungsinya berhenti memeriksa setelah satu basa. Uji `\"\"` gagal karena sesuatu yang lain: perulangannya tidak pernah jalan, jadi **tidak ada `return` sama sekali** — dan fungsi yang habis tanpa `return` mengembalikan `None`. Lalu `None is True` bernilai `False`.\n\nSatu tingkat indentasi, dua bug yang berbeda, dan tiga uji yang tetap lolos sambil fungsimu hanya melihat 25 persen datanya.\n\nUji `dna_valid(\"\") is True` adalah yang paling menarik. Untai kosong tidak punya basa yang salah, jadi ia sah — kosong berarti tidak ada pelanggaran. Pola ini memberikannya **gratis**: perulangannya tidak jalan, langsung ke `return True`. Tapi kalau kamu berpikir \"harus periksa dulu apakah kosong\" dan menambahkan `if len(dna) == 0: return False`, kamu justru memasang bug dengan tanganmu sendiri.\n\nVersi satu barisnya: `return all(basa in \"AGCT\" for basa in dna)`. `all` mengembalikan `True` untuk yang kosong, dengan alasan yang sama persis.\n\nDan perhatikan `basa not in \"AGCT\"` — memeriksa keanggotaan pada teks. `\"X\" not in \"AGCT\"` bernilai `True`. Alat yang sama dengan `\"ATG\" in dna` di set mudah, dipakai terbalik."
+    }
+  ],
+  "number": 30
+}

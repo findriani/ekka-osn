@@ -1,0 +1,90 @@
+{
+  "id": "python-01b-alur-tulis-01",
+  "group": "Latihan Python",
+  "title": "Control Flow dan Operator — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 1, menulis kode, tingkat **mudah**. Set pertama kamu menulis Python sungguhan. Semua jawabannya cukup **satu baris** — tidak ada perulangan sama sekali. Tujuannya bukan menyulitkan, melainkan membuat `def`, `return`, dan operator hitung menjadi otomatis, supaya nanti otakmu bebas memikirkan soalnya, bukan sintaksnya.",
+  "instructions": "Bacalah cerita pada soal terlebih dahulu. Kalimat yang diawali `Tulis` menjelaskan nama fungsi, masukan, dan nilai yang harus dikembalikan; contoh uji di bawahnya membantumu melihat bentuk jawabannya.\n\nIsi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Boleh dicoba sesering yang kamu mau; tidak ada hukuman untuk gagal. Nilaimu dihitung per baris uji, jadi lulus sebagian tetap dapat nilai sebagian.\n\nBaris uji adalah spesifikasinya. Baca dulu sebelum menulis — di situlah semua jebakannya berada.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- `return` **mengembalikan** nilai; `print` hanya menampilkannya ke layar. Fungsi yang hanya nge-`print` mengembalikan `None`, dan semua ujinya akan gagal.\n- `/` menghasilkan pecahan: `7 / 2` = `3.5`\n- `//` membuang pecahannya: `7 // 2` = `3`\n- `%` memberi sisanya: `7 % 2` = `1`\n- `n % 2 == 0` bernilai `True` atau `False` — itu sudah jawaban, tidak perlu `if`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Dua kali lipat",
+      "type": "code",
+      "prompt": "Panitia menggandakan setiap hadiah karena pesertanya membludak.\n\nTulis `dua_kali(x)` yang mengembalikan `x` dikali dua.",
+      "starter": "def dua_kali(x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "dua_kali(5) == 10",
+        "dua_kali(0) == 0",
+        "dua_kali(-3) == -6"
+      ],
+      "solution": "<pre class=\"kunci\">def dua_kali(x):\n    return x * 2</pre>\n\nSesederhana kelihatannya — dan itu memang maksudnya. Yang dilatih di sini cuma satu: `return` **mengembalikan** nilai kepada yang memanggil.\n\nKalau kamu menulis `print(x * 2)`, layarnya memang menampilkan angka yang benar, tetapi fungsinya mengembalikan `None`, dan `None == 10` bernilai False. Semua uji gagal walaupun \"hasilnya terlihat benar\". Ini kesalahan nomor satu bagi orang yang baru mulai, dan lebih baik ditemui sekarang daripada di soal grid nanti.\n\nUji `dua_kali(-3)` ada untuk memastikan kamu memakai `* 2`, bukan `+ x` yang kebetulan juga benar — sebenarnya `x + x` juga lolos semuanya, dan itu tidak apa-apa. Dua jalan menuju jawaban yang sama-sama benar."
+    },
+    {
+      "id": "S2",
+      "name": "Permen sisa",
+      "type": "code",
+      "prompt": "Bu Guru membagi permen rata ke semua anak. Yang tidak bisa dibagi rata disimpan lagi ke toples.\n\nTulis `sisa_permen(permen, anak)` yang mengembalikan **berapa permen yang tersisa** setelah dibagi rata.",
+      "starter": "def sisa_permen(permen, anak):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "sisa_permen(7, 2) == 1",
+        "sisa_permen(10, 5) == 0",
+        "sisa_permen(3, 5) == 3"
+      ],
+      "solution": "<pre class=\"kunci\">def sisa_permen(permen, anak):\n    return permen % anak</pre>\n\n`%` menjawab \"berapa yang tersisa setelah dibagi habis\". Itu saja.\n\nUji `sisa_permen(3, 5) == 3` yang paling menarik: permennya lebih sedikit daripada anaknya, jadi **tidak ada** yang bisa dibagikan dan **semuanya** tersisa. Banyak orang mengira jawabannya 0. Kalau kamu ragu, bayangkan saja: 3 permen, 5 anak, tidak ada yang kebagian satu pun — ketiganya kembali ke toples."
+    },
+    {
+      "id": "S3",
+      "name": "Permen per anak",
+      "type": "code",
+      "prompt": "Toples yang sama, pertanyaan yang berbeda.\n\nTulis `bagi_rata(permen, anak)` yang mengembalikan **berapa permen yang diterima setiap anak**. Permen tidak boleh dipotong, jadi hasilnya selalu bilangan bulat.",
+      "starter": "def bagi_rata(permen, anak):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "bagi_rata(7, 2) == 3",
+        "bagi_rata(10, 5) == 2",
+        "bagi_rata(3, 5) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def bagi_rata(permen, anak):\n    return permen // anak</pre>\n\n`//` menjawab \"berapa kali muat\", dan membuang sisanya. Pasangannya adalah `%` dari Soal 2: `7 = 2 * 3 + 1`, dan itulah `7 // 2 = 3` dengan `7 % 2 = 1`.\n\nKalau kamu memakai `/` biasa, perhatikan uji mana yang gagal:\n\n| uji | dengan `/` | lulus? |\n|---|---|---|\n| `bagi_rata(7, 2) == 3` | `3.5` | **gagal** |\n| `bagi_rata(10, 5) == 2` | `2.0` | lulus — karena `2.0 == 2` |\n| `bagi_rata(3, 5) == 0` | `0.6` | **gagal** |\n\nUji kedua lolos **secara kebetulan**, karena kebetulan hasilnya bulat. Inilah kenapa satu uji tidak pernah cukup untuk membuktikan kodemu benar — dan kenapa tiap soal di sini punya beberapa uji yang berbeda-beda bentuknya."
+    },
+    {
+      "id": "S4",
+      "name": "Nilai rapor",
+      "type": "code",
+      "prompt": "Nilai akhir adalah rata-rata dari nilai tugas dan nilai ujian, dengan bobot sama.\n\nTulis `nilai_akhir(tugas, ujian)` yang mengembalikan rata-rata keduanya. Hasilnya boleh berupa pecahan.",
+      "starter": "def nilai_akhir(tugas, ujian):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "abs(nilai_akhir(80, 90) - 85.0) < 1e-9",
+        "abs(nilai_akhir(70, 75) - 72.5) < 1e-9",
+        "abs(nilai_akhir(0, 0) - 0.0) < 1e-9"
+      ],
+      "solution": "<pre class=\"kunci\">def nilai_akhir(tugas, ujian):\n    return (tugas + ujian) / 2</pre>\n\nTanda kurungnya wajib. Tanpanya, `tugas + ujian / 2` berarti \"tugas ditambah setengah ujian\" — karena `/` dikerjakan lebih dulu daripada `+`, sama seperti di matematika. Untuk `(80, 90)` itu memberi 125, bukan 85.\n\nDi sinilah `/` yang benar, bukan `//`. Uji `nilai_akhir(70, 75) = 72.5` sengaja dipilih agar hasilnya **tidak** bulat: dengan `//` jawabannya menjadi 72, dan ujinya gagal. Nilai rapor memang boleh koma."
+    },
+    {
+      "id": "S5",
+      "name": "Nomor undian genap",
+      "type": "code",
+      "prompt": "Panitia memberi doorprize hanya kepada pemegang nomor undian genap.\n\nTulis `apakah_genap(n)` yang mengembalikan `True` kalau `n` genap, dan `False` kalau ganjil.",
+      "starter": "def apakah_genap(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "apakah_genap(4) is True",
+        "apakah_genap(7) is False",
+        "apakah_genap(0) is True",
+        "apakah_genap(-2) is True"
+      ],
+      "solution": "<pre class=\"kunci\">def apakah_genap(n):\n    return n % 2 == 0</pre>\n\n`n % 2 == 0` **sudah** bernilai `True` atau `False`. Ia adalah jawabannya; tinggal dikembalikan.\n\nYang sering ditulis pemula:\n\n<pre class=\"code\">if n % 2 == 0:\n    return True\nelse:\n    return False</pre>\n\nItu benar dan lolos semua uji — hanya saja empat baris untuk mengatakan hal yang sudah dikatakan oleh satu perbandingan. Kalau kamu menulisnya begitu, tidak ada yang salah; cukup sadari bahwa versi pendeknya ada.\n\nUji `apakah_genap(-2) is True` menyambung ke Baca Kode 02: `-2 % 2` bernilai `0` di Python, jadi bilangan negatif **tidak** perlu perlakuan khusus.\n\nKenapa ujinya memakai `is True` dan bukan `== True`? Karena di Python `1 == True` bernilai benar. Kalau fungsimu mengembalikan angka `1`, `== True` akan lolos padahal yang diminta adalah `True` yang sesungguhnya. `is` menuntut jenisnya tepat, dan `n % 2 == 0` memang menghasilkannya."
+    },
+    {
+      "id": "S6",
+      "name": "Total sumbangan",
+      "type": "code",
+      "prompt": "Kotak amal dihitung isinya di akhir hari.\n\nTulis `jumlah_semua(data)` yang mengembalikan jumlah semua angka di dalam `data`. Kalau kosong, hasilnya `0`.",
+      "starter": "def jumlah_semua(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_semua([1, 2, 3]) == 6",
+        "jumlah_semua([]) == 0",
+        "jumlah_semua([-5, 5]) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_semua(data):\n    return sum(data)</pre>\n\n`sum` sudah disediakan Python, dan untuk list kosong ia mengembalikan `0` — persis yang diminta uji kedua. Tidak perlu perulangan.\n\nMenulisnya dengan tangan juga benar, dan justru itu latihan Soal 1 di set berikutnya:\n\n<pre class=\"code\">def jumlah_semua(data):\n    total = 0\n    for n in data:\n        total += n\n    return total</pre>\n\nPerhatikan `total = 0` berada **sebelum** perulangan. Kalau di dalam, ia disetel ulang tiap putaran dan hasilnya hanya angka terakhir — persis bug yang kamu temukan di Baca Kode 01 Soal 4.\n\nUji `jumlah_semua([-5, 5]) == 0` ada supaya kamu tidak bisa lolos dengan `len(data)` atau semacamnya secara kebetulan."
+    }
+  ],
+  "number": 14
+}
