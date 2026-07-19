@@ -1,0 +1,100 @@
+{
+  "id": "python-08a-konvolusi-baca-01",
+  "group": "Latihan Python",
+  "title": "Konvolusi — Baca Kode 01",
+  "summary": "Topik 8, membaca kode. Sebuah lapisan konvolusi menggeser **kernel** kecil ke seluruh masukan; di tiap posisi ia mengalikan dan menjumlahkan, menghasilkan satu angka. Yang paling sering diuji di seleksi (Soal 22–25) bukan operasinya, tetapi **ukuran keluarannya**: berapa besar hasil sebuah lapisan, diberi ukuran masukan, kernel, stride, dan padding. Set ini melatih rumus itu — mudah, tetapi penuh jebakan kecil.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk tiap soal ukuran, tulis dulu keempat angka `n, k, s, p`, masukkan ke rumus, dan ingat padding dihitung **dua kali** (kiri dan kanan).\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- Ukuran keluaran satu sisi: `(n - k + 2*p) // s + 1`.\n  - `n` = ukuran masukan · `k` = ukuran kernel · `s` = stride · `p` = padding satu sisi.\n- Padding `p` ditambahkan di **kedua** sisi, jadi yang masuk rumus `2*p`.\n- Pakai `//` (bagi bulat), bukan `/` — ukuran harus bilangan bulat.\n- Untuk stride 1 dan kernel ganjil, `p = (k-1)//2` mempertahankan ukuran.\n- Masukan 2D: tinggi dihitung dari tinggi, lebar dari lebar — pisahkan.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Tanpa padding",
+      "type": "fill",
+      "prompt": "Kernel 3, stride 1, tanpa padding, pada masukan berukuran 28.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nprint(ukuran_keluar(28, 3, 1, 0))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 26,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`(28 - 3 + 2*0) // 1 + 1 = 25 // 1 + 1 = 25 + 1 = 26`.\n\nTanpa padding dan stride 1, keluaran selalu `n - k + 1`. Kernel 3 memangkas 2 dari tiap sisi lebar informasi (satu di kiri, satu di kanan tak punya tetangga lengkap), jadi 28 menjadi 26. Ini kasus paling dasar; hafalkan bentuknya sebagai titik acuan."
+    },
+    {
+      "id": "S2",
+      "name": "Padding menjaga ukuran",
+      "type": "fill",
+      "prompt": "Sekarang dengan padding 1. Perhatikan padding masuk sebagai `2*p`.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nprint(ukuran_keluar(32, 3, 1, 1))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 32,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`(32 - 3 + 2*1) // 1 + 1 = 31 // 1 + 1 = 32`.\n\nPadding 1 menambah satu piksel di **tiap** sisi, jadi `2*p = 2` masuk rumus. Hasilnya kembali ke 32 — ukuran masukan utuh. Inilah pola \"same\" yang sangat sering dipakai: kernel 3, stride 1, padding 1 mempertahankan ukuran, sehingga lapisan bisa ditumpuk tanpa gambar menyusut. Jebakan paling umum: menuliskan `p` sekali (jadi 31 → keluaran 31), lupa padding dihitung dua kali."
+    },
+    {
+      "id": "S3",
+      "name": "Padding berapa",
+      "type": "mc",
+      "prompt": "Masukan berukuran 10, kernel 3, stride 1. Kita ingin keluaran tetap **10**. Ingat bahwa untuk stride 1 dan kernel ganjil, padding yang menjaga ukuran adalah `(k-1)//2`.\n\nPadding `p` berapa yang membuat `ukuran_keluar(10, 3, 1, p)` bernilai 10?",
+      "choices": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "answer": 1,
+      "solution": "Coba `p = 1`: `(10 - 3 + 2*1) // 1 + 1 = 9 // 1 + 1 = 10`. Tepat 10. ✓\n\n| p | `(10 - 3 + 2p)//1 + 1` |\n|---|---|\n| **A.** 0 | 8 |\n| **B.** 1 | **10** ✓ |\n| **C.** 2 | 12 |\n| **D.** 3 | 14 |\n\nUntuk stride 1 dan kernel ganjil `k`, padding `p = (k-1)//2` selalu menjaga ukuran. Di sini `(3-1)//2 = 1`. Padding lebih besar justru **memperbesar** keluaran, karena rumusnya menambah `2*p`. Ingat: \"same\" bukan sihir, cuma padding yang pas."
+    },
+    {
+      "id": "S4",
+      "name": "Stride tidak membagi habis",
+      "type": "fill",
+      "prompt": "Kernel 3, stride 2, tanpa padding, pada masukan 10. Di sinilah `//` penting: hasil pembagiannya tidak bulat, dan dibulatkan ke bawah.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nprint(ukuran_keluar(10, 3, 2, 0))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`(10 - 3 + 2*0) // 2 + 1 = 7 // 2 + 1 = 3 + 1 = 4`.\n\nDi sinilah `//` menentukan. `7 // 2` adalah 3 (dibuang ke bawah), bukan 3.5. Kalau kamu memakai `/`, hasilnya 4.5 — bukan ukuran yang sah. Stride 2 berarti kernel melompati satu posisi tiap langkah, dan saat lompatannya tidak membagi habis, posisi terakhir yang tak muat sekadar diabaikan. `//` menangkap \"diabaikan\" itu dengan benar."
+    },
+    {
+      "id": "S5",
+      "name": "Kernel sebesar masukan",
+      "type": "fill",
+      "prompt": "Kernel 7 pada masukan 7, stride 1, tanpa padding — kernel menutupi seluruh masukan sekaligus.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nprint(ukuran_keluar(7, 7, 1, 0))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 1,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`(7 - 7 + 2*0) // 1 + 1 = 0 // 1 + 1 = 0 + 1 = 1`.\n\nSaat kernel sebesar masukan, cuma ada **satu** posisi: kernel menutupi semuanya sekaligus, tanpa ruang menggeser. Hasilnya satu angka — keluaran 1×1. Ini yang terjadi di ujung banyak jaringan, tempat peta fitur diciutkan menjadi satu nilai per kanal sebelum keputusan akhir."
+    },
+    {
+      "id": "S6",
+      "name": "Tinggi keluaran",
+      "type": "fill",
+      "prompt": "Masukan 2D berukuran 28×28. Kernelnya **tidak** persegi: tinggi 5, lebar 1. Tinggi keluaran dihitung dari tinggi masukan dan tinggi kernel saja.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\ntinggi = ukuran_keluar(28, 5, 1, 0)\nlebar = ukuran_keluar(28, 1, 1, 0)\nprint(tinggi)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 24,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Tinggi keluaran dihitung dari tinggi saja: `(28 - 5 + 0) // 1 + 1 = 23 + 1 = 24`.\n\nLebarnya, dari kernel selebar 1, adalah `(28 - 1) // 1 + 1 = 28` — tak berubah. Jadi keluaran 24×28: kernel 5×1 memangkas tinggi tetapi membiarkan lebar utuh. Inilah kenapa tinggi dan lebar **harus dihitung terpisah** saat kernel atau masukannya tidak persegi. Menukar keduanya adalah salah satu kesalahan paling sering di Soal 22–25."
+    }
+  ],
+  "number": 47
+}

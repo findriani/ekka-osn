@@ -1,0 +1,95 @@
+{
+  "id": "python-07b-rekursi-tulis-02",
+  "group": "Latihan Python",
+  "title": "Rekursi — Tulis Kode 02 (Sedang)",
+  "summary": "Topik 7, menulis kode, tingkat **sedang**. Sekarang rekursi bercabang dan berpindah bentuk data: Fibonacci (dua panggilan), membalik string, menjumlahkan digit sebuah angka, mencari maksimum, FPB, dan menjumlahkan list bersarang. Masing-masing memperkenalkan satu cara baru \"memperkecil soal\" — bukan cuma `n - 1`.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nPerhatikan bentuk yang mengecil di tiap soal: angka (`n - 1`, `n // 10`), string (`teks[1:]`), atau list (`data[1:]`). Kasus dasarnya selalu bentuk terkecil yang jawabannya sudah jelas.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Fibonacci: dua panggilan, `fib(n-1) + fib(n-2)`, dua kasus dasar (`n < 2`).\n- String mengecil dengan `teks[1:]`; kasus dasar `len(teks) <= 1`.\n- Digit terakhir angka: `n % 10`; sisanya: `n // 10`.\n- Maksimum list: bandingkan `data[0]` dengan maksimum sisanya.\n- List bersarang: cek `isinstance(x, list)` untuk memutuskan menyelam atau menjumlah.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Fibonacci",
+      "type": "code",
+      "prompt": "Tulis `fib(n)` yang mengembalikan angka Fibonacci ke-`n`, dengan `fib(0) = 0` dan `fib(1) = 1`.",
+      "starter": "def fib(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "fib(0) == 0",
+        "fib(1) == 1",
+        "fib(2) == 1",
+        "fib(6) == 8",
+        "fib(10) == 55"
+      ],
+      "solution": "<pre class=\"kunci\">def fib(n):\n    if n &lt; 2:\n        return n\n    return fib(n - 1) + fib(n - 2)</pre>\n\nKasus dasar `n < 2` menangkap dua angka sekaligus: `fib(0) = 0` dan `fib(1) = 1`. Kasus rekursif menjumlahkan dua langkah ke belakang.\n\nFibonacci butuh dua kasus dasar karena tiap panggilan menoleh dua angka ke belakang — kalau cuma `n == 0`, `fib(1)` akan mencoba `fib(-1)` dan tak berhenti. Ingat dari Baca Kode 02: versi polos ini memanggil dirinya banyak kali, jadi `fib(30)` sudah lambat. Untuk uji sampai `fib(10)` ini masih cepat."
+    },
+    {
+      "id": "S2",
+      "name": "Membalik string",
+      "type": "code",
+      "prompt": "Tulis `balik(teks)` yang mengembalikan `teks` dengan urutan huruf terbalik, secara rekursif. Jangan pakai `teks[::-1]`.",
+      "starter": "def balik(teks):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "balik(\"\") == \"\"",
+        "balik(\"a\") == \"a\"",
+        "balik(\"abc\") == \"cba\"",
+        "balik(\"halo\") == \"olah\""
+      ],
+      "solution": "<pre class=\"kunci\">def balik(teks):\n    if len(teks) &lt;= 1:\n        return teks\n    return balik(teks[1:]) + teks[0]</pre>\n\nAmbil huruf pertama, balik sisanya, lalu **tempel huruf pertama di belakang**. Urutan `balik(teks[1:]) + teks[0]` itulah yang membalik: tiap huruf pertama pindah ke ekor.\n\nKasus dasar `len(teks) <= 1` menangani string kosong dan satu huruf sekaligus — keduanya sudah \"terbalik\". Kalau kamu menulis `teks[0] + balik(teks[1:])`, kamu justru mengembalikan string aslinya, tak berubah. Letak `teks[0]` yang membedakannya."
+    },
+    {
+      "id": "S3",
+      "name": "Menjumlahkan digit",
+      "type": "code",
+      "prompt": "Tulis `jumlah_digit(n)` yang mengembalikan jumlah semua digit `n` (bilangan tak negatif), secara rekursif.",
+      "starter": "def jumlah_digit(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_digit(0) == 0",
+        "jumlah_digit(5) == 5",
+        "jumlah_digit(123) == 6",
+        "jumlah_digit(4062) == 12"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_digit(n):\n    if n &lt; 10:\n        return n\n    return n % 10 + jumlah_digit(n // 10)</pre>\n\n`n % 10` mengambil digit terakhir; `n // 10` membuang digit terakhir itu. Jadi tiap panggilan menjumlahkan satu digit dan mengecilkan angkanya. Kasus dasar `n < 10` adalah angka satu digit, yang jumlah digitnya dirinya sendiri.\n\nPerhatikan `%` dan `//` bekerja berpasangan di sini: yang satu mengambil, yang satu membuang. Ini pola membongkar angka digit demi digit, dan `//` (bukan `/`) wajib supaya hasilnya tetap bilangan bulat."
+    },
+    {
+      "id": "S4",
+      "name": "Maksimum",
+      "type": "code",
+      "prompt": "Tulis `maksimum(data)` yang mengembalikan angka terbesar di `data`, secara rekursif. Dijamin `data` tidak pernah kosong. Jangan pakai `max`.",
+      "starter": "def maksimum(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "maksimum([3]) == 3",
+        "maksimum([1, 9, 2]) == 9",
+        "maksimum([-5, -2, -8]) == -2"
+      ],
+      "solution": "<pre class=\"kunci\">def maksimum(data):\n    if len(data) == 1:\n        return data[0]\n    sisa = maksimum(data[1:])\n    return data[0] if data[0] > sisa else sisa</pre>\n\nKasus dasar: list satu isi, maksimumnya isi itu sendiri. Kasus rekursif: bandingkan isi pertama dengan maksimum sisanya, kembalikan yang lebih besar.\n\nUji `[-5, -2, -8]` adalah yang penting — kalau kamu memulai perbandingan dari 0 (seperti `terbesar = 0` di soal grid), semua angka negatif akan kalah dan kamu salah menjawab 0. Di sini tidak ada 0 karangan: perbandingannya selalu antara isi yang **ada**, jadi list negatif pun benar."
+    },
+    {
+      "id": "S5",
+      "name": "FPB",
+      "type": "code",
+      "prompt": "Tulis `fpb(a, b)` yang mengembalikan faktor persekutuan terbesar `a` dan `b` dengan algoritma Euclid: `fpb(a, b) = fpb(b, a % b)`, berhenti saat `b == 0`.",
+      "starter": "def fpb(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "fpb(12, 8) == 4",
+        "fpb(18, 12) == 6",
+        "fpb(7, 1) == 1",
+        "fpb(5, 0) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def fpb(a, b):\n    if b == 0:\n        return a\n    return fpb(b, a % b)</pre>\n\nEuclid: ganti `(a, b)` dengan `(b, a % b)` sampai `b` mencapai 0; jawabannya `a` yang tersisa. Rekursi ini menyusut cepat karena `a % b` selalu lebih kecil dari `b`.\n\nUji `fpb(5, 0)` langsung mengenai kasus dasar: FPB sebuah angka dengan 0 adalah angka itu sendiri. Perhatikan argumen bertukar tiap panggilan — `b` menjadi `a` yang baru — yang membuat rekursi ini terasa berbeda dari yang lain, tetapi kasus dasarnya tetap sederhana."
+    },
+    {
+      "id": "S6",
+      "name": "Jumlah list bersarang",
+      "type": "code",
+      "prompt": "Sebuah list bisa berisi angka atau list lain, sedalam apa pun. Tulis `jumlah_bersarang(data)` yang mengembalikan jumlah **semua** angka di dalamnya, secara rekursif.",
+      "starter": "def jumlah_bersarang(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_bersarang([]) == 0",
+        "jumlah_bersarang([1, 2, 3]) == 6",
+        "jumlah_bersarang([1, [2, 3]]) == 6",
+        "jumlah_bersarang([[1], [2, [3, 4]]]) == 10"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_bersarang(data):\n    if data == []:\n        return 0\n    kepala = data[0]\n    if isinstance(kepala, list):\n        return jumlah_bersarang(kepala) + jumlah_bersarang(data[1:])\n    return kepala + jumlah_bersarang(data[1:])</pre>\n\nDua sumber rekursi. Kalau isi pertama sebuah **list**, selami ia (`jumlah_bersarang(kepala)`) lalu lanjutkan ke sisanya. Kalau ia sebuah **angka**, tambahkan langsung lalu lanjutkan ke sisanya. `isinstance(kepala, list)` yang memutuskan mana yang berlaku.\n\nInilah rekursi yang bercabang mengikuti **bentuk data**, bukan sekadar mengecilkan angka. Pola ini — \"kalau list, selami; kalau bukan, olah\" — adalah dasar menelusuri struktur bersarang, dan muncul lagi saat menelusuri grid atau pohon di soal seleksi."
+    }
+  ],
+  "number": 45
+}

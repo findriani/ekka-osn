@@ -1,0 +1,93 @@
+{
+  "id": "python-09b-campuran-tulis-01",
+  "group": "Latihan Python",
+  "title": "Campuran — Tulis Kode 01",
+  "summary": "Set latihan campuran yang memadukan **enam topik dasar pertama**, dari perulangan sampai grid. Kerjakan setelah keenam topik tersebut selesai; jika dikerjakan lebih awal, wajar jika soal 5 dan 6 belum dapat diselesaikan. Keenam soal disusun dari yang lebih ringan ke yang lebih menantang, dan masing-masing mewakili pola yang dapat muncul dalam soal seleksi.",
+  "instructions": "Setiap soal memberi kamu kerangka fungsi dan beberapa baris uji. Tugasmu: tulis isi fungsinya sampai **semua baris uji bernilai True**. Tekan **Jalankan** untuk mengujinya sebanyak yang kamu mau — tidak ada hukuman untuk mencoba.\n\nNilaimu dihitung per baris uji, jadi lulus 3 dari 4 tetap mendapat sebagian nilai. Baris uji juga menunjukkan perilaku fungsi yang diharapkan. Bacalah semuanya sebelum menulis kode agar kasus-kasus khusus tidak terlewat.\n\nHanya Python standar. **Tanpa NumPy** — pustaka luar memang tidak tersedia di sini, persis seperti aturan seleksi 2025. `math`, `collections`, dan `itertools` boleh.",
+  "formulas": "- Kandungan GC \\(= \\dfrac{\\#G + \\#C}{\\text{panjang urutan}}\\)\n- \\(\\mathrm{MSE} = \\dfrac{1}{n}\\displaystyle\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2\\)\n- Jarak kuadrat \\((x_1,y_1)\\) ke \\((x_2,y_2)\\) \\(= (x_1-x_2)^2 + (y_1-y_2)^2\\) — akar tidak perlu jika hanya membandingkan.\n- Sel \\((r, k)\\) punya paling banyak 8 tetangga: semua \\((r+dr,\\ k+dk)\\) dengan \\(dr, dk \\in \\{-1,0,1\\}\\), kecuali \\((0,0)\\).",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Skor lomba cerdas cermat",
+      "type": "code",
+      "prompt": "Panitia mencatat skor tiap babak. Karena aturan lomba, hanya skor **genap** yang dijumlahkan; skor ganjil dianggap batal dan diabaikan.\n\nTulis `jumlah_genap(data)` yang mengembalikan jumlah semua bilangan genap di dalam `data`. Kalau tidak ada yang genap, hasilnya `0`.",
+      "starter": "def jumlah_genap(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_genap([3, 8, 5, 4]) == 12",
+        "jumlah_genap([1, 3, 5]) == 0",
+        "jumlah_genap([]) == 0",
+        "jumlah_genap([-2, 7, -4]) == -6"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_genap(data):\n    total = 0\n    for n in data:\n        if n % 2 == 0:\n            total += n\n    return total</pre>\n\nPolanya disebut **akumulasi**: siapkan wadah, tambahkan sedikit demi sedikit, kembalikan wadahnya. `total = 0` harus berada **sebelum** perulangan — kalau di dalam, ia lahir kembali setiap putaran dan hasilnya hanya angka terakhir.\n\nUji `[]` ada bukan untuk menyulitkan: ia memastikan `total = 0` benar-benar ditulis, bukan `total = data[0]`. Uji `[-2, 7, -4]` memastikan kamu memakai `n % 2 == 0` dan bukan `n > 0 and n % 2 == 0` — di Python, `-2 % 2` tetap `0`.\n\nVersi ringkasnya: `return sum(n for n in data if n % 2 == 0)`."
+    },
+    {
+      "id": "S2",
+      "name": "Pengunjung perpustakaan",
+      "type": "code",
+      "prompt": "Bu Ratna mencatat jumlah pengunjung perpustakaan tiap hari dan ingin tahu rata-ratanya.\n\nTulis `rata_rata(data)` yang mengembalikan rata-rata isi `data`.",
+      "hint": "Tuliskan jawaban sebagai kode Python.",
+      "starter": "def rata_rata(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "abs(rata_rata([14, 18, 11, 20, 12]) - 15.0) < 1e-9",
+        "abs(rata_rata([7]) - 7.0) < 1e-9",
+        "abs(rata_rata([1, 2]) - 1.5) < 1e-9"
+      ],
+      "solution": "<pre class=\"kunci\">def rata_rata(data):\n    return sum(data) / len(data)</pre>\n\nJebakannya ada di uji ketiga. `sum([1, 2]) // len([1, 2])` memberi `1`, bukan `1.5`: `//` membuang bagian pecahannya. Dua uji pertama lolos dengan `//` karena hasilnya kebetulan bulat — itulah sebabnya uji ketiga ada.\n\nPakai `/` bila kamu mau angka pecahan, `//` hanya bila kamu memang mau membuang sisanya."
+    },
+    {
+      "id": "S3",
+      "name": "Kandungan GC",
+      "type": "code",
+      "prompt": "Sebuah urutan DNA hanya berisi huruf `A`, `T`, `G`, dan `C`. **Kandungan GC** adalah bagian dari urutan itu yang berupa `G` atau `C` — angka antara 0 dan 1.\n\nTulis `kandungan_gc(urutan)` yang mengembalikan kandungan GC dari `urutan`.",
+      "starter": "def kandungan_gc(urutan):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "abs(kandungan_gc(\"GGCC\") - 1.0) < 1e-9",
+        "abs(kandungan_gc(\"ATAT\") - 0.0) < 1e-9",
+        "abs(kandungan_gc(\"ATGC\") - 0.5) < 1e-9",
+        "abs(kandungan_gc(\"AAATTTGGGCCC\") - 0.5) < 1e-9"
+      ],
+      "solution": "<pre class=\"kunci\">def kandungan_gc(urutan):\n    gc = urutan.count(\"G\") + urutan.count(\"C\")\n    return gc / len(urutan)</pre>\n\n`.count()` menghitung berapa kali sebuah huruf muncul, jadi tidak perlu perulangan sendiri. Sama seperti Soal 2, `/` wajib — dengan `//` semua uji akan memberi `0` kecuali yang `\"GGCC\"`.\n\nIni persis bentuk yang kamu butuhkan pada soal DNA seleksi 2025: setiap urutan diringkas menjadi beberapa angka, lalu angka-angka itu yang dibandingkan."
+    },
+    {
+      "id": "S4",
+      "name": "Seberapa meleset ramalannya",
+      "type": "code",
+      "prompt": "Dua model meramalkan penjualan. Untuk menilai mana yang lebih baik, kita ukur **MSE**: rata-rata dari kuadrat selisih antara nilai asli dan ramalan.\n\nTulis `mse(asli, ramalan)` yang mengembalikan MSE dari kedua list itu. Panjang keduanya selalu sama.",
+      "starter": "def mse(asli, ramalan):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "abs(mse([2, 4, 6, 8], [3, 4, 5, 10]) - 1.5) < 1e-9",
+        "abs(mse([1, 2], [1, 2]) - 0.0) < 1e-9",
+        "abs(mse([0], [3]) - 9.0) < 1e-9"
+      ],
+      "solution": "<pre class=\"kunci\">def mse(asli, ramalan):\n    total = 0\n    for a, r in zip(asli, ramalan):\n        total += (a - r) ** 2\n    return total / len(asli)</pre>\n\n`zip` memasangkan kedua list sekaligus, jadi kamu tidak perlu mengurus indeks. Alternatifnya `for i in range(len(asli))` lalu `asli[i] - ramalan[i]` — sama benarnya, hanya lebih panjang.\n\nTiga hal yang sering salah: mengkuadratkan **setelah** menjumlahkan (harus sebelum), lupa membagi `len(asli)` sehingga yang dihitung SSE bukan MSE, dan memakai `abs` bukan `** 2`. Yang terakhir menghasilkan MAE — ukuran yang sah, tetapi bukan yang diminta.\n\n**Jangan membulatkan di dalam fungsi ini.** Kalau nanti kamu memakai MSE untuk membandingkan dua garis, pembulatan dini bisa membuat dua garis tampak seri padahal tidak."
+    },
+    {
+      "id": "S5",
+      "name": "Warung terdekat",
+      "type": "code",
+      "prompt": "Sebuah aplikasi ojek menyimpan letak warung sebagai dictionary: namanya menjadi kunci, koordinatnya `(x, y)` menjadi nilai.\n\nTulis `warung_terdekat(pos, warung)` yang mengembalikan **nama** warung yang paling dekat ke `pos`. Selalu ada tepat satu yang terdekat.",
+      "starter": "def warung_terdekat(pos, warung):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "warung_terdekat((0, 0), {\"sate\": (1, 2), \"bakso\": (4, 6), \"soto\": (-3, 1)}) == \"sate\"",
+        "warung_terdekat((4, 6), {\"sate\": (1, 2), \"bakso\": (4, 6), \"soto\": (-3, 1)}) == \"bakso\"",
+        "warung_terdekat((0, 0), {\"anggrek\": (3, 0)}) == \"anggrek\""
+      ],
+      "solution": "<pre class=\"kunci\">def warung_terdekat(pos, warung):\n    def jarak2(p):\n        return (p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2\n    return min(warung, key=lambda nama: jarak2(warung[nama]))</pre>\n\n`min(warung, ...)` berjalan di atas **kunci** dictionary, jadi yang dikembalikan sudah berupa nama — persis yang diminta. Tanpa `key=`, `min(warung)` mengembalikan nama yang paling kecil menurut abjad, yang kebetulan `\"bakso\"` dan sama sekali tidak ada hubungannya dengan jarak.\n\nAkar kuadrat tidak dipakai. Kalau \\(a &lt; b\\) maka \\(\\sqrt{a} &lt; \\sqrt{b}\\), jadi mengurutkan dengan jarak kuadrat memberi urutan yang sama dengan jarak sesungguhnya — lebih cepat dan tanpa galat pembulatan.\n\nVersi perulangan biasa juga benar:\n\n<pre class=\"code\">def warung_terdekat(pos, warung):\n    terbaik, jarak_terbaik = None, None\n    for nama, (x, y) in warung.items():\n        d = (x - pos[0]) ** 2 + (y - pos[1]) ** 2\n        if jarak_terbaik is None or d &lt; jarak_terbaik:\n            terbaik, jarak_terbaik = nama, d\n    return terbaik</pre>\n\nInilah inti soal mencocokkan vektor kata di seleksi 2025: setiap kata dibandingkan jaraknya ke beberapa pusat, lalu diambil yang terdekat."
+    },
+    {
+      "id": "S6",
+      "name": "Drone di atas sawah",
+      "type": "code",
+      "prompt": "Sebuah drone memotret petak sawah dan menyimpannya sebagai list string — `grid[r][k]` adalah huruf di baris `r`, kolom `k`. Setiap petak punya **paling banyak** 8 tetangga; petak di tepi dan di pojok punya lebih sedikit.\n\nTulis `hitung_tetangga(grid, r, k, huruf)` yang mengembalikan banyaknya tetangga sel `(r, k)` yang isinya sama dengan `huruf`. Sel `(r, k)` sendiri tidak ikut dihitung.",
+      "starter": "def hitung_tetangga(grid, r, k, huruf):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_tetangga([\"AB\", \"BA\"], 0, 0, \"B\") == 2",
+        "hitung_tetangga([\"AAA\", \"AAA\", \"AAA\"], 1, 1, \"A\") == 8",
+        "hitung_tetangga([\"AAA\", \"AAA\", \"AAA\"], 0, 0, \"A\") == 3",
+        "hitung_tetangga([\"A\"], 0, 0, \"A\") == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_tetangga(grid, r, k, huruf):\n    baris, kolom = len(grid), len(grid[0])\n    total = 0\n    for dr in (-1, 0, 1):\n        for dk in (-1, 0, 1):\n            if dr == 0 and dk == 0:\n                continue\n            nr, nk = r + dr, k + dk\n            if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom and grid[nr][nk] == huruf:\n                total += 1\n    return total</pre>\n\nDua perulangan bersarang atas `(-1, 0, 1)` menghasilkan sembilan pasangan; `continue` membuang satu-satunya yang bukan tetangga, yaitu selnya sendiri. Ini lebih pendek dan lebih sulit disalahtulis daripada mendaftar kedelapan arah satu per satu.\n\nPemeriksaan batas `0 &lt;= nr &lt; baris` adalah bagian yang paling sering gagal. Tanpanya, `grid[-1][k]` **tidak error** — Python membaca indeks negatif sebagai hitungan dari belakang, jadi kodemu akan diam-diam menghitung tetangga dari sisi grid yang berlawanan. Uji `[\"A\"]` dan pojok `(0, 0)` ada khusus untuk menangkap ini: keduanya lolos pada kode yang salah kalau batasnya tidak diperiksa.\n\nFungsi ini adalah setengah dari soal menghitung lintasan `IOAI` di seleksi 2025. Setengahnya lagi adalah rekursi yang memanggil fungsi ini berulang-ulang."
+    }
+  ],
+  "number": 52
+}

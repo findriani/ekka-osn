@@ -37,11 +37,14 @@ const OUT = path.resolve(here, '../public/banks');
 
 const CHECK_ONLY = process.argv.includes('--check');
 
-/* These two early Python sets stay in banksoal as material to revise later,
+/* These draft sets stay in banksoal as material to revise later,
  * but should not be published to the student-facing bank yet. */
 const UNPUBLISHED_BANKS = new Set([
+  'meeting_03b_latihan_penskalaan_01',
+  'meeting_03c_latihan_imputasi_01',
+  'meeting_03d_latihan_kmeans_01',
+  'meeting_03e_latihan_proyeksi_pca_01',
   'meeting_07_latihan_python_diagnostik_01',
-  'python_09b_campuran_tulis_01',
   'python_01c_program_dasar_01'
 ]);
 

@@ -1,0 +1,90 @@
+{
+  "id": "python-06b-grid-tulis-02",
+  "group": "Latihan Python",
+  "title": "Grid — Tulis Kode 02 (Sedang)",
+  "summary": "Topik 6, menulis kode, tingkat **sedang**. Sekarang batas dan tetangga mulai bekerja: membaca sel dengan aman, menjumlahkan tetangga tanpa keluar grid, mencari letak sesuatu, menjumlahkan tepi, membandingkan baris, dan mencerminkan papan. Batas adalah tema besarnya — hampir tiap soal grid yang salah, salahnya di tepi.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nBeberapa soal mengembalikan sebuah **grid baru**; di sana urutan baris dan kolom penting. Beberapa mengembalikan pasangan `(r, k)` atau `None`.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Sel `(r, k)` sah kalau `0 <= r < len(grid) and 0 <= k < len(grid[0])`.\n- Empat tetangga (atas, bawah, kiri, kanan): geser `(r-1,k)`, `(r+1,k)`, `(r,k-1)`, `(r,k+1)`.\n- Menyusuri tepi: sel dengan `r == 0` atau `r == baris-1` atau `k == 0` atau `k == kolom-1`.\n- Membalik satu baris: `baris[::-1]`.\n- Cari sambil tahu letaknya: `for r in range(...): for k in range(...):`, lalu kembalikan `(r, k)`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Membaca dengan aman",
+      "type": "code",
+      "prompt": "Membaca `grid[r][k]` langsung berbahaya kalau `(r, k)` mungkin di luar grid — Python bisa error, atau lebih buruk, diam-diam membaca dari belakang lewat indeks negatif.\n\nTulis `nilai_aman(grid, r, k)` yang mengembalikan `grid[r][k]` kalau `(r, k)` sah, dan `0` kalau tidak (termasuk kalau `r` atau `k` negatif).",
+      "starter": "def nilai_aman(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "nilai_aman([[1, 2], [3, 4]], 0, 0) == 1",
+        "nilai_aman([[1, 2], [3, 4]], 5, 0) == 0",
+        "nilai_aman([[1, 2], [3, 4]], -1, 0) == 0",
+        "nilai_aman([[1, 2], [3, 4]], 1, 1) == 4"
+      ],
+      "solution": "<pre class=\"kunci\">def nilai_aman(grid, r, k):\n    if 0 &lt;= r &lt; len(grid) and 0 &lt;= k &lt; len(grid[0]):\n        return grid[r][k]\n    return 0</pre>\n\nPeriksa batas **dulu**, baca **belakangan**. Kalau `(r, k)` sah, kembalikan selnya; kalau tidak, kembalikan 0. Ini `di_dalam` dari Tulis Kode 01 yang dipakai untuk melindungi satu pembacaan.\n\nUji `-1` adalah intinya. Tanpa `0 <=`, `nilai_aman(grid, -1, 0)` akan lolos pemeriksaan dan mengembalikan `grid[-1][0]` — baris terakhir, bukan 0. Fungsi ini adalah cara membuat tetangga di soal berikutnya \"hilang dengan aman\" saat mereka keluar grid, alih-alih diam-diam membungkus ke sisi yang berlawanan."
+    },
+    {
+      "id": "S2",
+      "name": "Menjumlahkan empat tetangga",
+      "type": "code",
+      "prompt": "Sebuah sel punya sampai empat tetangga langsung: atas, bawah, kiri, kanan. Sel di tepi punya lebih sedikit — tetangga yang keluar grid tidak dihitung.\n\nTulis `tetangga4(grid, r, k)` yang mengembalikan jumlah nilai keempat tetangga langsung `(r, k)` yang masih di dalam grid. Sel `(r, k)` sendiri tidak ikut.",
+      "starter": "def tetangga4(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tetangga4([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1, 1) == 20",
+        "tetangga4([[1, 2], [3, 4]], 0, 0) == 5",
+        "tetangga4([[5]], 0, 0) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def tetangga4(grid, r, k):\n    total = 0\n    for dr, dk in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nk = r + dr, k + dk\n        if 0 &lt;= nr &lt; len(grid) and 0 &lt;= nk &lt; len(grid[0]):\n            total += grid[nr][nk]\n    return total</pre>\n\nEmpat geseran — atas, bawah, kiri, kanan — dicoba satu per satu. Untuk tiap tetangga, periksa dulu apakah masih di dalam grid; hanya yang sah yang dijumlahkan. Sel di tengah menyumbang empat tetangga; sel pojok cuma dua.\n\nKalau kamu sudah menulis `nilai_aman`, seluruh fungsi ini bisa memakainya: `sum(nilai_aman(grid, r+dr, k+dk) for dr, dk in [(-1,0),(1,0),(0,-1),(0,1)])`. Uji `[[5]]` (satu sel, tanpa tetangga) memberi 0 — semua geseran keluar grid dan tersaring habis."
+    },
+    {
+      "id": "S3",
+      "name": "Di mana letaknya",
+      "type": "code",
+      "prompt": "Panitia mencari petak berisi nilai tertentu dan ingin **koordinatnya**, bukan cuma tahu ada atau tidak.\n\nTulis `posisi(grid, x)` yang mengembalikan `(r, k)` sel **pertama** (dibaca baris demi baris, kiri ke kanan) yang isinya sama dengan `x`, atau `None` kalau tidak ada.",
+      "starter": "def posisi(grid, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "posisi([[1, 2], [3, 4]], 3) == (1, 0)",
+        "posisi([[1, 2], [3, 4]], 1) == (0, 0)",
+        "posisi([[1, 2], [3, 4]], 9) is None"
+      ],
+      "solution": "<pre class=\"kunci\">def posisi(grid, x):\n    for r in range(len(grid)):\n        for k in range(len(grid[0])):\n            if grid[r][k] == x:\n                return (r, k)\n    return None</pre>\n\nTelusuri baris demi baris; begitu ketemu, **langsung kembalikan** `(r, k)`. `return` di dalam perulangan menghentikan pencarian pada kecocokan pertama — persis yang diminta.\n\n`return None` di paling akhir hanya tercapai kalau perulangan selesai tanpa menemukan apa pun. Jangan menaruhnya di dalam perulangan: kalau `return None` ada di dalam `else`, fungsi akan menyerah setelah sel pertama tidak cocok. Uji `x = 9` (tidak ada) memastikan cabang `None` bekerja."
+    },
+    {
+      "id": "S4",
+      "name": "Jumlah tepi",
+      "type": "code",
+      "prompt": "Sebuah bingkai foto hanya menghitung piksel di tepinya: baris paling atas dan bawah, serta kolom paling kiri dan kanan. Tiap sel tepi dihitung sekali saja.\n\nTulis `jumlah_tepi(grid)` yang mengembalikan jumlah semua sel yang berada di tepi `grid`. Dijamin `grid` tidak pernah kosong.",
+      "starter": "def jumlah_tepi(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_tepi([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) == 40",
+        "jumlah_tepi([[1, 2], [3, 4]]) == 10",
+        "jumlah_tepi([[5]]) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_tepi(grid):\n    baris, kolom = len(grid), len(grid[0])\n    total = 0\n    for r in range(baris):\n        for k in range(kolom):\n            if r == 0 or r == baris - 1 or k == 0 or k == kolom - 1:\n                total += grid[r][k]\n    return total</pre>\n\nSebuah sel ada di tepi kalau berada di baris pertama atau terakhir, atau kolom pertama atau terakhir. Empat syarat disatukan dengan `or`, jadi sel pojok — yang memenuhi dua syarat sekaligus — tetap **dihitung sekali**, karena `if` cuma bertanya \"ya atau tidak\", bukan \"berapa kali\".\n\nUji `[[5]]` menarik: di grid 1×1, sel satu-satunya memenuhi keempat syarat, dan tetap dihitung sekali → 5. Untuk grid 3×3, semua sel tepi kecuali pusatnya → jumlah total dikurangi sel tengah."
+    },
+    {
+      "id": "S5",
+      "name": "Baris terkuat",
+      "type": "code",
+      "prompt": "Papan skor punya beberapa tim per baris. Panitia mencari baris dengan jumlah terbesar. Dijamin ada satu pemenang tunggal.\n\nTulis `baris_terbesar(grid)` yang mengembalikan **indeks** baris yang jumlah isinya paling besar.",
+      "starter": "def baris_terbesar(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "baris_terbesar([[1, 1], [5, 5]]) == 1",
+        "baris_terbesar([[9], [2], [4]]) == 0",
+        "baris_terbesar([[1, 2], [2, 2], [0, 0]]) == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def baris_terbesar(grid):\n    terbaik = 0\n    for r in range(len(grid)):\n        if sum(grid[r]) > sum(grid[terbaik]):\n            terbaik = r\n    return terbaik</pre>\n\nPola juara sementara atas **indeks**: mulai dari baris 0, ganti tiap kali menemukan baris yang jumlahnya lebih besar. Yang dikembalikan `r` (nomor barisnya), bukan `sum`-nya — karena yang diminta indeks.\n\nPerhatikan `sum(grid[r])` dipanggil di dua tempat; boleh saja, tetapi kalau grid besar, hitung sekali dan simpan. Memulai dari `terbaik = 0` aman di sini karena grid dijamin punya minimal satu baris. Bandingkan dengan `terdekat` di Topik 5 — kerangkanya sama, cuma \"lebih dekat\" diganti \"lebih besar\"."
+    },
+    {
+      "id": "S6",
+      "name": "Mencerminkan papan",
+      "type": "code",
+      "prompt": "Denah perlu dilihat seperti di cermin: tiap baris dibalik kiri-kanan, tetapi urutan barisnya tetap.\n\nTulis `cermin(grid)` yang mengembalikan **grid baru** dengan tiap baris dibalik urutannya.",
+      "starter": "def cermin(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "cermin([[1, 2, 3], [4, 5, 6]]) == [[3, 2, 1], [6, 5, 4]]",
+        "cermin([[1]]) == [[1]]",
+        "cermin([[1, 2]]) == [[2, 1]]"
+      ],
+      "solution": "<pre class=\"kunci\">def cermin(grid):\n    return [baris[::-1] for baris in grid]</pre>\n\n`baris[::-1]` membuat **baris baru** yang urutannya terbalik, jadi grid asli tidak tersentuh. Comprehension menerapkannya ke tiap baris, mempertahankan urutan barisnya.\n\nKarena `[::-1]` sudah menghasilkan list baru untuk tiap baris, hasilnya aman dari aliasing — mengubah grid cermin tidak mengubah aslinya. Bandingkan dengan `transpose` di Topik 2: transpose menukar baris dengan kolom, cermin cuma membalik tiap baris. Keduanya membangun grid baru, keduanya tidak boleh merusak yang lama."
+    }
+  ],
+  "number": 40
+}

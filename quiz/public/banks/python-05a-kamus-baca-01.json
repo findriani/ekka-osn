@@ -1,0 +1,100 @@
+{
+  "id": "python-05a-kamus-baca-01",
+  "group": "Latihan Python",
+  "title": "Dictionary & Vektor — Baca Kode 01",
+  "summary": "Topik 5, membaca kode. List menyimpan data lewat **urutan**; dictionary menyimpannya lewat **nama**. Di soal seleksi, dictionary muncul tiap kali sesuatu perlu dicari dari namanya — harga dari nama barang, koordinat dari nama kota, hitungan dari sebuah huruf. Set ini melatih membacanya: mengambil nilai lewat kunci, memberi nilai cadangan saat kunci tidak ada, dan menghitung dengan dictionary.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal dictionary, gambar dua kolom di kertas — kunci di kiri, nilai di kanan — lalu coret dan tulis ulang tiap kali ada yang berubah.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- `d[k]` mengambil nilai untuk kunci `k`. Kalau kuncinya tidak ada, ini **error** (`KeyError`).\n- `d.get(k)` memberi `None` kalau kunci tidak ada; `d.get(k, 0)` memberi `0`.\n- `k in d` bernilai `True` atau `False` — memeriksa **kunci**, bukan nilai.\n- `d[k] = d.get(k, 0) + 1` adalah pola menghitung: naikkan satu, mulai dari 0 kalau baru.\n- Perkalian titik dua vektor: jumlahkan `a[i] * b[i]` untuk tiap `i`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Harga di warung",
+      "type": "fill",
+      "prompt": "Pak Toni menyimpan daftar harga sebagai dictionary: nama menu menjadi kunci, harganya menjadi nilai. Ia menjumlahkan harga nasi dan es.\n\n<pre class=\"code\">harga = {\"nasi\": 8000, \"soto\": 10000, \"es\": 5000}\nprint(harga[\"nasi\"] + harga[\"es\"])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 13000,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`harga[\"nasi\"]` adalah 8000 dan `harga[\"es\"]` adalah 5000. Dictionary tidak peduli urutan penulisan — yang dicari adalah namanya, bukan posisinya.\n\n8000 + 5000 = **13000**.\n\nPerhatikan `\"soto\"` tidak ikut dihitung sama sekali. Itu bedanya dengan list: di sini kamu memanggil persis nama yang kamu mau, bukan indeks."
+    },
+    {
+      "id": "S2",
+      "name": "Stok yang belum ada",
+      "type": "fill",
+      "prompt": "Bu Sari mengecek stok di kamusnya. Ia menjumlahkan stok pensil dan spidol. Perhatikan bahwa spidol **tidak** ada di dalam dictionary, dan `.get` diberi nilai cadangan `0`.\n\n<pre class=\"code\">stok = {\"pensil\": 12, \"pulpen\": 7}\nprint(stok.get(\"pensil\", 0) + stok.get(\"spidol\", 0))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 12,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`stok.get(\"pensil\", 0)` adalah 12 karena pensil ada. `stok.get(\"spidol\", 0)` adalah **0** karena spidol tidak ada — dan `.get` memberi nilai cadangan `0` alih-alih melempar error.\n\n12 + 0 = **12**.\n\nKalau ditulis `stok[\"spidol\"]`, program akan berhenti dengan `KeyError`. Itulah gunanya `.get`: ia mengubah \"tidak ada\" menjadi sebuah angka yang bisa dihitung, bukan sebuah kecelakaan."
+    },
+    {
+      "id": "S3",
+      "name": "Mengambil dengan aman",
+      "type": "mc",
+      "prompt": "Nilai ulangan tersimpan di `nilai`. Kita ingin mengambil nilai seorang siswa yang **belum tentu** terdaftar, dan mendapat tepat `0` kalau namanya tidak ada — tanpa error.\n\n<pre class=\"code\">nilai = {\"ani\": 90, \"budi\": 85}</pre>\n\nManakah yang menghasilkan tepat `0`?",
+      "choices": [
+        "`nilai[\"cici\"]`",
+        "`nilai.get(\"cici\")`",
+        "`nilai.get(\"cici\", 0)`",
+        "`nilai.get(\"budi\", 0)`"
+      ],
+      "answer": 2,
+      "solution": "| pilihan | hasil |\n|---|---|\n| **A.** `nilai[\"cici\"]` | `KeyError` — berhenti dengan error |\n| **B.** `nilai.get(\"cici\")` | `None`, bukan `0` |\n| **C.** `nilai.get(\"cici\", 0)` | **0** ✓ |\n| **D.** `nilai.get(\"budi\", 0)` | 85 — budi ada, jadi cadangannya tak terpakai |\n\nTiga cara \"salah\" ini masing-masing salah dengan cara berbeda. A **error**. B memberi `None`, yang kelihatan mirip nol tetapi tidak bisa dijumlahkan (`None + 1` error). D mengembalikan nilai asli karena kuncinya kebetulan ada — nilai cadangan hanya dipakai saat kunci **tidak** ada."
+    },
+    {
+      "id": "S4",
+      "name": "Menghitung suara",
+      "type": "fill",
+      "prompt": "Panitia menghitung suara satu per satu. Tiap suara menaikkan hitungan kandidatnya sebanyak satu, mulai dari 0 kalau kandidat itu baru pertama muncul.\n\n<pre class=\"code\">suara = {}\nfor x in [\"a\", \"b\", \"a\", \"a\", \"c\", \"b\"]:\n    suara[x] = suara.get(x, 0) + 1\nprint(suara[\"a\"])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Telusuri pelan-pelan, mulai dari `suara = {}` yang kosong:\n\n| baca | `suara` |\n|---|---|\n| `\"a\"` | `{\"a\": 1}` |\n| `\"b\"` | `{\"a\": 1, \"b\": 1}` |\n| `\"a\"` | `{\"a\": 2, \"b\": 1}` |\n| `\"a\"` | `{\"a\": 3, \"b\": 1}` |\n| `\"c\"` | `{\"a\": 3, \"b\": 1, \"c\": 1}` |\n| `\"b\"` | `{\"a\": 3, \"b\": 2, \"c\": 1}` |\n\n`suara[\"a\"]` = **3**.\n\nInti polanya ada di `d.get(x, 0) + 1`. Saat `x` muncul pertama kali, `get` memberi 0 lalu ditambah 1. Kalau kamu menulis `suara[x] += 1` tanpa `get`, kemunculan pertama akan melempar `KeyError` — tidak ada yang bisa ditambah satu."
+    },
+    {
+      "id": "S5",
+      "name": "Menjumlahkan isi keranjang",
+      "type": "fill",
+      "prompt": "Sebuah dictionary menyimpan jumlah setiap jenis buah. Perulangan `for buah in keranjang` menelusuri **kunci**-nya, lalu tiap nilainya diambil dan dijumlahkan.\n\n<pre class=\"code\">keranjang = {\"apel\": 3, \"jeruk\": 5, \"mangga\": 2}\ntotal = 0\nfor buah in keranjang:\n    total += keranjang[buah]\nprint(total)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 10,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`for buah in keranjang` menelusuri **kunci**-nya: `\"apel\"`, `\"jeruk\"`, `\"mangga\"`. Untuk tiap kunci, `keranjang[buah]` mengambil nilainya:\n\n3 + 5 + 2 = **10**.\n\nIni yang sering menjebak: perulangan di atas dictionary memberimu **kunci**, bukan nilai. Kalau kamu mau langsung nilainya, tulis `for n in keranjang.values()`. Kalau kamu mau keduanya, `for buah, n in keranjang.items()`. Versi ringkas dari soal ini: `sum(keranjang.values())`."
+    },
+    {
+      "id": "S6",
+      "name": "Perkalian titik",
+      "type": "fill",
+      "prompt": "Dua vektor disimpan sebagai list sejajar. Kode ini mengalikan isi yang seposisi lalu menjumlahkan semuanya — persis operasi yang dipakai untuk mengukur kemiripan dua vektor kata di seleksi.\n\n<pre class=\"code\">a = [2, 5, 1]\nb = [3, 1, 4]\nhasil = 0\nfor i in range(3):\n    hasil += a[i] * b[i]\nprint(hasil)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 15,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Kalikan isi yang seposisi, lalu jumlahkan:\n\n| `i` | `a[i]` | `b[i]` | `a[i] * b[i]` |\n|---|---|---|---|\n| 0 | 2 | 3 | 6 |\n| 1 | 5 | 1 | 5 |\n| 2 | 1 | 4 | 4 |\n\n6 + 5 + 4 = **15**.\n\nOperasi ini namanya **perkalian titik** (dot product). Ia meringkas \"seberapa searah\" dua vektor menjadi satu angka. Di Pertemuan 3 kamu memakainya untuk memproyeksikan titik ke sebuah arah; di seleksi kata, kamu memakainya untuk mengukur kemiripan dua kata. Bentuk kodenya selalu sama: kalikan yang seposisi, jumlahkan."
+    }
+  ],
+  "number": 32
+}

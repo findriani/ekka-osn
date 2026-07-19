@@ -1,0 +1,101 @@
+{
+  "id": "python-05a-kamus-baca-02",
+  "group": "Latihan Python",
+  "title": "Dictionary & Vektor — Baca Kode 02",
+  "summary": "Topik 5, membaca kode, tingkat lanjut. Sekarang kita membahas kesalahan yang sering terjadi: menaikkan nilai pada kunci yang belum ada, mengira `b = a` membuat salinan, memakai `.get` tanpa nilai cadangan, dan memakai `min(d)` ketika yang dicari sebenarnya kunci dengan nilai terkecil. Bagian terakhir membahas vektor dan pencarian pusat terdekat, seperti kerangka soal seleksi 12–21.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal jarak, tulis dulu jarak kuadrat ke tiap pusat, baru bandingkan — akar tidak pernah diperlukan hanya untuk mencari yang terdekat.\n\nTuliskan jawaban sebagai bilangan bulat atau sepatah kata, kecuali pada soal pilihan ganda.",
+  "formulas": "- `d[k] += 1` **butuh** `k` sudah ada. Untuk kunci baru, pakai `d[k] = d.get(k, 0) + 1`.\n- `b = d` **bukan** menyalin — dua nama untuk dictionary yang sama. Salin dengan `dict(d)` atau `d.copy()`.\n- `min(d)` bekerja atas **kunci** menurut abjad. `min(d, key=d.get)` memberi kunci dengan nilai terkecil.\n- Jarak kuadrat \\((x_1,y_1)\\) ke \\((x_2,y_2)\\) \\(= (x_1-x_2)^2 + (y_1-y_2)^2\\).",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menghitung tanpa cadangan",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya menghitung kemunculan tiap huruf, tetapi berhenti dengan error pada huruf yang **pertama** kali muncul. Ingat bahwa `+=` hanya bekerja pada sesuatu yang sudah ada.\n\n<pre class=\"code\">1  suara = {}\n2  for x in [\"a\", \"b\", \"a\"]:\n3      suara[x] += 1\n4  print(suara)</pre>\n\nBaris nomor berapa yang menyebabkan errornya?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`suara[x] += 1` berarti `suara[x] = suara[x] + 1`. Untuk menaikkan, Python harus **membaca** `suara[x]` dulu — dan pada huruf `\"a\"` yang pertama, kunci itu belum ada. Baris 3 melempar `KeyError`.\n\n| yang ditulis | butuh kunci sudah ada? |\n|---|---|\n| `suara[x] += 1` | **ya** — gagal untuk kunci baru |\n| `suara[x] = suara.get(x, 0) + 1` | tidak — `get` memberi 0 untuk yang baru |\n\nIni pasangan dari pelajaran `.sort()` di Topik 2: kode yang tampak wajar, gagal pada kasus yang paling biasa. Perbaikannya `get(x, 0)`, dan itu satu-satunya alasan pola menghitung selalu ditulis begitu."
+    },
+    {
+      "id": "S2",
+      "name": "Titip catatan",
+      "type": "fill",
+      "prompt": "Ani punya catatan. Budi bilang \"samain aja sama punyamu\", lalu menambah satu kunci. Ia tidak menyalin; kedua nama menunjuk dictionary yang sama.\n\n<pre class=\"code\">a = {\"x\": 1}\nb = a\nb[\"y\"] = 2\nprint(len(a))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`b = a` **tidak** membuat dictionary baru. Ia menempelkan nama kedua pada dictionary yang sudah ada. Jadi `b[\"y\"] = 2` menambah kunci ke dictionary yang juga dilihat `a`, dan `len(a)` menjadi **2**.\n\nPersis seperti list di Topik 2: menyalin butuh usaha. Untuk dictionary, `b = dict(a)` atau `b = a.copy()`. Tanpa itu, keduanya adalah satu benda dengan dua nama, dan menulis lewat yang satu terlihat lewat yang lain."
+    },
+    {
+      "id": "S3",
+      "name": "Nama dengan jarak terkecil",
+      "type": "mc",
+      "prompt": "`jarak` menyimpan jarak tiap pos. Kita ingin **nama** pos dengan jarak paling kecil, yaitu `\"B\"`. Perhatikan bahwa `min` biasa bekerja atas kunci menurut abjad, bukan menurut nilainya.\n\n<pre class=\"code\">jarak = {\"A\": 5, \"B\": 2, \"C\": 8}</pre>\n\nManakah yang memberikan `\"B\"`?",
+      "choices": [
+        "`min(jarak)`",
+        "`min(jarak.values())`",
+        "`min(jarak, key=jarak.get)`",
+        "`min(jarak.keys())`"
+      ],
+      "answer": 2,
+      "solution": "| pilihan | hasil | kenapa |\n|---|---|---|\n| **A.** `min(jarak)` | `\"A\"` | `min` atas kunci → yang paling awal secara abjad |\n| **B.** `min(jarak.values())` | `2` | ini **nilainya**, bukan namanya |\n| **C.** `min(jarak, key=jarak.get)` | **\"B\"** ✓ | kunci yang nilainya terkecil |\n| **D.** `min(jarak.keys())` | `\"A\"` | sama dengan A |\n\nInilah jebakan paling mahal di topik ini. `min(jarak)` memberi `\"A\"` — kelihatan masuk akal, tetapi itu nama yang paling awal secara abjad, sama sekali tidak berhubungan dengan jarak. `min(jarak.values())` memberi 2 — angka jaraknya, bukan nama yang kamu cari.\n\nYang benar butuh `key=jarak.get`: \"urutkan kuncinya, tetapi nilai perbandingannya ambil dari `jarak.get`\". Kamu akan memakai bentuk persis ini untuk menjawab \"kata mana yang paling mirip\" di seleksi."
+    },
+    {
+      "id": "S4",
+      "name": "Jarak kuadrat",
+      "type": "fill",
+      "prompt": "Fungsi menghitung jarak kuadrat antara dua titik. Tuliskan tiap selisih dulu, kuadratkan, baru jumlahkan.\n\n<pre class=\"code\">def jarak2(p, q):\n    return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2\n\nprint(jarak2((1, 2), (4, 6)))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 25,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Selisih tiap sumbu dulu, lalu kuadratkan:\n\n- sumbu-x: \\(1 - 4 = -3\\), kuadratnya 9\n- sumbu-y: \\(2 - 6 = -4\\), kuadratnya 16\n\n9 + 16 = **25**.\n\nPerhatikan tandanya hilang begitu dikuadratkan — `-3` dan `3` sama-sama memberi 9. Itu sebabnya kita tidak repot dengan \"titik mana di kiri mana di kanan\". Dan akar kuadrat sengaja tidak diambil: kalau tujuannya cuma **membandingkan** jarak, jarak kuadrat sudah cukup dan tidak membawa galat pembulatan."
+    },
+    {
+      "id": "S5",
+      "name": "Menghitung huruf",
+      "type": "fill",
+      "prompt": "Kode membangun kamus hitungan huruf dari sebuah kata, memakai pola `get(h, 0) + 1` yang aman untuk huruf baru.\n\n<pre class=\"code\">teks = \"abracadabra\"\nhitung = {}\nfor h in teks:\n    hitung[h] = hitung.get(h, 0) + 1\nprint(hitung[\"a\"])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Bangun kamusnya sambil membaca `\"abracadabra\"` huruf demi huruf. Yang ditanya cuma `\"a\"`, jadi hitung saja kemunculan `a`:\n\n`a b r a c a d a b r a` — huruf `a` ada di posisi ke-1, 4, 6, 8, dan 11.\n\nJumlahnya **5**.\n\nPola `get(h, 0) + 1` ini adalah cara paling langsung membuat **vektor ciri** dari sebuah untai — meringkas seluruh teks menjadi hitungan tiap huruf. Di seleksi DNA (Soal 26–40), untai diringkas begini lalu hitungannya yang dibandingkan. `collections.Counter` melakukan hal yang sama dalam satu baris, tetapi ada baiknya menulis polanya sendiri sekali."
+    },
+    {
+      "id": "S6",
+      "name": "Pusat terdekat",
+      "type": "fill",
+      "prompt": "Tiga lokasi disimpan sebagai dictionary nama ke koordinat. Kode mencari **nama** lokasi yang paling dekat ke titik `q`, dengan membandingkan jarak kuadrat.\n\n<pre class=\"code\">def jarak2(p, q):\n    return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2\n\npusat = {\"kota\": (0, 0), \"desa\": (10, 0), \"pantai\": (5, 5)}\nq = (6, 4)\nterbaik = None\nfor nama in pusat:\n    if terbaik is None or jarak2(q, pusat[nama]) &lt; jarak2(q, pusat[terbaik]):\n        terbaik = nama\nprint(terbaik)</pre>\n\nKata apa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "pantai"
+          ]
+        }
+      ],
+      "solution": "Hitung jarak kuadrat dari `q = (6, 4)` ke tiap pusat:\n\n| nama | pusat | jarak kuadrat |\n|---|---|---|\n| kota | (0, 0) | \\(36 + 16 = 52\\) |\n| desa | (10, 0) | \\(16 + 16 = 32\\) |\n| pantai | (5, 5) | \\(1 + 1 = \\mathbf{2}\\) |\n\nYang terkecil adalah **pantai**.\n\nIni kerangka lengkap \"pusat terdekat\": simpan calon di dictionary, telusuri, pegang yang sejauh ini terbaik. Pola `if terbaik is None or ... < ...` adalah cara mencari minimum tanpa `min` — berguna saat kamu butuh **namanya**, bukan jaraknya. Kamu akan menuliskannya sendiri di Tulis Kode 02 dan 03, dan memakainya untuk mengklasifikasikan kata di seleksi."
+    }
+  ],
+  "number": 33
+}

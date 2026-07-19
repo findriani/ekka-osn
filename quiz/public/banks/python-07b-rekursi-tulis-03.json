@@ -1,0 +1,95 @@
+{
+  "id": "python-07b-rekursi-tulis-03",
+  "group": "Latihan Python",
+  "title": "Rekursi — Tulis Kode 03 (Sedang)",
+  "summary": "Topik 7, menulis kode, tingkat **sedang**, dan puncak topik ini. Rekursi bertemu grid. Menghitung lintasan, mengukur kedalaman, membanjiri sebuah wilayah, dan — puncaknya — menghitung berapa cara sebuah kata bisa dieja menyusuri papan. Yang terakhir adalah bentuk kecil dari Soal 2 seleksi 2025 (mengeja `IOAI` di grid 7×7), dan ternyata cuma rekursi yang memanggil dirinya untuk tiap huruf berikutnya.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji, jadi lulus sebagian tetap bernilai.\n\nSoal 3 dan 6 berpasangan: `tetangga_valid` adalah alat yang dipakai `hitung_kata`. Kerjakan Soal 3 dulu.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Lintasan kanan/bawah: `lintasan(b, k) = lintasan(b-1, k) + lintasan(b, k-1)`, dasar di tepi (`b == 1` atau `k == 1`).\n- Kedelapan tetangga: `for dr in (-1,0,1): for dk in (-1,0,1)`, lewati `(0,0)`, saring dengan batas.\n- Banjir (flood fill): tandai sel yang sudah dikunjungi (ubah jadi 0) supaya tidak dihitung dua kali.\n- Mengeja kata: dari sel huruf ke-`i`, lanjutkan ke tetangga yang berisi huruf ke-`i+1`.\n- Kasus dasar mengeja: huruf terakhir tercapai → satu lintasan lengkap.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menghitung lintasan",
+      "type": "code",
+      "prompt": "Robot mulai di pojok kiri-atas papan `baris × kolom`, hanya melangkah **kanan atau bawah**, menuju kanan-bawah.\n\nTulis `jumlah_lintasan(baris, kolom)` yang mengembalikan banyaknya lintasan, secara **rekursif** (tanpa grid `dp`).",
+      "starter": "def jumlah_lintasan(baris, kolom):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_lintasan(1, 1) == 1",
+        "jumlah_lintasan(2, 2) == 2",
+        "jumlah_lintasan(2, 3) == 3",
+        "jumlah_lintasan(3, 3) == 6"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_lintasan(baris, kolom):\n    if baris == 1 or kolom == 1:\n        return 1\n    return jumlah_lintasan(baris - 1, kolom) + jumlah_lintasan(baris, kolom - 1)</pre>\n\nKasus dasar: papan setinggi atau selebar 1 hanya punya satu lintasan (lurus terus). Kasus rekursif: sel tujuan dicapai dari **atas** atau **kiri**, jadi lintasannya jumlah keduanya.\n\nIni jawaban yang sama dengan versi grid `dp` di Topik 6, ditulis dari arah sebaliknya: `dp` membangun dari sel kecil ke besar, rekursi memecah dari besar ke kecil. Keduanya benar; rekursi lebih pendek ditulis, tetapi memanggil dirinya berulang untuk sel yang sama — untuk papan besar, `dp` lebih cepat."
+    },
+    {
+      "id": "S2",
+      "name": "Kedalaman list",
+      "type": "code",
+      "prompt": "Sebuah list bisa berisi list, sedalam apa pun. **Kedalaman** list datar adalah 1; tiap lapis sarang menambah satu.\n\nTulis `kedalaman(data)` yang mengembalikan kedalaman sarang terdalam di `data`.",
+      "starter": "def kedalaman(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "kedalaman([1, 2, 3]) == 1",
+        "kedalaman([1, [2, 3]]) == 2",
+        "kedalaman([1, [2, [3, 4]]]) == 3",
+        "kedalaman([]) == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def kedalaman(data):\n    d = 1\n    for x in data:\n        if isinstance(x, list):\n            d = max(d, 1 + kedalaman(x))\n    return d</pre>\n\nMulai dari kedalaman 1 (list ini sendiri). Untuk tiap isi yang berupa **list**, kedalaman yang mungkin adalah `1 + kedalaman(isi itu)`; ambil yang terbesar. Isi yang bukan list tidak menambah kedalaman.\n\nUji `[]` memberi 1: perulangan tidak jalan, `d` tetap 1. Ini rekursi yang bercabang mengikuti bentuk data, seperti `jumlah_bersarang` di Tulis Kode 02 — tetapi alih-alih menjumlahkan, ia mengambil maksimum lapisan. Kerangka yang sama, ukuran yang berbeda."
+    },
+    {
+      "id": "S3",
+      "name": "Tetangga yang sah",
+      "type": "code",
+      "prompt": "Untuk menyusuri papan, kita butuh daftar tetangga sebuah sel yang masih di dalam grid — kedelapan arah, termasuk diagonal.\n\nTulis `tetangga_valid(grid, r, k)` yang mengembalikan **list** pasangan `(nr, nk)` untuk tiap tetangga `(r, k)` yang di dalam grid. Urutkan dengan mencoba `dr` lalu `dk` dari `-1` ke `1`.",
+      "starter": "def tetangga_valid(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tetangga_valid([[0, 0], [0, 0]], 0, 0) == [(0, 1), (1, 0), (1, 1)]",
+        "len(tetangga_valid([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1, 1)) == 8",
+        "tetangga_valid([[5]], 0, 0) == []"
+      ],
+      "solution": "<pre class=\"kunci\">def tetangga_valid(grid, r, k):\n    baris, kolom = len(grid), len(grid[0])\n    hasil = []\n    for dr in (-1, 0, 1):\n        for dk in (-1, 0, 1):\n            if dr == 0 and dk == 0:\n                continue\n            nr, nk = r + dr, k + dk\n            if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom:\n                hasil.append((nr, nk))\n    return hasil</pre>\n\nKedelapan geseran dicoba; `(0, 0)` dilewati (sel itu sendiri), dan hanya tetangga di dalam grid yang masuk daftar. Urutan `dr` lalu `dk` dari `-1` ke `1` menentukan urutan hasilnya — itu sebabnya uji pertama memeriksa list yang persis.\n\nIni `tetangga8` dari Topik 6, tetapi mengembalikan **koordinatnya**, bukan menghitung. Bentuk ini yang dibutuhkan `hitung_kata`: dari sel sekarang, ke mana saja langkah berikutnya boleh pergi."
+    },
+    {
+      "id": "S4",
+      "name": "Lintasan dengan halangan",
+      "type": "code",
+      "prompt": "Sekarang papannya berisi halangan: sel `1` tak boleh diinjak, sel `0` boleh. Robot mulai di kiri-atas, melangkah kanan/bawah, menuju kanan-bawah. Sel awal dan akhir dijamin `0`.\n\nTulis `jumlah_lintasan_halangan(grid)` yang mengembalikan banyaknya lintasan sah, secara **rekursif**.",
+      "starter": "def jumlah_lintasan_halangan(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_lintasan_halangan([[0, 0], [0, 0]]) == 2",
+        "jumlah_lintasan_halangan([[0, 1], [0, 0]]) == 1",
+        "jumlah_lintasan_halangan([[0, 0, 0], [0, 1, 0], [0, 0, 0]]) == 2",
+        "jumlah_lintasan_halangan([[0]]) == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_lintasan_halangan(grid):\n    baris, kolom = len(grid), len(grid[0])\n    def cari(r, k):\n        if r &gt;= baris or k &gt;= kolom:\n            return 0\n        if grid[r][k] == 1:\n            return 0\n        if r == baris - 1 and k == kolom - 1:\n            return 1\n        return cari(r + 1, k) + cari(r, k + 1)\n    return cari(0, 0)</pre>\n\nFungsi dalam `cari(r, k)` menghitung lintasan dari `(r, k)` ke sudut kanan-bawah. Tiga kasus dasar: keluar grid (0 lintasan), menabrak halangan (0 lintasan), dan tiba di tujuan (1 lintasan). Selain itu, jumlahkan lintasan lewat bawah dan lewat kanan.\n\nBerbeda dari Soal 1 yang memakai jumlah baris/kolom, di sini kita bergerak dengan **koordinat** `(r, k)` karena tiap sel bisa terhalang. Uji 3×3 dengan pusat terhalang memberi 2 — dari 6 lintasan tanpa halangan, empat yang lewat pusat gugur. Inilah bentuk rekursif dari soal menghitung lintasan berhalangan di seleksi."
+    },
+    {
+      "id": "S5",
+      "name": "Luas pulau",
+      "type": "code",
+      "prompt": "Sebuah peta berisi 1 (daratan) dan 0 (laut). Sebuah **pulau** adalah kumpulan sel daratan yang terhubung ke atas/bawah/kiri/kanan.\n\nTulis `luas_pulau(grid, r, k)` yang mengembalikan banyaknya sel daratan yang terhubung dengan `(r, k)`. Kalau `(r, k)` adalah laut, hasilnya 0. Kamu boleh mengubah `grid` untuk menandai sel yang sudah dihitung.",
+      "starter": "def luas_pulau(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "luas_pulau([[1, 1, 0], [1, 0, 0], [0, 0, 1]], 0, 0) == 3",
+        "luas_pulau([[1]], 0, 0) == 1",
+        "luas_pulau([[0, 0], [0, 0]], 0, 0) == 0",
+        "luas_pulau([[1, 0, 1], [1, 0, 1], [1, 1, 1]], 0, 0) == 7"
+      ],
+      "solution": "<pre class=\"kunci\">def luas_pulau(grid, r, k):\n    if not (0 &lt;= r &lt; len(grid) and 0 &lt;= k &lt; len(grid[0])):\n        return 0\n    if grid[r][k] != 1:\n        return 0\n    grid[r][k] = 0\n    return 1 + luas_pulau(grid, r - 1, k) + luas_pulau(grid, r + 1, k) \\\n             + luas_pulau(grid, r, k - 1) + luas_pulau(grid, r, k + 1)</pre>\n\nKalau sel di luar grid atau bukan daratan, ia menyumbang 0. Kalau daratan, hitung ia (1) lalu banjiri keempat tetangganya. Kuncinya `grid[r][k] = 0` **sebelum** merekursi: menandai sel yang sudah dihitung sebagai laut, supaya tidak dihitung ulang dan rekursinya tidak berputar selamanya.\n\nTanpa penandaan itu, dua sel daratan bertetangga akan saling memanggil tak henti → `RecursionError`. Inilah beda \"banjir\" dari \"mengeja kata\": banjir **melarang** kembali ke sel yang sama, sedangkan mengeja kata (Soal 6) **mengizinkannya**. Perhatikan mana yang menandai kunjungan dan mana yang tidak — itu yang membedakan keduanya."
+    },
+    {
+      "id": "S6",
+      "name": "Menghitung kata di grid",
+      "type": "code",
+      "prompt": "Papan huruf disimpan sebagai list string: `grid[r][k]` adalah huruf di baris `r`, kolom `k`. Sebuah kata dieja dengan melangkah dari huruf ke huruf berikutnya melalui salah satu dari **delapan** tetangga. Sel yang sama boleh dilewati lagi.\n\nTulis `hitung_kata(grid, kata)` yang mengembalikan banyaknya lintasan berbeda yang mengeja `kata`.",
+      "starter": "def hitung_kata(grid, kata):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_kata([\"AB\", \"CD\"], \"A\") == 1",
+        "hitung_kata([\"CAT\"], \"CAT\") == 1",
+        "hitung_kata([\"CAT\", \"CAT\"], \"CAT\") == 8",
+        "hitung_kata([\"CAT\", \"CAT\"], \"DOG\") == 0",
+        "hitung_kata([\"AB\"], \"ABA\") == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_kata(grid, kata):\n    if not kata or not grid:\n        return 0\n    baris, kolom = len(grid), len(grid[0])\n    def tetangga(r, k):\n        hasil = []\n        for dr in (-1, 0, 1):\n            for dk in (-1, 0, 1):\n                if dr == 0 and dk == 0:\n                    continue\n                nr, nk = r + dr, k + dk\n                if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom:\n                    hasil.append((nr, nk))\n        return hasil\n    def lanjut(r, k, i):\n        if i == len(kata) - 1:\n            return 1\n        total = 0\n        for nr, nk in tetangga(r, k):\n            if grid[nr][nk] == kata[i + 1]:\n                total += lanjut(nr, nk, i + 1)\n        return total\n    total = 0\n    for r in range(baris):\n        for k in range(kolom):\n            if grid[r][k] == kata[0]:\n                total += lanjut(r, k, 0)\n    return total</pre>\n\n`lanjut(r, k, i)` mengembalikan banyaknya cara mengeja **sisa** kata, dengan `grid[r][k]` berisi huruf ke-`i`. Kasus dasar: kalau `i` sudah huruf terakhir, satu lintasan selesai. Selain itu, jumlahkan lintasan dari tiap tetangga yang berisi huruf berikutnya.\n\nBagian luar mencoba tiap sel yang cocok dengan huruf **pertama** sebagai titik mulai. Tidak ada penandaan kunjungan — soalnya mengizinkan sel dilewati lagi (lihat uji `hitung_kata([\"AB\"], \"ABA\")`, yang bolak-balik di dua sel). Untuk `[\"CAT\", \"CAT\"]` mengeja `\"CAT\"`, ada 8 lintasan: dua huruf C awal, masing-masing punya dua A, dan tiap A punya dua T. Ganti grid 2×3 ini dengan 7×7 dan kata `IOAI`, dan kamu punya Soal 2 seleksi 2025 utuh — kode yang sama, ukuran yang lebih besar."
+    }
+  ],
+  "number": 46
+}

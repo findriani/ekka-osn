@@ -1,0 +1,93 @@
+{
+  "id": "python-06b-grid-tulis-03",
+  "group": "Latihan Python",
+  "title": "Grid — Tulis Kode 03 (Sedang)",
+  "summary": "Topik 6, menulis kode, tingkat **sedang**, dengan latihan terpadu untuk materi grid. Kamu akan menangani delapan tetangga, puncak lokal, penghitungan lintasan di papan, peta jumlah tetangga, dan satu langkah Game of Life. Dua di antaranya — menghitung lintasan dengan halangan dan menjalankan satu langkah Game of Life — merupakan versi kecil dari soal-soal sulit di arsip seleksi. Semuanya memakai pola yang sama: telusuri tiap sel, periksa batas, lalu bangun grid baru.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji, jadi lulus sebagian tetap bernilai.\n\nSoal 3–6 lebih berat. Kalau macet, kerjakan yang lebih ringan dulu — nilai per uji berarti tidak ada ruginya mengumpulkan bagian yang bisa.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Delapan tetangga: `for dr in (-1,0,1): for dk in (-1,0,1):`, lewati `(0,0)` dengan `continue`.\n- Selalu periksa batas sebelum membaca: `0 <= nr < baris and 0 <= nk < kolom`.\n- Grid nol yang benar: `[[0] * kolom for _ in range(baris)]` — **bukan** `[[0]*kolom]*baris`.\n- Menghitung lintasan (kanan/bawah): `dp[r][k] = dp[r-1][k] + dp[r][k-1]`, tepi diisi 1.\n- Game of Life: sel hidup bertahan dengan 2 atau 3 tetangga hidup; sel mati menjadi hidup dengan tepat 3.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Delapan tetangga",
+      "type": "code",
+      "prompt": "Sebuah papan berisi 0 dan 1. Tiap sel punya sampai delapan tetangga (termasuk diagonal); sel di tepi punya lebih sedikit.\n\nTulis `tetangga8(grid, r, k)` yang mengembalikan banyaknya tetangga sel `(r, k)` yang isinya `1`. Sel `(r, k)` sendiri tidak ikut dihitung.",
+      "starter": "def tetangga8(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tetangga8([[1, 1, 1], [1, 0, 1], [1, 1, 1]], 1, 1) == 8",
+        "tetangga8([[1, 0], [0, 0]], 1, 1) == 1",
+        "tetangga8([[1, 1], [1, 1]], 0, 0) == 3",
+        "tetangga8([[0]], 0, 0) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def tetangga8(grid, r, k):\n    baris, kolom = len(grid), len(grid[0])\n    c = 0\n    for dr in (-1, 0, 1):\n        for dk in (-1, 0, 1):\n            if dr == 0 and dk == 0:\n                continue\n            nr, nk = r + dr, k + dk\n            if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom and grid[nr][nk] == 1:\n                c += 1\n    return c</pre>\n\nDua perulangan atas `(-1, 0, 1)` menghasilkan sembilan pasangan `(dr, dk)`; `continue` membuang satu-satunya yang bukan tetangga, yaitu `(0, 0)` (sel itu sendiri). Ini lebih pendek dan lebih sulit salah daripada mendaftar kedelapan arah satu per satu.\n\nPemeriksaan `0 <= nr < baris` adalah yang paling sering bolong. Tanpanya, `grid[-1][k]` **tidak error** — Python membaca indeks negatif dari belakang, jadi tetangga di tepi kiri diam-diam terhitung dari tepi kanan. Uji `[[0]]` dan pojok `(0, 0)` ada khusus untuk menangkap ini: keduanya lolos pada kode yang batasnya bolong."
+    },
+    {
+      "id": "S2",
+      "name": "Puncak lokal",
+      "type": "code",
+      "prompt": "Sebuah sel disebut **puncak** kalau nilainya lebih besar daripada **semua** tetangga (delapan arah) yang ada. Sel di pojok cukup mengalahkan tetangga yang ada saja; sel tunggal otomatis puncak karena tak punya tetangga.\n\nTulis `puncak(grid, r, k)` yang mengembalikan `True` kalau `grid[r][k]` lebih besar daripada semua tetangganya, dan `False` kalau tidak.",
+      "starter": "def puncak(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "puncak([[1, 2, 1], [2, 9, 2], [1, 2, 1]], 1, 1) is True",
+        "puncak([[1, 2, 1], [2, 9, 2], [1, 2, 1]], 0, 0) is False",
+        "puncak([[5]], 0, 0) is True",
+        "puncak([[3, 3], [1, 1]], 0, 0) is False"
+      ],
+      "solution": "<pre class=\"kunci\">def puncak(grid, r, k):\n    baris, kolom = len(grid), len(grid[0])\n    for dr in (-1, 0, 1):\n        for dk in (-1, 0, 1):\n            if dr == 0 and dk == 0:\n                continue\n            nr, nk = r + dr, k + dk\n            if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom:\n                if grid[nr][nk] >= grid[r][k]:\n                    return False\n    return True</pre>\n\nSusuri kedelapan tetangga yang ada. Begitu **satu** tetangga menyamai atau melampaui sel kita, ia bukan puncak — langsung `return False`. Kalau perulangan selesai tanpa menemukan penantang, ia puncak: `return True`.\n\nPerhatikan `>=`, bukan `>`. Uji `[[3, 3], [1, 1]]` di `(0, 0)` menjelaskan kenapa: tetangga bernilai sama (3) berarti sel kita **tidak** lebih besar daripada semua, jadi bukan puncak. Sel tunggal `[[5]]` otomatis `True` karena perulangan tidak pernah menemukan penantang — pola \"tidak ada tandingan berarti menang\" yang sama dengan pencarian terdekat."
+    },
+    {
+      "id": "S3",
+      "name": "Menghitung lintasan",
+      "type": "code",
+      "prompt": "Sebuah robot mulai di pojok kiri-atas papan `baris × kolom` dan hanya boleh melangkah **ke kanan atau ke bawah**, menuju pojok kanan-bawah.\n\nTulis `jumlah_lintasan(baris, kolom)` yang mengembalikan banyaknya lintasan berbeda.",
+      "starter": "def jumlah_lintasan(baris, kolom):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_lintasan(1, 1) == 1",
+        "jumlah_lintasan(2, 2) == 2",
+        "jumlah_lintasan(2, 3) == 3",
+        "jumlah_lintasan(3, 3) == 6"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_lintasan(baris, kolom):\n    dp = [[1] * kolom for _ in range(baris)]\n    for r in range(1, baris):\n        for k in range(1, kolom):\n            dp[r][k] = dp[r - 1][k] + dp[r][k - 1]\n    return dp[baris - 1][kolom - 1]</pre>\n\nIsi sebuah grid `dp` dengan banyaknya lintasan menuju tiap sel. Sel di baris atas dan kolom kiri hanya bisa dicapai satu cara (lurus terus), jadi diisi 1 — itulah kenapa `dp` dimulai penuh 1. Setiap sel lain dicapai dari **atas** atau **kiri**, jadi lintasannya adalah jumlah keduanya.\n\nIni namanya **pemrograman dinamis**: jawaban sel besar dirakit dari sel-sel kecil yang sudah dihitung, tanpa satu pun rekursi. Perhatikan `[[1] * kolom for _ in range(baris)]` — bukan `[[1]*kolom]*baris`, yang akan membuat baris kembar dan merusak seluruh perhitungan. Bug Baca Kode 02 Soal 1 muncul lagi, dan di sini akibatnya fatal."
+    },
+    {
+      "id": "S4",
+      "name": "Lintasan dengan halangan",
+      "type": "code",
+      "prompt": "Sekarang papannya berisi halangan: sel bernilai `1` tidak boleh diinjak, sel bernilai `0` boleh. Robot tetap mulai di kiri-atas, hanya melangkah kanan/bawah, menuju kanan-bawah. Dijamin sel awal dan akhir selalu `0`.\n\nTulis `jumlah_lintasan_halangan(grid)` yang mengembalikan banyaknya lintasan yang menghindari semua halangan.",
+      "starter": "def jumlah_lintasan_halangan(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_lintasan_halangan([[0, 0], [0, 0]]) == 2",
+        "jumlah_lintasan_halangan([[0, 1], [0, 0]]) == 1",
+        "jumlah_lintasan_halangan([[0, 0, 0], [0, 1, 0], [0, 0, 0]]) == 2",
+        "jumlah_lintasan_halangan([[0]]) == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_lintasan_halangan(grid):\n    baris, kolom = len(grid), len(grid[0])\n    dp = [[0] * kolom for _ in range(baris)]\n    for r in range(baris):\n        for k in range(kolom):\n            if grid[r][k] == 1:\n                dp[r][k] = 0\n            elif r == 0 and k == 0:\n                dp[r][k] = 1\n            else:\n                atas = dp[r - 1][k] if r > 0 else 0\n                kiri = dp[r][k - 1] if k > 0 else 0\n                dp[r][k] = atas + kiri\n    return dp[baris - 1][kolom - 1]</pre>\n\nIde yang sama dengan Soal 3, dengan dua tambahan. Pertama, sel halangan (`1`) menampung **0** lintasan — tidak ada cara sah melewatinya. Kedua, tepi tidak lagi otomatis 1: sebuah sel di baris atas menjadi tak terjangkau kalau ada halangan di kirinya. Karena itu tepi ikut dihitung dengan rumus `atas + kiri`, di mana arah yang keluar grid dianggap 0.\n\n`dp` dimulai penuh 0 dan sel awal dipasang 1 (kalau ia bukan halangan). Contoh 3×3 dengan pusat terhalang: dari 6 lintasan tanpa halangan, keempat yang melewati pusat gugur, tersisa **2**. Inilah kerangka persis soal menghitung lintasan di papan berhalangan pada seleksi — hanya ukurannya yang lebih besar."
+    },
+    {
+      "id": "S5",
+      "name": "Peta tetangga hidup",
+      "type": "code",
+      "prompt": "Untuk satu langkah Game of Life, kita perlu tahu, untuk **tiap** sel, berapa tetangga hidupnya (`1`). Bangun grid baru yang isinya angka-angka itu.\n\nTulis `tetangga_hidup_grid(grid)` yang mengembalikan grid baru berukuran sama, di mana tiap sel berisi banyaknya tetangga hidup (delapan arah) dari sel itu di `grid`.",
+      "starter": "def tetangga_hidup_grid(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tetangga_hidup_grid([[1, 1], [1, 1]]) == [[3, 3], [3, 3]]",
+        "tetangga_hidup_grid([[0, 0, 0], [0, 1, 0], [0, 0, 0]]) == [[1, 1, 1], [1, 0, 1], [1, 1, 1]]",
+        "tetangga_hidup_grid([[0]]) == [[0]]"
+      ],
+      "solution": "<pre class=\"kunci\">def tetangga_hidup_grid(grid):\n    baris, kolom = len(grid), len(grid[0])\n    def hidup(r, k):\n        c = 0\n        for dr in (-1, 0, 1):\n            for dk in (-1, 0, 1):\n                if dr == 0 and dk == 0:\n                    continue\n                nr, nk = r + dr, k + dk\n                if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom and grid[nr][nk] == 1:\n                    c += 1\n        return c\n    return [[hidup(r, k) for k in range(kolom)] for r in range(baris)]</pre>\n\nFungsi dalam `hidup` adalah `tetangga8` dari Soal 1. Yang baru: menerapkannya ke **tiap** sel dan menampung hasilnya di grid baru. Comprehension bersarang membangun grid itu — baris demi baris, kolom demi kolom.\n\nContoh kedua menjelaskan pola: satu sel hidup di tengah, dan kedelapan tetangganya masing-masing \"melihat\" satu sel hidup (sel tengah itu), sedangkan sel tengah sendiri melihat nol tetangga hidup. Inilah bahan mentah satu langkah Game of Life — semua hitungan diambil dari papan lama sebelum ada yang berubah."
+    },
+    {
+      "id": "S6",
+      "name": "Satu langkah Game of Life",
+      "type": "code",
+      "prompt": "Papan berisi sel hidup (`1`) dan mati (`0`). Satu langkah menghasilkan papan baru dengan aturan:\n\n- Sel **hidup** bertahan hidup kalau punya **2 atau 3** tetangga hidup; selain itu ia mati.\n- Sel **mati** menjadi hidup kalau punya **tepat 3** tetangga hidup; selain itu tetap mati.\n\nSemua sel dihitung dari papan **lama** secara serentak. Tetangga dihitung delapan arah.\n\nTulis `langkah(grid)` yang mengembalikan papan baru setelah satu langkah.",
+      "starter": "def langkah(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "langkah([[0, 0, 0], [0, 0, 0], [0, 0, 0]]) == [[0, 0, 0], [0, 0, 0], [0, 0, 0]]",
+        "langkah([[0, 0, 0], [1, 1, 1], [0, 0, 0]]) == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]",
+        "langkah([[1, 1], [1, 1]]) == [[1, 1], [1, 1]]"
+      ],
+      "solution": "<pre class=\"kunci\">def langkah(grid):\n    baris, kolom = len(grid), len(grid[0])\n    def hidup(r, k):\n        c = 0\n        for dr in (-1, 0, 1):\n            for dk in (-1, 0, 1):\n                if dr == 0 and dk == 0:\n                    continue\n                nr, nk = r + dr, k + dk\n                if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom and grid[nr][nk] == 1:\n                    c += 1\n        return c\n    baru = [[0] * kolom for _ in range(baris)]\n    for r in range(baris):\n        for k in range(kolom):\n            n = hidup(r, k)\n            if grid[r][k] == 1:\n                baru[r][k] = 1 if n == 2 or n == 3 else 0\n            else:\n                baru[r][k] = 1 if n == 3 else 0\n    return baru</pre>\n\nPuncak topik ini, dan ternyata cuma menggabungkan yang sudah ada. Untuk tiap sel, hitung tetangga hidupnya (Soal 1), lalu terapkan aturan: sel hidup bertahan dengan 2 atau 3 tetangga, sel mati lahir dengan tepat 3.\n\nSatu hal yang **wajib** benar: papan baru dibaca dari papan **lama**. Karena itu `baru` adalah grid terpisah, dan kita tidak pernah menulis balik ke `grid` selama menghitung. Kalau kamu mengubah `grid` di tengah jalan, sel yang sudah berubah akan mencemari tetangga yang belum — dan blinker tidak akan pernah berdenyut dengan benar. Uji blinker (baris tengah hidup) berubah menjadi kolom tengah hidup; uji blok 2×2 tidak berubah karena tiap selnya punya tepat 3 tetangga hidup dan bertahan."
+    }
+  ],
+  "number": 41
+}

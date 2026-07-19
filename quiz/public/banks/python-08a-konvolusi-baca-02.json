@@ -1,0 +1,100 @@
+{
+  "id": "python-08a-konvolusi-baca-02",
+  "group": "Latihan Python",
+  "title": "Konvolusi — Baca Kode 02",
+  "summary": "Topik 8, membaca kode, tingkat lanjut. Rumus ukuran yang sama, dipakai untuk hal yang lebih besar: merantai beberapa lapisan, menghitung ukuran pooling, dan memisahkan tinggi dari lebar saat keduanya berbeda. Ditambah dua hal baru — menghitung **parameter** sebuah lapisan (jangan lupa bias) dan **operasi konvolusi** itu sendiri, yang ternyata cuma perkalian titik antara kernel dan sepetak masukan.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal rantai, hitung lapisan satu per satu; keluaran satu lapisan menjadi masukan berikutnya. Untuk parameter, hitung bobot dulu, lalu tambahkan bias.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- Ukuran keluaran: `(n - k + 2*p) // s + 1`. Padding `2*p`, pakai `//`.\n- Rantai: hitung lapisan secara berurutan; ukuran keluaran satu lapisan menjadi ukuran masukan lapisan berikutnya.\n- Pooling `k×k` stride `s` memakai rumus yang sama (tanpa padding, `p = 0`).\n- Parameter satu lapisan: `bobot = kanal_masuk * kanal_keluar * kt * kl`, `bias = kanal_keluar`, `total = bobot + bias`.\n- Nilai konvolusi di satu posisi: jumlahkan `patch[r][c] * kernel[r][c]` — perkalian titik.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Padding dua",
+      "type": "fill",
+      "prompt": "Masukan 30, kernel 5, stride 1, padding 2.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nprint(ukuran_keluar(30, 5, 1, 2))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 30,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`(30 - 5 + 2*2) // 1 + 1 = (30 - 5 + 4) // 1 + 1 = 29 + 1 = 30`.\n\nPadding 2 di kedua sisi menambah `2*p = 4`. Kernel 5 memangkas 4, jadi keduanya saling menutup dan ukuran kembali utuh — pola \"same\" untuk kernel 5 adalah padding 2, karena `(5-1)//2 = 2`. Jebakan yang paling sering: menuliskan `+ 2` (padding sekali) alih-alih `+ 4`, sehingga jawabannya 28."
+    },
+    {
+      "id": "S2",
+      "name": "Dua lapisan berantai",
+      "type": "fill",
+      "prompt": "Masukan 32. Lapisan pertama: kernel 3, stride 1, padding 1. Lapisan kedua: kernel 3, stride 2, padding 1. Keluaran lapisan pertama menjadi masukan lapisan kedua.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nn = 32\nn = ukuran_keluar(n, 3, 1, 1)\nn = ukuran_keluar(n, 3, 2, 1)\nprint(n)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 16,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Hitung lapisan satu per satu:\n\n| lapisan | rumus | keluaran |\n|---|---|---|\n| awal | — | 32 |\n| 1: k3 s1 p1 | `(32 - 3 + 2)//1 + 1` | 32 |\n| 2: k3 s2 p1 | `(32 - 3 + 2)//2 + 1` | **16** |\n\nLapisan pertama (kernel 3, stride 1, padding 1) menjaga ukuran di 32. Lapisan kedua punya stride 2, jadi ia kira-kira **memotong ukuran menjadi setengah**: `31 // 2 + 1 = 16`. Inilah pola tumpuk yang lazim — beberapa lapisan penjaga ukuran, sesekali stride 2 untuk menciutkan. Kunci merantai: keluaran satu lapisan **wajib** menjadi masukan berikutnya, bukan 32 terus."
+    },
+    {
+      "id": "S3",
+      "name": "Berapa parameter",
+      "type": "mc",
+      "prompt": "Sebuah lapisan konvolusi punya 3 kanal masuk, 16 kanal keluar, dan kernel 3×3. Ingat tiap kanal keluaran punya satu bias tersendiri.\n\nBerapa jumlah parameter lapisan ini, termasuk bias?",
+      "choices": [
+        "432",
+        "448",
+        "144",
+        "464"
+      ],
+      "answer": 1,
+      "solution": "Bobot: `3 × 16 × 3 × 3 = 432`. Bias: satu per kanal keluaran = `16`. Total: `432 + 16 = 448`.\n\n| pilihan | dari mana |\n|---|---|\n| **A.** 432 | bobot saja, **lupa bias** |\n| **B.** 448 | 432 + 16 ✓ |\n| **C.** 144 | lupa kanal keluar (`3 × 3 × 16`? salah susun) |\n| **D.** 464 | menghitung bias 32, bukan 16 |\n\nJebakan utamanya bias: ia dihitung **satu per kanal keluaran**, bukan satu per lapisan, dan bukan satu per bobot. Jadi 16 kanal keluar → 16 bias. Pilihan A (lupa bias sama sekali) adalah kesalahan paling umum di soal parameter."
+    },
+    {
+      "id": "S4",
+      "name": "Tinggi dari masukan tidak persegi",
+      "type": "fill",
+      "prompt": "Masukan 2D berukuran 10×20 (tinggi × lebar). Kernel 3×5, stride 1, tanpa padding. Tinggi keluaran dihitung dari tinggi masukan dan tinggi kernel.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\ntinggi = ukuran_keluar(10, 3, 1, 0)\nlebar = ukuran_keluar(20, 5, 1, 0)\nprint(tinggi)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Tinggi dihitung dari tinggi: `(10 - 3 + 0) // 1 + 1 = 7 + 1 = 8`.\n\nLebarnya, dari kernel selebar 5, adalah `(20 - 5) // 1 + 1 = 16` — dihitung dari lebar. Keluaran 8×16. Karena masukan (10×20) dan kernel (3×5) sama-sama tidak persegi, tinggi dan lebar punya perhitungan sendiri-sendiri. Menukar angka mana masuk ke mana adalah kesalahan klasik: pastikan tinggi selalu bertemu tinggi, lebar bertemu lebar."
+    },
+    {
+      "id": "S5",
+      "name": "Ukuran setelah pooling",
+      "type": "fill",
+      "prompt": "Max pooling 2×2 dengan stride 2 pada peta fitur 28×28. Pooling memakai rumus ukuran yang sama, dengan padding 0.\n\n<pre class=\"code\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1\n\nprint(ukuran_keluar(28, 2, 2, 0))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 14,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`(28 - 2 + 0) // 2 + 1 = 26 // 2 + 1 = 13 + 1 = 14`.\n\nPooling 2×2 stride 2 memakai rumus yang sama dengan konvolusi, hanya tanpa parameter yang dipelajari — ia cuma meringkas tiap jendela 2×2 menjadi satu angka (maksimum atau rata-rata). Stride 2 dengan kernel 2 memotong ukuran menjadi tepat setengah: 28 → 14. Inilah kenapa pooling adalah cara umum menciutkan peta fitur separuh demi separuh."
+    },
+    {
+      "id": "S6",
+      "name": "Nilai konvolusi",
+      "type": "fill",
+      "prompt": "Sebuah kernel 2×2 ditempatkan di atas sepetak masukan 2×2. Nilai keluarannya adalah perkalian titik: kalikan tiap entri yang seposisi, lalu jumlahkan.\n\n<pre class=\"code\">patch = [[1, 2], [3, 4]]\nkernel = [[1, 0], [0, 1]]\nhasil = 0\nfor r in range(2):\n    for c in range(2):\n        hasil += patch[r][c] * kernel[r][c]\nprint(hasil)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Kalikan tiap entri yang seposisi, lalu jumlahkan:\n\n| posisi | `patch` | `kernel` | hasil kali |\n|---|---|---|---|\n| (0,0) | 1 | 1 | 1 |\n| (0,1) | 2 | 0 | 0 |\n| (1,0) | 3 | 0 | 0 |\n| (1,1) | 4 | 1 | 4 |\n\n1 + 0 + 0 + 4 = **5**.\n\nInilah operasi konvolusi di **satu** posisi — perkalian titik antara kernel dan sepetak masukan, persis seperti perkalian titik vektor di Topik 5, hanya diatur dalam grid. Kernel ini (diagonal 1, sisanya 0) menjumlahkan diagonal petak. Menggeser kernel ini ke seluruh masukan, mengulang perhitungan yang sama di tiap posisi, menghasilkan satu peta fitur utuh — itulah yang kamu bangun di Tulis Kode 03."
+    }
+  ],
+  "number": 48
+}

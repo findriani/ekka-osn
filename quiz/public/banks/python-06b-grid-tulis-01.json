@@ -1,0 +1,90 @@
+{
+  "id": "python-06b-grid-tulis-01",
+  "group": "Latihan Python",
+  "title": "Grid — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 6, menulis kode, tingkat **mudah**. Di Topik 2 kamu sudah membuat, menyalin, dan memutar grid. Sekarang kamu **membaca seluruhnya**: menjumlahkan semua sel, mengukur, memeriksa apakah sebuah sel ada, menghitung nilai tertentu, mencari yang terbesar, dan mengambil diagonal. Semua satu perulangan atau satu comprehension.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nIngat: `grid[r][k]` baris dulu, kolom kemudian. `len(grid)` baris, `len(grid[0])` kolom.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Jumlah seluruh grid: `sum(sum(baris) for baris in grid)`.\n- Ukuran: `len(grid)` baris, `len(grid[0])` kolom.\n- Sel `(r, k)` di dalam grid: `0 <= r < len(grid) and 0 <= k < len(grid[0])`.\n- Menelusuri semua isi: `for baris in grid: for x in baris:`.\n- Diagonal utama grid persegi: `grid[i][i]` untuk `i` dari `0` sampai `len(grid) - 1`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Total papan",
+      "type": "code",
+      "prompt": "Panitia menjumlahkan semua angka di papan skor.\n\nTulis `jumlah_semua(grid)` yang mengembalikan jumlah semua sel di `grid`.",
+      "starter": "def jumlah_semua(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_semua([[1, 2], [3, 4]]) == 10",
+        "jumlah_semua([[5]]) == 5",
+        "jumlah_semua([]) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_semua(grid):\n    return sum(sum(baris) for baris in grid)</pre>\n\nTiap baris sudah berupa list, jadi `sum(baris)` menjumlahkan satu baris. `sum(... for baris in grid)` lalu menjumlahkan hasil tiap baris — jumlah dari jumlah. Uji `[]` memberi 0 gratis: tidak ada baris, jadi `sum` dari kosong adalah 0.\n\nVersi perulangan biasa sama benarnya:\n\n<pre class=\"code\">def jumlah_semua(grid):\n    total = 0\n    for baris in grid:\n        for x in baris:\n            total += x\n    return total</pre>"
+    },
+    {
+      "id": "S2",
+      "name": "Ukuran papan",
+      "type": "code",
+      "prompt": "Sebuah program perlu tahu bentuk papan sebelum mengolahnya.\n\nTulis `ukuran(grid)` yang mengembalikan pasangan `(baris, kolom)`. Dijamin `grid` tidak pernah kosong dan semua barisnya sama panjang.",
+      "starter": "def ukuran(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ukuran([[1, 2, 3], [4, 5, 6]]) == (2, 3)",
+        "ukuran([[9]]) == (1, 1)",
+        "ukuran([[1], [2], [3]]) == (3, 1)"
+      ],
+      "solution": "<pre class=\"kunci\">def ukuran(grid):\n    return (len(grid), len(grid[0]))</pre>\n\n`len(grid)` banyaknya baris; `len(grid[0])` banyaknya isi di baris pertama, yaitu kolom. Karena semua baris dijamin sama panjang, baris pertama mewakili semuanya.\n\nIni menegaskan asimetri Topik 6: baris \"murah\" karena `len(grid)` langsung memberinya, sedangkan kolom butuh mengintip ke dalam sebuah baris. Uji `[[1], [2], [3]]` (3×1) ada khusus untuk menangkap tertukarnya kedua angka ini."
+    },
+    {
+      "id": "S3",
+      "name": "Apakah sel ada",
+      "type": "code",
+      "prompt": "Sebelum membaca sebuah sel, program harus memastikan koordinatnya sah — termasuk menolak angka negatif, yang oleh Python akan diam-diam dibaca dari belakang.\n\nTulis `di_dalam(grid, r, k)` yang mengembalikan `True` kalau `(r, k)` adalah sel yang sah di `grid`, dan `False` kalau tidak (termasuk kalau `r` atau `k` negatif).",
+      "starter": "def di_dalam(grid, r, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "di_dalam([[1, 2], [3, 4]], 0, 1) is True",
+        "di_dalam([[1, 2], [3, 4]], 2, 0) is False",
+        "di_dalam([[1, 2], [3, 4]], -1, 0) is False",
+        "di_dalam([[1, 2], [3, 4]], 0, 5) is False"
+      ],
+      "solution": "<pre class=\"kunci\">def di_dalam(grid, r, k):\n    return 0 &lt;= r &lt; len(grid) and 0 &lt;= k &lt; len(grid[0])</pre>\n\nSebuah sel sah kalau barisnya di rentang `[0, len(grid))` **dan** kolomnya di rentang `[0, len(grid[0]))`. Bagian `0 <=` itulah yang menolak angka negatif — dan itu yang paling sering lupa ditulis.\n\nUji `di_dalam(..., -1, 0)` adalah inti soal ini. Tanpa `0 <=`, fungsi akan menjawab `True` untuk `-1`, karena `-1 < len(grid)` memang benar. Lalu `grid[-1]` diam-diam membaca baris terakhir, dan seluruh perhitunganmu meleset tanpa error. Fungsi kecil ini adalah tameng terhadap bug itu; kamu memakainya di tiap soal tetangga di Tulis Kode 02 dan 03."
+    },
+    {
+      "id": "S4",
+      "name": "Menghitung nilai",
+      "type": "code",
+      "prompt": "Sebuah peta menyimpan angka di tiap petak. Panitia ingin tahu berapa petak yang berisi nilai tertentu.\n\nTulis `hitung_nilai(grid, x)` yang mengembalikan banyaknya sel di `grid` yang isinya sama dengan `x`.",
+      "starter": "def hitung_nilai(grid, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung_nilai([[1, 0, 1], [0, 1, 0]], 1) == 3",
+        "hitung_nilai([[1, 0], [0, 0]], 0) == 3",
+        "hitung_nilai([[5]], 9) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung_nilai(grid, x):\n    c = 0\n    for baris in grid:\n        for isi in baris:\n            if isi == x:\n                c += 1\n    return c</pre>\n\nPola menghitung dengan perulangan bersarang: telusuri tiap sel, tambah satu tiap kali isinya cocok. Versi ringkas: `sum(1 for baris in grid for isi in baris if isi == x)`, atau `sum(baris.count(x) for baris in grid)`.\n\nUji `[[5]], 9` memberi 0: tidak ada sel yang cocok, hitungannya tetap 0. Ini pola yang dipakai untuk menghitung petak hidup di soal citra dan papan."
+    },
+    {
+      "id": "S5",
+      "name": "Sel terbesar",
+      "type": "code",
+      "prompt": "Panitia mencari nilai tertinggi di seluruh papan.\n\nTulis `sel_terbesar(grid)` yang mengembalikan angka terbesar di `grid`. Dijamin `grid` tidak pernah kosong.",
+      "starter": "def sel_terbesar(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "sel_terbesar([[3, 8], [1, 9]]) == 9",
+        "sel_terbesar([[5]]) == 5",
+        "sel_terbesar([[-1, -2], [-3, -4]]) == -1"
+      ],
+      "solution": "<pre class=\"kunci\">def sel_terbesar(grid):\n    m = grid[0][0]\n    for baris in grid:\n        for isi in baris:\n            if isi > m:\n                m = isi\n    return m</pre>\n\nPola juara sementara: mulai dari sel pertama, ganti tiap kali menemukan yang lebih besar. Uji dengan semua angka **negatif** adalah yang penting — kalau kamu memulai dari `m = 0` alih-alih `grid[0][0]`, fungsimu akan salah menjawab 0, karena tidak ada sel yang melampaui 0.\n\nVersi ringkas memakai bawaan Python: `max(max(baris) for baris in grid)`. Aman di sini karena grid dijamin tidak kosong."
+    },
+    {
+      "id": "S6",
+      "name": "Diagonal",
+      "type": "code",
+      "prompt": "Kartu bingo dibaca diagonalnya: sel-sel yang baris dan kolomnya sama.\n\nTulis `diagonal(grid)` yang mengembalikan **list** berisi `grid[0][0]`, `grid[1][1]`, dan seterusnya. Dijamin `grid` persegi.",
+      "starter": "def diagonal(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "diagonal([[1, 2], [3, 4]]) == [1, 4]",
+        "diagonal([[9]]) == [9]",
+        "diagonal([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) == [1, 5, 9]"
+      ],
+      "solution": "<pre class=\"kunci\">def diagonal(grid):\n    return [grid[i][i] for i in range(len(grid))]</pre>\n\nDiagonal utama adalah sel-sel dengan baris dan kolom yang sama, jadi indeksnya `grid[i][i]`. `range(len(grid))` berjalan dari 0 sampai baris terakhir.\n\nYang perlu diperhatikan: **satu** indeks `i` dipakai di dua tempat. Kalau kamu menulis dua perulangan bersarang, kamu justru mengambil semua sel, bukan diagonalnya. Diagonal yang satunya (kanan-atas ke kiri-bawah) adalah `grid[i][len(grid) - 1 - i]` — variasi yang sering muncul di soal papan."
+    }
+  ],
+  "number": 39
+}

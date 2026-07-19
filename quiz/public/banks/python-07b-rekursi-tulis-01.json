@@ -1,0 +1,93 @@
+{
+  "id": "python-07b-rekursi-tulis-01",
+  "group": "Latihan Python",
+  "title": "Rekursi — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 7, menulis kode, tingkat **mudah**. Keenam soal memakai rekursi dengan satu pemanggilan diri pada setiap langkah. Polanya sama: satu kasus dasar untuk berhenti dan satu panggilan dengan masukan yang lebih kecil. Latihannya mencakup faktorial, penjumlahan, pangkat, panjang list, jumlah isi list, dan penghitungan kemunculan. Jika pola ini sudah lancar, kamu akan lebih siap menghadapi rekursi yang bercabang atau memakai bentuk data lain di Tulis Kode 02 dan 03.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nTiap fungsi butuh dua bagian: **kasus dasar** (`if ...: return ...`) yang berhenti, dan **kasus rekursif** yang memanggil versi lebih kecil. Tulis kasus dasarnya dulu — itu yang mencegah `RecursionError`.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Rekursi angka mengecil dengan `n - 1`, berhenti di `n == 0`.\n- Rekursi list mengecil dengan `data[1:]` (sisa setelah yang pertama), berhenti di `data == []`.\n- Kasus dasar penjumlahan mengembalikan **0**; kasus dasar perkalian mengembalikan **1**.\n- Percayai panggilan yang lebih kecil sudah benar; kamu cukup menggabungkan hasilnya dengan `data[0]` atau `n`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Faktorial",
+      "type": "code",
+      "prompt": "Tulis `faktorial(n)` yang mengembalikan `n!` = `n × (n-1) × ... × 1`, dengan `faktorial(0)` bernilai 1.",
+      "starter": "def faktorial(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "faktorial(0) == 1",
+        "faktorial(1) == 1",
+        "faktorial(4) == 24",
+        "faktorial(5) == 120"
+      ],
+      "solution": "<pre class=\"kunci\">def faktorial(n):\n    if n == 0:\n        return 1\n    return n * faktorial(n - 1)</pre>\n\nKasus dasar `n == 0` mengembalikan 1 — titik awal aman untuk perkalian. Kasus rekursif mengalikan `n` dengan faktorial yang lebih kecil. Tulis kasus dasar **lebih dulu**; tanpa `if`, panggilan tak pernah berhenti.\n\nKamu tidak perlu tahu isi `faktorial(n - 1)` — percayai saja ia benar, dan kalikan dengan `n`. Kepercayaan itu inti rekursi."
+    },
+    {
+      "id": "S2",
+      "name": "Jumlah sampai n",
+      "type": "code",
+      "prompt": "Tulis `jumlah_sampai(n)` yang mengembalikan `n + (n-1) + ... + 1 + 0`.",
+      "starter": "def jumlah_sampai(n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_sampai(0) == 0",
+        "jumlah_sampai(1) == 1",
+        "jumlah_sampai(5) == 15"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_sampai(n):\n    if n == 0:\n        return 0\n    return n + jumlah_sampai(n - 1)</pre>\n\nSama polanya, dengan penjumlahan. Bedanya satu: kasus dasar mengembalikan **0**, bukan 1. Penjumlahan yang kosong adalah 0; kalau kamu memakai 1, semua jawabanmu meleset persis satu."
+    },
+    {
+      "id": "S3",
+      "name": "Pangkat",
+      "type": "code",
+      "prompt": "Tulis `pangkat(a, n)` yang mengembalikan `a` pangkat `n`, dengan `pangkat(a, 0)` bernilai 1. Kecilkan `n`, bukan `a`.",
+      "starter": "def pangkat(a, n):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "pangkat(2, 0) == 1",
+        "pangkat(2, 5) == 32",
+        "pangkat(3, 2) == 9",
+        "pangkat(5, 1) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def pangkat(a, n):\n    if n == 0:\n        return 1\n    return a * pangkat(a, n - 1)</pre>\n\nBentuknya faktorial, tetapi yang dikalikan `a` (tetap) dan yang mengecil `n`. Uji `pangkat(2, 0)` memastikan kasus dasarmu mengembalikan 1 — apa pun pangkat nol adalah 1.\n\nKalau kamu keliru mengecilkan `a` (`pangkat(a - 1, n - 1)`), uji `pangkat(3, 2)` akan menangkapnya: seharusnya 9, tetapi jadi salah."
+    },
+    {
+      "id": "S4",
+      "name": "Panjang list",
+      "type": "code",
+      "prompt": "Tulis `panjang(data)` yang mengembalikan banyaknya isi `data`, secara rekursif. Jangan pakai `len`.",
+      "starter": "def panjang(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "panjang([]) == 0",
+        "panjang([7]) == 1",
+        "panjang([1, 2, 3, 4]) == 4"
+      ],
+      "solution": "<pre class=\"kunci\">def panjang(data):\n    if data == []:\n        return 0\n    return 1 + panjang(data[1:])</pre>\n\nKasus dasar list kosong: panjangnya 0. Kasus rekursif: 1 (untuk isi pertama) ditambah panjang sisanya. `data[1:]` adalah \"semua kecuali yang pertama\" — inilah cara mengecilkan list.\n\nPerhatikan `data[1:]` selalu lebih pendek dari `data`, jadi rekursinya pasti mencapai list kosong. Itu jaminan bahwa ia berhenti."
+    },
+    {
+      "id": "S5",
+      "name": "Jumlah isi list",
+      "type": "code",
+      "prompt": "Tulis `jumlah_list(data)` yang mengembalikan jumlah semua angka di `data`, secara rekursif. Jangan pakai `sum`.",
+      "starter": "def jumlah_list(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_list([]) == 0",
+        "jumlah_list([5]) == 5",
+        "jumlah_list([1, 2, 3, 4]) == 10",
+        "jumlah_list([-1, 1]) == 0"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_list(data):\n    if data == []:\n        return 0\n    return data[0] + jumlah_list(data[1:])</pre>\n\nPersis kerangka Soal 4, tetapi `1 +` diganti `data[0] +`. Alih-alih menghitung berapa isi, ia menjumlahkan isinya. Uji `[-1, 1]` memberi 0 — memastikan kamu menjumlahkan nilai sebenarnya, bukan mencacah.\n\nSatu kerangka, dua pekerjaan: yang berubah cuma apa yang ditambahkan pada tiap langkah."
+    },
+    {
+      "id": "S6",
+      "name": "Menghitung kemunculan",
+      "type": "code",
+      "prompt": "Tulis `hitung(data, x)` yang mengembalikan berapa kali `x` muncul di `data`, secara rekursif.",
+      "starter": "def hitung(data, x):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung([], 9) == 0",
+        "hitung([1, 2, 1, 1], 1) == 3",
+        "hitung([5], 9) == 0",
+        "hitung([\"a\", \"b\", \"a\"], \"a\") == 2"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung(data, x):\n    if data == []:\n        return 0\n    pertama = 1 if data[0] == x else 0\n    return pertama + hitung(data[1:], x)</pre>\n\nUntuk isi pertama, tambahkan 1 kalau ia sama dengan `x`, selain itu 0; lalu tambahkan hitungan dari sisanya. Ini menggabungkan pola Soal 4 (mengupas satu) dengan sebuah syarat.\n\nVersi ringkasnya menyatukan syarat ke dalam penjumlahan: `return (data[0] == x) + hitung(data[1:], x)`, karena `True` bernilai 1 dan `False` bernilai 0 di Python. Uji dengan teks (`\"a\"`) memastikan fungsimu tidak mengira isinya selalu angka."
+    }
+  ],
+  "number": 44
+}

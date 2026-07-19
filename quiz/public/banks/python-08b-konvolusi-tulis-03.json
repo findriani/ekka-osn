@@ -1,0 +1,89 @@
+{
+  "id": "python-08b-konvolusi-tulis-03",
+  "group": "Latihan Python",
+  "title": "Konvolusi — Tulis Kode 03 (Sedang)",
+  "summary": "Topik 8, menulis kode, tingkat **sedang**, dengan latihan terpadu untuk operasi CNN. Kamu akan membuat konvolusi 2D, ReLU pada grid, max pooling 2D, konvolusi dengan padding, pencarian respons terbesar, dan satu blok CNN sederhana berupa konvolusi yang diikuti pooling. Semuanya memakai operasi dasar yang sama: perkalian titik antara kernel dan petak masukan pada setiap posisi. Jika kamu dapat merakitnya, berarti kamu memahami perhitungan yang dilakukan sebuah lapisan konvolusi.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji, jadi lulus sebagian tetap bernilai.\n\nSemua fungsi ini membangun **grid baru**; ukuran keluarannya mengikuti rumus Topik 8. Ingat `[[0]*lebar for _ in range(tinggi)]`, bukan `[[0]*lebar]*tinggi`.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Konvolusi valid: keluaran `(tinggi - kt + 1) × (lebar - kl + 1)`; tiap sel adalah perkalian titik kernel dengan petak di bawahnya.\n- ReLU grid: ganti tiap sel negatif dengan 0.\n- Max pool `k×k`: bagi grid jadi petak `k×k` tak bertumpang, ambil maksimum tiap petak.\n- Padding `p`: kelilingi grid dengan `p` lapis nol dulu, baru konvolusi valid.\n- Bangun baris demi baris, dan **jangan** pakai `[[..]*n]*m` (baris kembar).",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Konvolusi 2D",
+      "type": "code",
+      "prompt": "Geser `kernel` ke seluruh `grid` (stride 1, tanpa padding). Di tiap posisi, keluarannya adalah perkalian titik kernel dengan petak di bawahnya.\n\nTulis `konvolusi_2d(grid, kernel)` yang mengembalikan grid keluaran.",
+      "starter": "def konvolusi_2d(grid, kernel):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "konvolusi_2d([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 0], [0, 1]]) == [[6, 8], [12, 14]]",
+        "konvolusi_2d([[1, 1], [1, 1]], [[1, 1], [1, 1]]) == [[4]]",
+        "konvolusi_2d([[1, 2, 3]], [[1, 1]]) == [[3, 5]]"
+      ],
+      "solution": "<pre class=\"kunci\">def konvolusi_2d(grid, kernel):\n    kt, kl = len(kernel), len(kernel[0])\n    tinggi = len(grid) - kt + 1\n    lebar = len(grid[0]) - kl + 1\n    hasil = []\n    for r in range(tinggi):\n        baris = []\n        for c in range(lebar):\n            total = 0\n            for i in range(kt):\n                for j in range(kl):\n                    total += grid[r + i][c + j] * kernel[i][j]\n            baris.append(total)\n        hasil.append(baris)\n    return hasil</pre>\n\nEmpat perulangan bersarang, tetapi dua yang luar cuma memilih posisi `(r, c)` dan dua yang dalam adalah `nilai_di` dari Tulis Kode 02 — perkalian titik kernel dengan petak. Ukuran keluaran `(tinggi - kt + 1) × (lebar - kl + 1)` adalah rumus Topik 8, kali ini menentukan berapa baris dan kolom yang dibangun.\n\nUji `[[1, 2, 3]]` dengan kernel `[[1, 1]]` memberi `[[3, 5]]` — masukan 1×3, kernel 1×2, keluaran 1×2. Bangun `hasil` baris demi baris; jangan tergoda `[[0]*lebar]*tinggi`, yang membuat baris kembar."
+    },
+    {
+      "id": "S2",
+      "name": "ReLU pada grid",
+      "type": "code",
+      "prompt": "Terapkan ReLU ke tiap sel: negatif menjadi 0, sisanya tetap.\n\nTulis `relu(grid)` yang mengembalikan grid baru hasil ReLU.",
+      "starter": "def relu(grid):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "relu([[1, -2], [-3, 4]]) == [[1, 0], [0, 4]]",
+        "relu([[-1, -1], [-1, -1]]) == [[0, 0], [0, 0]]",
+        "relu([[5]]) == [[5]]"
+      ],
+      "solution": "<pre class=\"kunci\">def relu(grid):\n    return [[x if x &gt; 0 else 0 for x in baris] for baris in grid]</pre>\n\nReLU pada grid adalah ReLU pada tiap baris. Comprehension bersarang: untuk tiap baris, untuk tiap sel, pertahankan kalau positif, ganti dengan 0 kalau tidak. `x if x > 0 else 0` sama dengan `max(x, 0)`.\n\nIni versi grid dari `relu_1d` Tulis Kode 02. Di sebuah jaringan, ReLU dipasang tepat setelah konvolusi, membuang respons negatif sebelum pooling — persis urutan yang kamu rakit di Soal 6 (di sana ReLU digabung, tetapi konsepnya sama)."
+    },
+    {
+      "id": "S3",
+      "name": "Max pooling 2D",
+      "type": "code",
+      "prompt": "Bagi `grid` menjadi petak `k×k` tak bertumpang, dan ambil nilai terbesar tiap petak. Tinggi dan lebar `grid` selalu habis dibagi `k`.\n\nTulis `max_pool_2d(grid, k)` yang mengembalikan grid keluarannya.",
+      "starter": "def max_pool_2d(grid, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "max_pool_2d([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], 2) == [[6, 8], [14, 16]]",
+        "max_pool_2d([[1, 0], [0, 0]], 2) == [[1]]",
+        "max_pool_2d([[5, 3], [2, 9]], 1) == [[5, 3], [2, 9]]"
+      ],
+      "solution": "<pre class=\"kunci\">def max_pool_2d(grid, k):\n    tinggi = len(grid) // k\n    lebar = len(grid[0]) // k\n    hasil = []\n    for r in range(tinggi):\n        baris = []\n        for c in range(lebar):\n            terbesar = grid[r * k][c * k]\n            for i in range(k):\n                for j in range(k):\n                    if grid[r * k + i][c * k + j] &gt; terbesar:\n                        terbesar = grid[r * k + i][c * k + j]\n            baris.append(terbesar)\n        hasil.append(baris)\n    return hasil</pre>\n\nPetak `(r, c)` di keluaran berasal dari sel `grid[r*k .. r*k+k]` dan `[c*k .. c*k+k]` — pojok kiri-atasnya di `(r*k, c*k)`. Telusuri petak `k×k` itu dan simpan yang terbesar (pola juara sementara dari Topik 6).\n\nKeluaran berukuran `tinggi//k × lebar//k`: pooling 2×2 memotong tiap sisi menjadi setengah. Uji `k = 1` mengembalikan grid apa adanya — tiap petak 1×1 adalah selnya sendiri. Perhatikan perkalian `r * k` dan `c * k`: itu yang membuat jendela tak bertumpang."
+    },
+    {
+      "id": "S4",
+      "name": "Konvolusi dengan padding",
+      "type": "code",
+      "prompt": "Kelilingi `grid` dengan `p` lapis nol di keempat sisi, lalu lakukan konvolusi valid dengan `kernel`.\n\nTulis `konvolusi_2d_padding(grid, kernel, p)` yang mengembalikan grid keluarannya.",
+      "starter": "def konvolusi_2d_padding(grid, kernel, p):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "konvolusi_2d_padding([[1, 2], [3, 4]], [[1, 1], [1, 1]], 0) == [[10]]",
+        "konvolusi_2d_padding([[1, 1], [1, 1]], [[1, 1], [1, 1]], 1) == [[1, 2, 1], [2, 4, 2], [1, 2, 1]]",
+        "konvolusi_2d_padding([[5]], [[1, 1], [1, 1]], 1) == [[5, 5], [5, 5]]"
+      ],
+      "solution": "<pre class=\"kunci\">def konvolusi_2d_padding(grid, kernel, p):\n    tinggi, lebar = len(grid), len(grid[0])\n    besar = [[0] * (lebar + 2 * p) for _ in range(tinggi + 2 * p)]\n    for r in range(tinggi):\n        for c in range(lebar):\n            besar[r + p][c + p] = grid[r][c]\n    kt, kl = len(kernel), len(kernel[0])\n    ht = len(besar) - kt + 1\n    hl = len(besar[0]) - kl + 1\n    hasil = []\n    for r in range(ht):\n        baris = []\n        for c in range(hl):\n            total = 0\n            for i in range(kt):\n                for j in range(kl):\n                    total += besar[r + i][c + j] * kernel[i][j]\n            baris.append(total)\n        hasil.append(baris)\n    return hasil</pre>\n\nDua langkah. Pertama, bangun grid berpadding: sebuah grid nol yang lebih besar `2*p` di tiap sisi, lalu salin grid asli ke tengahnya (`besar[r+p][c+p]`). Kedua, konvolusi valid pada grid besar itu — kode yang sama dengan Soal 1.\n\nPerhatikan `[[0] * (lebar + 2*p) for _ in range(tinggi + 2*p)]` memakai comprehension, bukan `* (tinggi + 2*p)` — kalau baris kembar, menyalin satu sel akan muncul di semua baris dan seluruh hasilnya rusak. Ini bug baris kembar dari Topik 6, dan di sini akibatnya fatal. Uji `[[5]]` dengan padding 1 menyebar satu nilai ke keluaran 2×2, memperlihatkan padding sedang bekerja."
+    },
+    {
+      "id": "S5",
+      "name": "Respons terkuat",
+      "type": "code",
+      "prompt": "Sebuah kernel mendeteksi pola; posisi dengan respons terbesar adalah tempat pola itu paling cocok.\n\nTulis `respons_maks(grid, kernel)` yang mengembalikan **nilai** konvolusi terbesar di antara semua posisi valid.",
+      "starter": "def respons_maks(grid, kernel):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "respons_maks([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 0], [0, 1]]) == 14",
+        "respons_maks([[1, 1], [1, 1]], [[1, 1], [1, 1]]) == 4",
+        "respons_maks([[0, 0, 5], [0, 0, 0], [0, 0, 0]], [[1, 1], [1, 1]]) == 5"
+      ],
+      "solution": "<pre class=\"kunci\">def respons_maks(grid, kernel):\n    kt, kl = len(kernel), len(kernel[0])\n    tinggi = len(grid) - kt + 1\n    lebar = len(grid[0]) - kl + 1\n    terbesar = None\n    for r in range(tinggi):\n        for c in range(lebar):\n            total = 0\n            for i in range(kt):\n                for j in range(kl):\n                    total += grid[r + i][c + j] * kernel[i][j]\n            if terbesar is None or total &gt; terbesar:\n                terbesar = total\n    return terbesar</pre>\n\nSama seperti `konvolusi_2d`, tetapi alih-alih menyimpan tiap nilai ke grid, kita cuma menyimpan yang **terbesar**. `terbesar = None` di awal (belum ada juara), lalu diperbarui tiap kali menemukan respons lebih besar — pola juara sementara yang sama dari `terdekat` (Topik 5) dan `sel_terbesar` (Topik 6).\n\nUji ketiga menaruh satu nilai besar (5) di pojok grid nol; posisi yang petaknya memuat 5 memberi respons tertinggi. Inilah cara sebuah kernel \"menemukan\" pola: posisi respons terkuat adalah tempat pola paling cocok."
+    },
+    {
+      "id": "S6",
+      "name": "Satu blok CNN",
+      "type": "code",
+      "prompt": "Sebuah blok CNN sederhana: konvolusi valid dengan `kernel`, lalu max pooling 2×2. Ini pola yang menciutkan gambar sambil menyoroti pola — diulang berkali-kali di sebuah jaringan. Ukuran keluaran konvolusi selalu habis dibagi 2.\n\nTulis `konvolusi_lalu_pool(grid, kernel)` yang mengembalikan grid setelah konvolusi lalu pooling 2×2.",
+      "starter": "def konvolusi_lalu_pool(grid, kernel):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "konvolusi_lalu_pool([[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], [[1, 1], [1, 1]]) == [[4, 4], [4, 4]]",
+        "konvolusi_lalu_pool([[2, 2, 2], [2, 2, 2], [2, 2, 2]], [[1, 1], [1, 1]]) == [[8]]",
+        "konvolusi_lalu_pool([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]], [[1, 0], [0, 0]]) == [[7, 9], [17, 19]]"
+      ],
+      "solution": "<pre class=\"kunci\">def konvolusi_lalu_pool(grid, kernel):\n    kt, kl = len(kernel), len(kernel[0])\n    ct = len(grid) - kt + 1\n    cl = len(grid[0]) - kl + 1\n    conv = []\n    for r in range(ct):\n        baris = []\n        for c in range(cl):\n            total = 0\n            for i in range(kt):\n                for j in range(kl):\n                    total += grid[r + i][c + j] * kernel[i][j]\n            baris.append(total)\n        conv.append(baris)\n    pt, pl = len(conv) // 2, len(conv[0]) // 2\n    hasil = []\n    for r in range(pt):\n        baris = []\n        for c in range(pl):\n            terbesar = conv[2 * r][2 * c]\n            for i in range(2):\n                for j in range(2):\n                    if conv[2 * r + i][2 * c + j] &gt; terbesar:\n                        terbesar = conv[2 * r + i][2 * c + j]\n            baris.append(terbesar)\n        hasil.append(baris)\n    return hasil</pre>\n\nPuncak topik, dan ternyata cuma dua bagian yang sudah kamu tulis, dipasang berurutan: `konvolusi_2d` menghasilkan peta fitur, lalu `max_pool_2d` dengan `k = 2` menciutkannya. Keluaran konvolusi menjadi masukan pooling.\n\nInilah satu **blok** CNN. Sebuah jaringan menumpuk banyak blok: tiap blok menyoroti pola (konvolusi) lalu memampatkan (pooling), sehingga gambar mengecil sementara maknanya mengental. Uji grid 5×5 menjadi 4×4 setelah konvolusi, lalu 2×2 setelah pooling — ukuran menyusut persis seperti rumus Topik 8 meramalkan. Merakit dua fungsi yang sudah teruji menjadi satu adalah keterampilan terakhir jalur ini."
+    }
+  ],
+  "number": 51
+}

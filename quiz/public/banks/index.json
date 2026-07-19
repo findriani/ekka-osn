@@ -32,6 +32,27 @@
     "python-04a-string-baca-02",
     "python-04b-string-tulis-01",
     "python-04b-string-tulis-02",
-    "python-04b-string-tulis-03"
+    "python-04b-string-tulis-03",
+    "python-05a-kamus-baca-01",
+    "python-05a-kamus-baca-02",
+    "python-05b-kamus-tulis-01",
+    "python-05b-kamus-tulis-02",
+    "python-05b-kamus-tulis-03",
+    "python-06a-grid-baca-01",
+    "python-06a-grid-baca-02",
+    "python-06b-grid-tulis-01",
+    "python-06b-grid-tulis-02",
+    "python-06b-grid-tulis-03",
+    "python-07a-rekursi-baca-01",
+    "python-07a-rekursi-baca-02",
+    "python-07b-rekursi-tulis-01",
+    "python-07b-rekursi-tulis-02",
+    "python-07b-rekursi-tulis-03",
+    "python-08a-konvolusi-baca-01",
+    "python-08a-konvolusi-baca-02",
+    "python-08b-konvolusi-tulis-01",
+    "python-08b-konvolusi-tulis-02",
+    "python-08b-konvolusi-tulis-03",
+    "python-09b-campuran-tulis-01"
   ]
 }

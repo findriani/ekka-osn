@@ -1,0 +1,100 @@
+{
+  "id": "python-06a-grid-baca-02",
+  "group": "Latihan Python",
+  "title": "Grid — Baca Kode 02",
+  "summary": "Topik 6, membaca kode, tingkat lanjut. Sekarang kita membahas kesalahan yang sering tidak menimbulkan error. Bentuk `[[0] * k] * b` membuat semua baris merujuk ke list yang sama, sedangkan `grid[-1]` membaca baris terakhir meskipun indeks negatif mungkin tidak dimaksudkan. Ada juga indeks baris dan kolom yang tertukar, serta nama lain yang masih merujuk ke baris yang sama. Programnya tetap berjalan, tetapi hasilnya bisa keliru.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal yang mengubah grid, gambar kotak-dan-panah: satu kotak untuk tiap baris, panah dari nama ke kotaknya. Bug grid selalu soal \"berapa kotak sebenarnya ada\", dan panah membuatnya kelihatan.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- `[[0] * k] * b` → **satu** baris ditunjuk `b` kali. Ubah satu sel, semua ikut.\n- `[[0] * k for _ in range(b)]` → `b` baris berbeda. Hampir selalu yang kamu mau.\n- `grid[-1]` adalah baris **terakhir**, bukan error. Indeks negatif menghitung dari belakang.\n- `baris = grid[0]` **bukan** menyalin — menulis lewat `baris` mengubah `grid`.\n- Sel `(r, k)` di dalam grid kalau `0 <= r < len(grid)` **dan** `0 <= k < len(grid[0])`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Baris kembar",
+      "type": "fill",
+      "prompt": "Kode ini membuat grid dengan cara yang kelihatan wajar, mengubah satu sel di baris pertama, lalu mencetak sel yang seharusnya tak tersentuh di baris kedua.\n\n<pre class=\"code\">grid = [[0] * 3] * 2\ngrid[0][1] = 5\nprint(grid[1][1])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`[[0] * 3] * 2` **tidak** membuat dua baris. Ia membuat satu baris `[0, 0, 0]`, lalu membuat list yang menunjuk baris yang sama itu dua kali. `grid[0]` dan `grid[1]` adalah benda yang sama.\n\nJadi `grid[0][1] = 5` mengubah satu-satunya baris yang ada, dan `grid[1][1]` — yang menunjuk baris yang sama — ikut menjadi **5**.\n\n| yang kamu tulis | apa yang terjadi |\n|---|---|\n| `[[0] * 3] * 2` | satu baris, ditunjuk dua kali — **kembar** |\n| `[[0] * 3 for _ in range(2)]` | dua baris berbeda |\n\nIni kesalahan grid nomor satu, dan ia tidak pernah melempar error. Program berjalan mulus dan memberi angka yang salah. Satu-satunya obatnya adalah membuat tiap baris dengan `for`."
+    },
+    {
+      "id": "S2",
+      "name": "Indeks dari belakang",
+      "type": "fill",
+      "prompt": "Kode membaca sebuah sel dengan indeks baris `-1`. Ingat bahwa `-1` bukan error; ia menunjuk baris terakhir.\n\n<pre class=\"code\">grid = [[1, 2], [3, 4], [5, 6]]\nprint(grid[-1][1])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 6,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`grid[-1]` adalah baris **terakhir**, `[5, 6]`. Lalu `[1]` mengambil kolomnya yang ke-1 → **6**.\n\nIndeks negatif menghitung dari belakang: `-1` yang terakhir, `-2` sebelumnya. Ini fitur yang berguna — tetapi juga alasan bug grid tidak melempar error. Kalau perhitungan barismu keliru menjadi `-1`, Python tidak protes; ia diam-diam membaca baris terakhir dan memberimu angka dari tempat yang salah. `IndexError` hanya muncul kalau indeksnya lebih negatif daripada panjang gridnya."
+    },
+    {
+      "id": "S3",
+      "name": "Membuat tiga baris berbeda",
+      "type": "mc",
+      "prompt": "Kita ingin grid 3×3 berisi nol dengan tiga baris yang benar-benar terpisah, sehingga mengubah satu sel tidak mengubah baris lain.\n\nManakah yang menghasilkannya?",
+      "choices": [
+        "`[[0] * 3] * 3`",
+        "`[[0] * 3 for _ in range(3)]`",
+        "`[[0, 0, 0]] * 3`",
+        "`[0] * 3 * 3`"
+      ],
+      "answer": 1,
+      "solution": "| pilihan | hasil |\n|---|---|\n| **A.** `[[0] * 3] * 3` | tiga baris **kembar** — bug Soal 1 |\n| **B.** `[[0] * 3 for _ in range(3)]` | tiga baris **berbeda** ✓ |\n| **C.** `[[0, 0, 0]] * 3` | tiga baris kembar, cara lain menulis A |\n| **D.** `[0] * 3 * 3` | `[0, 0, 0, 0, 0, 0, 0, 0, 0]` — list datar, bukan grid |\n\nA dan C adalah jebakan yang sama dari dua arah: keduanya menyalin **acuan** ke satu baris, bukan membuat baris baru. D bahkan bukan grid — `[0] * 3 * 3` sama dengan `[0] * 9`, sembilan nol dalam satu baris tanpa struktur.\n\nHanya B yang menjalankan `[0] * 3` **sekali untuk tiap baris**, jadi lahir tiga list yang berbeda. Hafalkan bentuk ini; kamu memakainya di tiap soal Tulis Kode grid."
+    },
+    {
+      "id": "S4",
+      "name": "Kolom yang tertukar",
+      "type": "fill",
+      "prompt": "Fungsi ini seharusnya menjumlahkan kolom ke-`k`, tetapi memberi angka yang salah tanpa error (selama gridnya persegi). Perhatikan urutan indeks di dalam perulangan.\n\n<pre class=\"code\">1  def jumlah_kolom(grid, k):\n2      total = 0\n3      for r in range(len(grid)):\n4          total += grid[k][r]\n5      return total</pre>\n\nBaris nomor berapa yang menjadi penyebab kesalahannya?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Baris 4 menulis `grid[k][r]`, padahal seharusnya `grid[r][k]`. Indeksnya tertukar: fungsi ini menjumlahkan **baris** ke-`k`, bukan kolom ke-`k`.\n\nSelama gridnya persegi, ini tidak melempar error — ukuran baris dan kolom sama, jadi kedua indeks selalu sah. Ia cuma memberi angka dari arah yang salah. Kalau gridnya tidak persegi, `grid[k][r]` bisa keluar batas dan melempar `IndexError` di baris 4.\n\nAturannya, sekali lagi: `grid[r][k]` selalu baris dulu, kolom kemudian. Untuk kolom, kamu harus mengumpulkan `grid[r][k]` dari tiap baris `r` — bukan menukar indeksnya."
+    },
+    {
+      "id": "S5",
+      "name": "Tetangga di dalam batas",
+      "type": "fill",
+      "prompt": "Kode menghitung berapa tetangga sel `(1, 1)` yang masih di dalam grid 3×3. Kedelapan arah dicoba; sel itu sendiri dilewati dengan `continue`.\n\n<pre class=\"code\">grid = [[1, 1, 1], [1, 1, 1], [1, 1, 1]]\ndef di_dalam(r, k):\n    return 0 &lt;= r &lt; 3 and 0 &lt;= k &lt; 3\n\nc = 0\nfor dr in [-1, 0, 1]:\n    for dk in [-1, 0, 1]:\n        if dr == 0 and dk == 0:\n            continue\n        if di_dalam(1 + dr, 1 + dk):\n            c += 1\nprint(c)</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Sel `(1, 1)` ada di tengah grid 3×3, jadi **semua** delapan tetangganya berada di dalam grid. `continue` membuang satu-satunya pasangan `(0, 0)` (sel itu sendiri), menyisakan delapan arah, dan `di_dalam` meloloskan kedelapannya.\n\nJawabannya **8**.\n\nKalau sel yang ditanya ada di pojok, misalnya `(0, 0)`, hanya tiga tetangga yang di dalam grid dan `di_dalam` akan menolak lima sisanya. Itulah gunanya pemeriksaan batas: di tengah ia meloloskan semua, di tepi ia menyaring. Pola `for dr in [-1,0,1]: for dk in [-1,0,1]:` dengan `continue` untuk `(0,0)` adalah cara baku menyusuri delapan tetangga — kamu menulisnya sendiri di Tulis Kode 03."
+    },
+    {
+      "id": "S6",
+      "name": "Menulis lewat nama lain",
+      "type": "fill",
+      "prompt": "Kode memberi nama `baris` kepada baris pertama grid, mengubah satu selnya, lalu mencetak sel yang sama lewat `grid`.\n\n<pre class=\"code\">grid = [[1, 2], [3, 4]]\nbaris = grid[0]\nbaris[0] = 9\nprint(grid[0][0])</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 9,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`baris = grid[0]` tidak menyalin baris pertama; ia memberi nama kedua kepada baris yang sama. Jadi `baris[0] = 9` mengubah `grid[0][0]` juga, dan yang dicetak adalah **9**.\n\nIni aliasing dari Topik 2, muncul lagi di dalam grid. Sebuah baris grid adalah list biasa, dan `baris = grid[0]` tunduk pada aturan yang sama dengan `b = a`. Kalau kamu mau menyalin barisnya, tulis `baris = grid[0][:]`.\n\nInilah kenapa menyalin grid butuh menyalin **tiap baris**, bukan cuma list luarnya — persis yang kamu pelajari di `salin_grid` Topik 2, dan yang kamu pakai lagi saat mencoba langkah pada papan tanpa merusak aslinya."
+    }
+  ],
+  "number": 38
+}

@@ -1,0 +1,89 @@
+{
+  "id": "python-05b-kamus-tulis-02",
+  "group": "Latihan Python",
+  "title": "Dictionary & Vektor — Tulis Kode 02 (Sedang)",
+  "summary": "Topik 5, menulis kode, tingkat **sedang**. Sekarang dictionary dibangun, bukan cuma dibaca: menghitung kemunculan, mencari yang terbanyak, menggabungkan dua kamus. Lalu vektor melar dari dua dimensi menjadi sepanjang apa pun, dan ditutup dengan mencari pusat terdekat — inti soal seleksi 12–21.",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nBeberapa soal mengembalikan **dictionary**; uji membandingkannya dengan `==`, yang benar tak peduli urutan kunci. Beberapa mengembalikan **list**; di sana urutan penting.\n\nHanya Python standar, **tanpa NumPy**. `collections.Counter` boleh, tetapi menulis polanya sendiri lebih melatih.",
+  "formulas": "- Menghitung: `d[x] = d.get(x, 0) + 1` untuk tiap `x`.\n- Kunci dengan nilai terbesar: `max(d, key=d.get)`; terkecil: `min(d, key=d.get)`.\n- Menelusuri pasangan: `for kunci, nilai in d.items()`.\n- Jarak kuadrat vektor sepanjang apa pun: jumlahkan `(a[i] - b[i]) ** 2`.\n- Mencari terbaik tanpa `min`: simpan `terbaik = None`, perbarui saat menemukan yang lebih dekat.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menghitung kemunculan",
+      "type": "code",
+      "prompt": "Panitia mencatat pilihan tiap peserta dan ingin tahu berapa kali tiap pilihan muncul.\n\nTulis `hitung(data)` yang mengembalikan dictionary: tiap isi `data` menjadi kunci, banyak kemunculannya menjadi nilai.",
+      "starter": "def hitung(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "hitung([\"a\", \"b\", \"a\"]) == {\"a\": 2, \"b\": 1}",
+        "hitung([]) == {}",
+        "hitung([1, 1, 1]) == {1: 3}"
+      ],
+      "solution": "<pre class=\"kunci\">def hitung(data):\n    d = {}\n    for x in data:\n        d[x] = d.get(x, 0) + 1\n    return d</pre>\n\nPola menghitung, kali ini dikembalikan utuh sebagai dictionary. `d = {}` **sebelum** perulangan; kalau di dalam, ia lahir kembali tiap putaran dan hasilnya cuma hitungan isi terakhir.\n\n`d.get(x, 0) + 1` menangani kunci baru maupun lama sekaligus: yang baru mulai dari 0, yang lama naik satu. Uji `[]` memastikan dictionary kosong dikembalikan apa adanya. `collections.Counter(data)` melakukan semuanya dalam satu baris — tetapi tulis pola ini sendiri sekali, karena ia muncul di mana-mana."
+    },
+    {
+      "id": "S2",
+      "name": "Yang paling sering",
+      "type": "code",
+      "prompt": "Dari catatan yang sama, panitia ingin pilihan yang **paling sering** muncul. Dijamin selalu ada satu pemenang tunggal.\n\nTulis `terbanyak(data)` yang mengembalikan isi yang paling sering muncul di `data`.",
+      "starter": "def terbanyak(data):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "terbanyak([\"a\", \"b\", \"a\"]) == \"a\"",
+        "terbanyak([1, 2, 2, 3, 2]) == 2",
+        "terbanyak([\"x\"]) == \"x\""
+      ],
+      "solution": "<pre class=\"kunci\">def terbanyak(data):\n    d = {}\n    for x in data:\n        d[x] = d.get(x, 0) + 1\n    return max(d, key=d.get)</pre>\n\nDua langkah: hitung dulu (persis Soal 1), lalu ambil kunci dengan nilai terbesar. `max(d, key=d.get)` berarti \"telusuri kuncinya, tetapi bandingkan pakai `d.get`\" — jadi yang dikembalikan adalah **kunci** yang nilainya paling besar, bukan nilainya.\n\nKalau kamu menulis `max(d.values())`, kamu mendapat hitungan tertingginya (misalnya 3), bukan pilihan mana yang tercapai. Ini pasangan langsung dari `min(d, key=d.get)` yang kamu lihat di Baca Kode 02."
+    },
+    {
+      "id": "S3",
+      "name": "Menggabungkan dua gudang",
+      "type": "code",
+      "prompt": "Dua cabang mengirim catatan stoknya. Barang yang ada di keduanya harus **dijumlahkan**, bukan ditimpa.\n\nTulis `gabung(a, b)` yang mengembalikan dictionary baru berisi semua kunci dari `a` dan `b`; kalau sebuah kunci ada di keduanya, nilainya dijumlahkan.",
+      "starter": "def gabung(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "gabung({\"a\": 1, \"b\": 2}, {\"b\": 3, \"c\": 4}) == {\"a\": 1, \"b\": 5, \"c\": 4}",
+        "gabung({}, {\"x\": 1}) == {\"x\": 1}",
+        "gabung({\"p\": 2}, {}) == {\"p\": 2}"
+      ],
+      "solution": "<pre class=\"kunci\">def gabung(a, b):\n    hasil = dict(a)\n    for kunci, nilai in b.items():\n        hasil[kunci] = hasil.get(kunci, 0) + nilai\n    return hasil</pre>\n\n`dict(a)` membuat **salinan** `a` supaya `a` yang asli tidak berubah — pelajaran aliasing dari Baca Kode 02 Soal 2 dipakai di sini. Lalu tiap pasangan dari `b` ditambahkan: `hasil.get(kunci, 0) + nilai` menjumlahkan kalau kuncinya sudah ada, dan memasang apa adanya kalau belum.\n\nYang sering salah: `hasil[kunci] = nilai` (tanpa `get`) — itu **menimpa**, jadi `\"b\"` menjadi 3, bukan 5. Uji pertama ada khusus untuk menangkap ini. Yang lebih halus: menulis `hasil = a` alih-alih `dict(a)` diam-diam merusak `a` milik pemanggil."
+    },
+    {
+      "id": "S4",
+      "name": "Menjumlahkan dua vektor",
+      "type": "code",
+      "prompt": "Dua vektor sama panjang diberikan sebagai list.\n\nTulis `tambah(a, b)` yang mengembalikan **list baru** berisi `a[i] + b[i]` untuk tiap `i`.",
+      "starter": "def tambah(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "tambah([1, 2], [3, 4]) == [4, 6]",
+        "tambah([0, 0, 0], [1, 2, 3]) == [1, 2, 3]",
+        "tambah([], []) == []"
+      ],
+      "solution": "<pre class=\"kunci\">def tambah(a, b):\n    return [a[i] + b[i] for i in range(len(a))]</pre>\n\nUntuk tiap indeks, jumlahkan isi yang seposisi, kumpulkan ke list baru. Versi `zip` juga rapi:\n\n<pre class=\"code\">def tambah(a, b):\n    return [x + y for x, y in zip(a, b)]</pre>\n\nUji `tambah([], [])` memberi `[]`: tidak ada indeks, jadi list kosong. Ini pasangan penjumlahan dari perkalian titik — bedanya, di sini hasilnya **list** (tiap sumbu terpisah), sedangkan perkalian titik meringkasnya jadi **satu angka**."
+    },
+    {
+      "id": "S5",
+      "name": "Jarak kuadrat, panjang berapa pun",
+      "type": "code",
+      "prompt": "Di Tulis Kode 01 jaraknya untuk titik dua dimensi. Sekarang vektornya bisa sepanjang apa pun — tetap satu rumus.\n\nTulis `jarak2(a, b)` yang mengembalikan jumlah dari `(a[i] - b[i]) ** 2` untuk tiap `i`. Kedua vektor selalu sama panjang.",
+      "starter": "def jarak2(a, b):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jarak2([0, 0], [3, 4]) == 25",
+        "jarak2([1, 2, 3], [1, 2, 3]) == 0",
+        "jarak2([1, 0, 0], [0, 0, 0]) == 1"
+      ],
+      "solution": "<pre class=\"kunci\">def jarak2(a, b):\n    total = 0\n    for i in range(len(a)):\n        total += (a[i] - b[i]) ** 2\n    return total</pre>\n\nRumus yang sama dengan Tulis Kode 01, tetapi tidak lagi menyebut `[0]` dan `[1]` satu per satu — sebuah perulangan menanganinya untuk panjang berapa pun. Versi ringkas: `sum((a[i] - b[i]) ** 2 for i in range(len(a)))`, atau dengan `zip`: `sum((x - y) ** 2 for x, y in zip(a, b))`.\n\nIni bentuk yang sebenarnya dipakai di seleksi: vektor kata bisa berdimensi puluhan, dan rumus jaraknya tidak berubah sedikit pun. Menuliskannya dengan indeks tetap membuka jalan ke Soal 6."
+    },
+    {
+      "id": "S6",
+      "name": "Pusat terdekat",
+      "type": "code",
+      "prompt": "Beberapa pusat disimpan sebagai dictionary: nama menjadi kunci, vektornya menjadi nilai. Sebuah titik `q` diberikan.\n\nTulis `terdekat(q, pusat)` yang mengembalikan **nama** pusat yang jarak kuadratnya ke `q` paling kecil. Dijamin ada satu pemenang tunggal.",
+      "starter": "def terdekat(q, pusat):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "terdekat([0, 0], {\"a\": [1, 1], \"b\": [9, 9]}) == \"a\"",
+        "terdekat([9, 9], {\"a\": [1, 1], \"b\": [9, 9]}) == \"b\"",
+        "terdekat([0, 0], {\"solo\": [3, 4], \"medan\": [1, 0]}) == \"medan\""
+      ],
+      "solution": "<pre class=\"kunci\">def terdekat(q, pusat):\n    def jarak2(a, b):\n        return sum((a[i] - b[i]) ** 2 for i in range(len(a)))\n    terbaik = None\n    for nama in pusat:\n        if terbaik is None or jarak2(q, pusat[nama]) &lt; jarak2(q, pusat[terbaik]):\n            terbaik = nama\n    return terbaik</pre>\n\nIni kerangka \"cari yang terdekat\" yang utuh. `terbaik = None` di awal, lalu tiap pusat dibandingkan: kalau belum ada juara, atau yang ini lebih dekat, ia menjadi juara baru. Yang dikembalikan **nama**, karena itu yang diminta — bukan jaraknya.\n\nKenapa `terbaik = None` dan bukan `terbaik = pusat[0]`? Karena dictionary tidak punya \"yang ke-0\". `None` adalah cara aman memulai \"belum ada juara\". Versi memakai `min`: `return min(pusat, key=lambda nama: jarak2(q, pusat[nama]))` — lebih pendek, tetapi versi perulangan memperlihatkan apa yang sebenarnya terjadi. Fungsi inilah yang mengklasifikasikan kata di seleksi 12–21: tiap kata dibandingkan jaraknya ke beberapa pusat, yang terdekat menang."
+    }
+  ],
+  "number": 35
+}

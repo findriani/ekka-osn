@@ -1,0 +1,100 @@
+{
+  "id": "python-07a-rekursi-baca-02",
+  "group": "Latihan Python",
+  "title": "Rekursi — Baca Kode 02",
+  "summary": "Topik 7, membaca kode, tingkat lanjut. Sekarang kita membahas tiga sumber kesalahan utama: argumen yang tidak pernah mengecil sehingga rekursi tidak berhenti, perbedaan antara pekerjaan yang dilakukan sebelum dan sesudah panggilan rekursif, serta jumlah pemanggilan yang bertambah sangat cepat ketika satu fungsi memanggil dirinya lebih dari sekali. Bagian terakhir memperkenalkan dua pola rekursif klasik, yaitu pangkat dan FPB, yang sering digunakan dalam soal pemrograman.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal urutan cetak, tulis \"turun\" (panggilan) dan \"naik\" (kembali) sebagai dua kolom, lalu tandai di titik mana `print` terjadi.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- Tiap panggilan rekursif harus **mengecil** menuju kasus dasar. `f(n)` yang memanggil `f(n)` tak pernah berhenti.\n- `print` **sebelum** panggilan → tercetak saat turun. `print` **sesudah** → tercetak saat naik (urutan terbalik).\n- Fibonacci rekursif sederhana memanggil dirinya dua kali pada banyak langkah, sehingga jumlah pemanggilannya bertambah sangat cepat.\n- Pangkat: `pangkat(a, n) = a * pangkat(a, n-1)`, dasar `pangkat(a, 0) = 1`.\n- FPB (Euclid): `fpb(a, b) = fpb(b, a % b)`, dasar `fpb(a, 0) = a`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Tak pernah mengecil",
+      "type": "fill",
+      "prompt": "Fungsi ini punya kasus dasar, tetapi tetap tidak pernah berhenti. Perhatikan argumen pada panggilan rekursifnya.\n\n<pre class=\"code\">1  def jumlah_sampai(n):\n2      if n == 0:\n3          return 0\n4      return n + jumlah_sampai(n)</pre>\n\nBaris nomor berapa yang membuat rekursi ini tidak pernah mencapai kasus dasar?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Baris 4 memanggil `jumlah_sampai(n)` — dengan `n` yang **sama**, bukan `n - 1`. Karena argumennya tidak pernah mengecil, kasus dasar `n == 0` tidak pernah tercapai (kecuali `n` sudah 0 sejak awal), dan rekursi berlanjut sampai `RecursionError`.\n\nKasus dasar di baris 2–3 tidak salah; masalahnya panggilan di baris 4 tidak bergerak menujunya. Ini jebakan yang lebih halus daripada \"lupa kasus dasar\": kasus dasarnya ada, tetapi tak terjangkau. Aturannya tetap sama — **tiap panggilan wajib mengecil**. Perbaikannya cuma satu huruf: `jumlah_sampai(n - 1)`."
+    },
+    {
+      "id": "S2",
+      "name": "Fibonacci lagi",
+      "type": "fill",
+      "prompt": "<pre class=\"code\">def fib(n):\n    if n &lt; 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(7))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 13,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Lanjutkan barisan Fibonacci satu langkah dari soal sebelumnya:\n\n| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n|---|---|---|---|---|---|---|---|---|\n| `fib(n)` | 0 | 1 | 1 | 2 | 3 | 5 | 8 | **13** |\n\n`fib(7) = fib(6) + fib(5) = 8 + 5 = 13`."
+    },
+    {
+      "id": "S3",
+      "name": "Berapa kali dipanggil",
+      "type": "mc",
+      "prompt": "Fibonacci rekursif sederhana menghitung angka yang sama berulang kali. Untuk menghitung `fib(4)`, gambar pohon panggilannya dan hitung **semua** simpulnya, termasuk `fib(4)` sendiri.\n\n<pre class=\"code\">def fib(n):\n    if n &lt; 2:\n        return n\n    return fib(n - 1) + fib(n - 2)</pre>\n\nBerapa kali `fib` dipanggil seluruhnya saat menghitung `fib(4)`?",
+      "choices": [
+        "4",
+        "5",
+        "8",
+        "9"
+      ],
+      "answer": 3,
+      "solution": "Gambar pohon panggilannya dan hitung tiap simpul:\n\n<pre class=\"code\">fib(4)\n  fib(3)\n    fib(2)\n      fib(1)\n      fib(0)\n    fib(1)\n  fib(2)\n    fib(1)\n    fib(0)</pre>\n\nHitung: `fib(4)`, `fib(3)`, dua `fib(2)`, tiga `fib(1)`, dua `fib(0)` = 1 + 1 + 2 + 3 + 2 = **9** panggilan.\n\nInilah sebabnya Fibonacci rekursif sederhana lambat: `fib(2)` dihitung dua kali dan `fib(1)` tiga kali. Untuk `fib(4)` hanya ada 9 panggilan, tetapi jumlahnya bertambah sangat cepat ketika `n` membesar — `fib(20)` membutuhkan belasan ribu panggilan. Dalam seleksi, perbedaan ini dapat menentukan apakah program selesai tepat waktu. Cara mempercepatnya adalah menyimpan hasil yang sudah pernah dihitung; sebelum mempelajari teknik itu, pahami dulu sumber pengulangan melalui pohon panggilan ini."
+    },
+    {
+      "id": "S4",
+      "name": "Pangkat",
+      "type": "fill",
+      "prompt": "Fungsi ini menghitung `a` pangkat `n` dengan mengalikan `a` sebanyak `n` kali.\n\n<pre class=\"code\">def pangkat(a, n):\n    if n == 0:\n        return 1\n    return a * pangkat(a, n - 1)\n\nprint(pangkat(2, 5))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 32,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Tiap panggilan mengalikan satu `a` lalu mengecilkan `n`:\n\n| panggilan | mengembalikan |\n|---|---|\n| `pangkat(2, 0)` | 1 |\n| `pangkat(2, 1)` | 2 × 1 = 2 |\n| `pangkat(2, 2)` | 2 × 2 = 4 |\n| `pangkat(2, 3)` | 2 × 4 = 8 |\n| `pangkat(2, 4)` | 2 × 8 = 16 |\n| `pangkat(2, 5)` | 2 × 16 = **32** |\n\nBentuknya sama persis dengan faktorial, hanya \"kalikan `n`\" diganti \"kalikan `a`\". Kasus dasar `n == 0` mengembalikan 1 karena apa pun pangkat nol adalah 1 — dan karena 1 adalah titik awal yang aman untuk perkalian."
+    },
+    {
+      "id": "S5",
+      "name": "Cetak saat naik",
+      "type": "fill",
+      "prompt": "Perhatikan letak `print`: ia berada **setelah** panggilan rekursif, jadi baru berjalan saat panggilan kembali naik.\n\n<pre class=\"code\">def turun_naik(n):\n    if n == 0:\n        return\n    turun_naik(n - 1)\n    print(n)\n\nturun_naik(3)</pre>\n\nAngka **pertama** yang dicetak adalah?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 1,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "`print(n)` ada **setelah** `turun_naik(n - 1)`, jadi tiap panggilan turun dulu sampai dasar sebelum ada yang tercetak.\n\nTelusuri: `turun_naik(3)` memanggil `turun_naik(2)` memanggil `turun_naik(1)` memanggil `turun_naik(0)` — yang langsung kembali tanpa mencetak. Baru setelah itu cetakan terjadi saat naik: `print(1)`, lalu `print(2)`, lalu `print(3)`.\n\nJadi urutan cetaknya **1, 2, 3**, dan yang pertama adalah **1** — walaupun fungsinya \"menghitung mundur\". Ini jebakan urutan yang penting: `print` sebelum panggilan mencetak 3, 2, 1; `print` sesudah panggilan mencetak 1, 2, 3. Meletakkan satu baris di atas atau di bawah panggilan rekursif membalik seluruh urutannya."
+    },
+    {
+      "id": "S6",
+      "name": "FPB",
+      "type": "fill",
+      "prompt": "Algoritma Euclid: FPB dua bilangan sama dengan FPB dari bilangan kedua dan sisa bagi keduanya, berhenti saat bilangan kedua nol.\n\n<pre class=\"code\">def fpb(a, b):\n    if b == 0:\n        return a\n    return fpb(b, a % b)\n\nprint(fpb(18, 12))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 6,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Terapkan Euclid, tiap langkah mengganti `(a, b)` dengan `(b, a % b)`:\n\n| panggilan | `a % b` |\n|---|---|\n| `fpb(18, 12)` | 18 % 12 = 6 |\n| `fpb(12, 6)` | 12 % 6 = 0 |\n| `fpb(6, 0)` | — (kasus dasar) |\n\nSaat `b` mencapai 0, jawabannya adalah `a` yang tersisa: **6**.\n\nPerhatikan `18 % 12` memberi sisa 6, dan `12 % 6` memberi 0. Begitu sisanya 0, bilangan pertama saat itu adalah FPB-nya. Ini salah satu rekursi terpendek yang berguna: dua baris, dan ia menyusut cepat karena `a % b` selalu lebih kecil dari `b`."
+    }
+  ],
+  "number": 43
+}

@@ -1,0 +1,100 @@
+{
+  "id": "python-07a-rekursi-baca-01",
+  "group": "Latihan Python",
+  "title": "Rekursi — Baca Kode 01",
+  "summary": "Topik 7, membaca kode. **Rekursi** adalah fungsi yang memanggil dirinya sendiri untuk soal yang lebih kecil, sampai mencapai soal terkecil yang jawabannya sudah diketahui — **kasus dasar**. Ia muncul di seleksi tiap kali sebuah soal bisa dipecah menjadi versi kecil dirinya: menghitung lintasan di grid, menelusuri kata, memecah angka. Set ini melatih membacanya: mengikuti panggilan turun sampai kasus dasar, lalu menjumlahkan hasilnya saat naik kembali.",
+  "instructions": "Kerjakan **tanpa komputer**. Untuk soal rekursi, tulis tiap panggilan di kertas sebagai baris baru yang menjorok ke kanan, lalu isi jawabannya dari panggilan terdalam (kasus dasar) ke atas.\n\nTuliskan jawaban sebagai bilangan bulat, kecuali pada soal pilihan ganda.",
+  "formulas": "- Rekursi butuh **kasus dasar** (berhenti) dan **kasus rekursif** (memanggil versi lebih kecil).\n- Tiap panggilan harus menuju kasus dasar — biasanya `n - 1`, `data[1:]`, atau angka yang mengecil.\n- Tanpa kasus dasar, fungsi memanggil dirinya selamanya sampai `RecursionError`.\n- Bacalah dari dalam ke luar: panggilan terdalam selesai lebih dulu, hasilnya dipakai panggilan di atasnya.\n- `faktorial(n) = n * faktorial(n-1)`, dengan `faktorial(0) = 1`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Faktorial",
+      "type": "fill",
+      "prompt": "Faktorial mengalikan `n` dengan faktorial dari `n - 1`, berhenti saat `n` mencapai 0 yang bernilai 1.\n\n<pre class=\"code\">def faktorial(n):\n    if n == 0:\n        return 1\n    return n * faktorial(n - 1)\n\nprint(faktorial(4))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 24,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Ikuti panggilannya turun sampai kasus dasar, lalu kalikan saat naik:\n\n| panggilan | mengembalikan |\n|---|---|\n| `faktorial(0)` | 1 |\n| `faktorial(1)` | 1 × 1 = 1 |\n| `faktorial(2)` | 2 × 1 = 2 |\n| `faktorial(3)` | 3 × 2 = 6 |\n| `faktorial(4)` | 4 × 6 = **24** |\n\nKunci membaca rekursi: panggilan terdalam (`faktorial(0)`) selesai **lebih dulu**, dan jawabannya mengalir naik. `faktorial(4)` tidak bisa selesai sebelum `faktorial(3)` selesai, dan seterusnya sampai dasar. Kasus dasar `n == 0` adalah yang menghentikan seluruh rantai."
+    },
+    {
+      "id": "S2",
+      "name": "Menjumlahkan sampai n",
+      "type": "fill",
+      "prompt": "Fungsi ini menjumlahkan `n + (n-1) + ... + 1`, berhenti di 0.\n\n<pre class=\"code\">def jumlah_sampai(n):\n    if n == 0:\n        return 0\n    return n + jumlah_sampai(n - 1)\n\nprint(jumlah_sampai(5))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 15,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Sama polanya, dengan penjumlahan:\n\n`5 + 4 + 3 + 2 + 1 + 0` = **15**.\n\nPanggilan `jumlah_sampai(0)` memberi 0, lalu `jumlah_sampai(1)` memberi `1 + 0`, dan seterusnya. Perhatikan kasus dasarnya mengembalikan **0** (bukan 1 seperti faktorial), karena penjumlahan yang kosong adalah 0, sedangkan perkalian yang kosong adalah 1."
+    },
+    {
+      "id": "S3",
+      "name": "Lupa berhenti",
+      "type": "mc",
+      "prompt": "Fungsi ini mencetak `n`, lalu memanggil dirinya dengan `n - 1`. Tetapi tidak ada kasus dasar yang menghentikannya.\n\n<pre class=\"code\">def hitung_mundur(n):\n    print(n)\n    hitung_mundur(n - 1)</pre>\n\nApa yang terjadi kalau `hitung_mundur(3)` dijalankan?",
+      "choices": [
+        "Mencetak 3, 2, 1, lalu berhenti",
+        "Mencetak 3, 2, 1, 0, lalu berhenti",
+        "Mencetak 3, 2, 1, 0, -1, ... terus sampai `RecursionError`",
+        "Tidak mencetak apa pun"
+      ],
+      "answer": 2,
+      "solution": "Fungsi ini tidak punya `if` yang menghentikannya. Ia mencetak 3, memanggil `hitung_mundur(2)`, yang mencetak 2, memanggil `hitung_mundur(1)`, dan seterusnya — melewati 0, ke -1, -2, tanpa henti.\n\nPython tidak membiarkan ini selamanya: setelah ribuan panggilan bertumpuk, ia menyerah dengan `RecursionError: maximum recursion depth exceeded`.\n\nInilah pelajaran terpenting rekursi: **setiap fungsi rekursif wajib punya kasus dasar**, dan tiap panggilan wajib bergerak menujunya. Di sini `n - 1` memang mengecil, tetapi tidak ada yang memeriksa `n == 0`, jadi ia melewatinya begitu saja. Bandingkan dengan Soal 1 dan 2 yang berhenti tepat di 0."
+    },
+    {
+      "id": "S4",
+      "name": "Panjang list",
+      "type": "fill",
+      "prompt": "Panjang sebuah list adalah 1 ditambah panjang sisanya, berhenti di list kosong.\n\n<pre class=\"code\">def panjang(data):\n    if data == []:\n        return 0\n    return 1 + panjang(data[1:])\n\nprint(panjang([5, 6, 7, 8]))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Tiap panggilan mengupas satu isi (`data[1:]` membuang yang pertama) dan menambah 1:\n\n| panggilan | mengembalikan |\n|---|---|\n| `panjang([])` | 0 |\n| `panjang([8])` | 1 + 0 = 1 |\n| `panjang([7, 8])` | 1 + 1 = 2 |\n| `panjang([6, 7, 8])` | 1 + 2 = 3 |\n| `panjang([5, 6, 7, 8])` | 1 + 3 = **4** |\n\n`data[1:]` adalah \"sisa setelah yang pertama\" — inilah cara rekursi memperkecil soal pada list. Kasus dasarnya list kosong, yang panjangnya 0. Ini `len` versi rekursif; kamu jarang menulisnya begini, tetapi polanya (kupas satu, rekursikan sisanya) dipakai di mana-mana."
+    },
+    {
+      "id": "S5",
+      "name": "Fibonacci",
+      "type": "fill",
+      "prompt": "Tiap angka Fibonacci adalah jumlah dua sebelumnya, dengan dua yang pertama bernilai 0 dan 1.\n\n<pre class=\"code\">def fib(n):\n    if n &lt; 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(6))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Fibonacci punya **dua** panggilan rekursif, jadi bangun tabelnya dari bawah:\n\n| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|---|\n| `fib(n)` | 0 | 1 | 1 | 2 | 3 | 5 | **8** |\n\n`fib(6) = fib(5) + fib(4) = 5 + 3 = 8`.\n\nPerhatikan kasus dasarnya `n < 2`, yang menangkap **dua** angka sekaligus (`fib(0) = 0` dan `fib(1) = 1`). Fibonacci butuh dua kasus dasar karena tiap langkah menoleh dua angka ke belakang — kalau cuma `n == 0`, panggilan `fib(1)` akan mencoba `fib(-1)` dan tak pernah berhenti."
+    },
+    {
+      "id": "S6",
+      "name": "Menjumlahkan isi list",
+      "type": "fill",
+      "prompt": "Jumlah sebuah list adalah isi pertamanya ditambah jumlah sisanya.\n\n<pre class=\"code\">def total(data):\n    if data == []:\n        return 0\n    return data[0] + total(data[1:])\n\nprint(total([3, 1, 4, 2]))</pre>\n\nBerapa yang dicetak?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 10,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Isi pertama ditambah jumlah sisanya:\n\n`3 + (1 + (4 + (2 + 0)))` = **10**.\n\nSama persis dengan Soal 4, tetapi `1 +` diganti `data[0] +`: alih-alih menghitung berapa isi, ia menjumlahkan isinya. Satu kerangka rekursi, dua pekerjaan berbeda — hanya bagian yang ditambahkan yang berubah. Ini `sum` versi rekursif."
+    }
+  ],
+  "number": 42
+}

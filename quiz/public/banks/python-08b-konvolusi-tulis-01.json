@@ -1,0 +1,91 @@
+{
+  "id": "python-08b-konvolusi-tulis-01",
+  "group": "Latihan Python",
+  "title": "Konvolusi — Tulis Kode 01 (Mudah)",
+  "summary": "Topik 8, menulis kode, tingkat **mudah**. Rumus ukuran keluaran, versi dua dimensinya, jumlah parameter, padding \"same\", memotong sepetak masukan, dan menghitung satu nilai konvolusi. Ini alat-alat yang menjawab Soal 22–25 seleksi — rumusnya pendek, dan tugasmu di sini adalah menuliskannya tanpa jebakan kecil (padding dua kali, `//`, bias).",
+  "instructions": "Bacalah cerita pada soal dulu. Isi badan fungsi sampai **semua baris uji bernilai True**, lalu tekan **Jalankan**. Nilaimu dihitung per baris uji.\n\nBeberapa fungsi mengembalikan **pasangan** `(tinggi, lebar)` atau sebuah **list**; perhatikan bentuk yang diminta uji.\n\nHanya Python standar, **tanpa NumPy**.",
+  "formulas": "- Ukuran satu sisi: `(n - k + 2*p) // s + 1`. Padding `2*p`, pakai `//`.\n- 2D: hitung tinggi dari tinggi, lebar dari lebar; kembalikan `(tinggi, lebar)`.\n- Parameter: `bobot = kanal_masuk * kanal_keluar * kt * kl`, `bias = kanal_keluar`.\n- Padding \"same\" untuk stride 1, kernel ganjil: `(k - 1) // 2`.\n- Irisan `data[i:i+k]` mengambil `k` isi mulai dari indeks `i`.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Ukuran keluaran",
+      "type": "code",
+      "prompt": "Tulis `ukuran_keluar(n, k, s, p)` yang mengembalikan ukuran keluaran satu sisi: `(n - k + 2*p) // s + 1`.",
+      "starter": "def ukuran_keluar(n, k, s, p):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ukuran_keluar(32, 5, 2, 1) == 15",
+        "ukuran_keluar(32, 3, 1, 0) == 30",
+        "ukuran_keluar(7, 7, 1, 0) == 1",
+        "ukuran_keluar(10, 3, 2, 0) == 4"
+      ],
+      "solution": "<pre class=\"kunci\">def ukuran_keluar(n, k, s, p):\n    return (n - k + 2 * p) // s + 1</pre>\n\nSeluruh topik ini berdiri di atas satu baris ini. Dua hal wajib benar: `2 * p` (padding di kedua sisi) dan `//` (bagi bulat, dibuang ke bawah). Uji `ukuran_keluar(10, 3, 2, 0)` memberi `7 // 2 + 1 = 4`, menangkap keduanya — kalau kamu memakai `/`, hasilnya 4.5 dan gagal.\n\nUji `ukuran_keluar(32, 5, 2, 1)` memberi 15, contoh diagnostik yang sama dengan soal seleksi."
+    },
+    {
+      "id": "S2",
+      "name": "Ukuran keluaran 2D",
+      "type": "code",
+      "prompt": "Masukan dan kernel diberikan sebagai pasangan `(tinggi, lebar)`.\n\nTulis `ukuran_keluar_2d(ukuran, kernel, s, p)` yang mengembalikan `(tinggi_keluar, lebar_keluar)`. Hitung tinggi dari tinggi, lebar dari lebar.",
+      "starter": "def ukuran_keluar_2d(ukuran, kernel, s, p):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "ukuran_keluar_2d((32, 64), (5, 3), 1, 0) == (28, 62)",
+        "ukuran_keluar_2d((28, 28), (5, 1), 1, 0) == (24, 28)",
+        "ukuran_keluar_2d((10, 10), (3, 3), 1, 1) == (10, 10)"
+      ],
+      "solution": "<pre class=\"kunci\">def ukuran_keluar_2d(ukuran, kernel, s, p):\n    def satu(n, k):\n        return (n - k + 2 * p) // s + 1\n    tinggi, lebar = ukuran\n    kt, kl = kernel\n    return (satu(tinggi, kt), satu(lebar, kl))</pre>\n\nPanggil rumus satu-sisi dua kali: sekali untuk tinggi (pakai tinggi masukan dan tinggi kernel), sekali untuk lebar. Kembalikan pasangannya dalam urutan `(tinggi, lebar)` — dan pertahankan urutan itu di seluruh jawabanmu.\n\nUji `((28, 28), (5, 1), 1, 0)` memberi `(24, 28)`: kernel 5×1 memangkas tinggi tetapi membiarkan lebar. Kalau kamu menukar tinggi dan lebar, hasilnya `(28, 24)` dan gagal. Inilah kesalahan paling sering di Soal 22–25."
+    },
+    {
+      "id": "S3",
+      "name": "Jumlah parameter",
+      "type": "code",
+      "prompt": "Tulis `jumlah_parameter(kanal_masuk, kanal_keluar, kernel)` dengan `kernel = (tinggi, lebar)`, yang mengembalikan jumlah parameter satu lapisan: bobot ditambah satu bias per kanal keluaran.",
+      "starter": "def jumlah_parameter(kanal_masuk, kanal_keluar, kernel):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jumlah_parameter(3, 16, (3, 3)) == 448",
+        "jumlah_parameter(64, 32, (1, 1)) == 2080",
+        "jumlah_parameter(1, 1, (1, 1)) == 2"
+      ],
+      "solution": "<pre class=\"kunci\">def jumlah_parameter(kanal_masuk, kanal_keluar, kernel):\n    kt, kl = kernel\n    bobot = kanal_masuk * kanal_keluar * kt * kl\n    bias = kanal_keluar\n    return bobot + bias</pre>\n\nBobot adalah hasil kali keempat angka; bias adalah satu per kanal keluaran. Uji `(3, 16, (3, 3))` memberi `3*16*9 + 16 = 432 + 16 = 448`.\n\nJebakannya bias. Kalau kamu mengembalikan `bobot` saja (lupa bias), jawabannya 432 — kesalahan paling umum di soal parameter. Bias dihitung **satu per kanal keluaran**, bukan satu per lapisan."
+    },
+    {
+      "id": "S4",
+      "name": "Padding \"same\"",
+      "type": "code",
+      "prompt": "Untuk stride 1 dan kernel ganjil, padding yang mempertahankan ukuran adalah `(k - 1) // 2`.\n\nTulis `padding_sama(k)` yang mengembalikan padding itu.",
+      "starter": "def padding_sama(k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "padding_sama(3) == 1",
+        "padding_sama(5) == 2",
+        "padding_sama(1) == 0",
+        "padding_sama(7) == 3"
+      ],
+      "solution": "<pre class=\"kunci\">def padding_sama(k):\n    return (k - 1) // 2</pre>\n\nUntuk stride 1 dan kernel ganjil, padding `(k-1)//2` di tiap sisi membuat keluaran sama besar dengan masukan: kernel memangkas `k-1`, padding mengembalikan `2 * (k-1)//2 = k-1`. Keduanya saling menutup.\n\n`padding_sama(3)` memberi 1, `padding_sama(5)` memberi 2 — pola \"same\" yang kamu lihat di Baca Kode. Untuk kernel genap tidak ada padding simetris yang pas, jadi rumus ini memang untuk kernel ganjil."
+    },
+    {
+      "id": "S5",
+      "name": "Memotong jendela",
+      "type": "code",
+      "prompt": "Konvolusi 1D menggeser jendela sepanjang `k` di sepanjang barisan.\n\nTulis `jendela(data, i, k)` yang mengembalikan sublist sepanjang `k` yang mulai di indeks `i`.",
+      "starter": "def jendela(data, i, k):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "jendela([1, 2, 3, 4, 5], 1, 3) == [2, 3, 4]",
+        "jendela([9, 8, 7], 0, 2) == [9, 8]",
+        "jendela([1, 2, 3], 0, 3) == [1, 2, 3]"
+      ],
+      "solution": "<pre class=\"kunci\">def jendela(data, i, k):\n    return data[i:i + k]</pre>\n\nIrisan `data[i:i+k]` mengambil `k` isi mulai dari indeks `i`. Ingat dari Topik 2: irisan berhenti **sebelum** `i+k`, jadi persis `k` isi.\n\nIni potongan yang digeser konvolusi 1D di sepanjang barisan. Di Tulis Kode 02 kamu memanggilnya berulang di tiap posisi, mengalikannya dengan kernel, untuk membangun keluaran penuh."
+    },
+    {
+      "id": "S6",
+      "name": "Satu nilai konvolusi",
+      "type": "code",
+      "prompt": "Sebuah `patch` dan `kernel` berukuran sama, keduanya grid. Nilai konvolusi adalah perkalian titiknya: kalikan tiap entri yang seposisi, lalu jumlahkan.\n\nTulis `konvolusi_titik(patch, kernel)` yang mengembalikan nilai itu.",
+      "starter": "def konvolusi_titik(patch, kernel):\n    # tulis kodemu di sini\n    return None\n",
+      "tests": [
+        "konvolusi_titik([[1, 2], [3, 4]], [[1, 0], [0, 1]]) == 5",
+        "konvolusi_titik([[1, 1], [1, 1]], [[1, 1], [1, 1]]) == 4",
+        "konvolusi_titik([[2]], [[3]]) == 6"
+      ],
+      "solution": "<pre class=\"kunci\">def konvolusi_titik(patch, kernel):\n    total = 0\n    for r in range(len(patch)):\n        for c in range(len(patch[0])):\n            total += patch[r][c] * kernel[r][c]\n    return total</pre>\n\nTelusuri tiap sel, kalikan entri `patch` dengan entri `kernel` yang seposisi, jumlahkan. Ini perkalian titik dari Topik 5, hanya diatur dalam grid alih-alih list datar.\n\nInilah operasi konvolusi di satu posisi. Uji pertama memakai kernel diagonal (1 di pojok, 0 di sisanya) yang menjumlahkan diagonal petak: `1 + 4 = 5`. Menggeser operasi ini ke seluruh masukan menghasilkan satu peta fitur — pekerjaan Tulis Kode 03."
+    }
+  ],
+  "number": 49
+}
