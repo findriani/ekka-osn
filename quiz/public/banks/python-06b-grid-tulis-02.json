@@ -86,5 +86,5 @@
       "solution": "<pre class=\"kunci\">def cermin(grid):\n    return [baris[::-1] for baris in grid]</pre>\n\n`baris[::-1]` membuat **baris baru** yang urutannya terbalik, jadi grid asli tidak tersentuh. Comprehension menerapkannya ke tiap baris, mempertahankan urutan barisnya.\n\nKarena `[::-1]` sudah menghasilkan list baru untuk tiap baris, hasilnya aman dari aliasing — mengubah grid cermin tidak mengubah aslinya. Bandingkan dengan `transpose` di Topik 2: transpose menukar baris dengan kolom, cermin cuma membalik tiap baris. Keduanya membangun grid baru, keduanya tidak boleh merusak yang lama."
     }
   ],
-  "number": 40
+  "number": 51
 }

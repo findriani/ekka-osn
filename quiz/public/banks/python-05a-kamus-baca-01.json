@@ -96,5 +96,5 @@
       "solution": "Kalikan isi yang seposisi, lalu jumlahkan:\n\n| `i` | `a[i]` | `b[i]` | `a[i] * b[i]` |\n|---|---|---|---|\n| 0 | 2 | 3 | 6 |\n| 1 | 5 | 1 | 5 |\n| 2 | 1 | 4 | 4 |\n\n6 + 5 + 4 = **15**.\n\nOperasi ini namanya **perkalian titik** (dot product). Ia meringkas \"seberapa searah\" dua vektor menjadi satu angka. Di Pertemuan 3 kamu memakainya untuk memproyeksikan titik ke sebuah arah; di seleksi kata, kamu memakainya untuk mengukur kemiripan dua kata. Bentuk kodenya selalu sama: kalikan yang seposisi, jumlahkan."
     }
   ],
-  "number": 32
+  "number": 43
 }

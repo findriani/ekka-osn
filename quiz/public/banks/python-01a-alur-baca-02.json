@@ -96,5 +96,5 @@
       "solution": "| transaksi | `saldo + transaksi` | minus? | `saldo` |\n|---|---|---|---|\n| -30000 | 70000 | tidak | 70000 |\n| -50000 | 20000 | tidak | 20000 |\n| -40000 | **-20000** | ya → `continue` | 20000 (tetap) |\n| +20000 | 40000 | tidak | 40000 |\n\nTransaksi ketiga ditolak, jadi `saldo += transaksi` tidak pernah dijalankan untuk baris itu — dan yang penting, perulangannya **tetap lanjut**. Kalau `continue` diganti `break`, transaksi keempat tidak akan diproses dan hasilnya 20000.\n\nPerhatikan syaratnya memeriksa `saldo + transaksi`, bukan `saldo`. Memeriksa akibat sebelum melakukannya adalah pola yang akan kamu pakai lagi di topik grid, saat memeriksa batas sebelum melangkah."
     }
   ],
-  "number": 13
+  "number": 24
 }

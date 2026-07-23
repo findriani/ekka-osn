@@ -85,5 +85,5 @@
       "solution": "<pre class=\"kunci\">def centroid(daftar):\n    n = len(daftar)\n    dim = len(daftar[0])\n    hasil = []\n    for j in range(dim):\n        total = 0\n        for v in daftar:\n            total += v[j]\n        hasil.append(total / n)\n    return hasil</pre>\n\nUntuk tiap sumbu `j`, jumlahkan isi ke-`j` dari semua vektor, lalu bagi banyaknya. Perhatikan `/` (bukan `//`): rata-rata boleh pecahan, dan `[1, 0]` yang seharusnya `1.0` akan menjadi salah kalau dibagi dengan `//`.\n\nCentroid adalah \"titik tengah\" sekumpulan vektor, dan ia pusat dari K-means di Pertemuan 3: tiap kelompok diringkas menjadi satu titik pusat, lalu titik-titik dibandingkan jaraknya ke pusat itu. Menggabungkan `centroid` (di sini) dengan `terdekat` (Tulis Kode 02) memberimu satu langkah penuh K-means."
     }
   ],
-  "number": 36
+  "number": 47
 }

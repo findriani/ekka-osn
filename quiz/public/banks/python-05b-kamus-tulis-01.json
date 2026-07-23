@@ -85,5 +85,5 @@
       "solution": "<pre class=\"kunci\">def jarak2(p, q):\n    return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2</pre>\n\nSelisih tiap sumbu, kuadratkan, jumlahkan. Kuadratnya membuang tanda, jadi tidak perlu `abs` dan tidak peduli titik mana yang \"lebih besar\".\n\n**Jangan ambil akarnya.** Soal ini minta jarak kuadrat, dan untuk **membandingkan** jarak, akar tidak pernah diperlukan: kalau \\(a &lt; b\\) maka \\(\\sqrt a &lt; \\sqrt b\\). Menghindari akar berarti menghindari galat pembulatan — dan itulah yang kamu mau di tiap soal \"cari yang terdekat\". Bentuk ini akan kamu perluas ke vektor sepanjang apa pun di Tulis Kode 02."
     }
   ],
-  "number": 34
+  "number": 45
 }

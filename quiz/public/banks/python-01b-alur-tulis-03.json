@@ -91,5 +91,5 @@
       "solution": "<pre class=\"kunci\">def jumlah_digit(n):\n    total = 0\n    while n &gt; 0:\n        total += n % 10\n        n = n // 10\n    return total</pre>\n\nPasangan `%` dan `//` lagi, tetapi kali ini sebagai alat pengupas: `n % 10` mengambil digit terakhir, `n // 10` membuangnya. Ulangi sampai tidak ada yang tersisa.\n\nUntuk 3725:\n\n| `n` | `n % 10` | `total` | `n // 10` |\n|---|---|---|---|\n| 3725 | 5 | 5 | 372 |\n| 372 | 2 | 7 | 37 |\n| 37 | 7 | 14 | 3 |\n| 3 | 3 | 17 | 0 |\n\n`n` menjadi 0, syarat `n > 0` gagal, selesai. **17**.\n\nUji `jumlah_digit(0) == 0` gratis lagi: perulangannya tidak pernah jalan. Kalau kamu memakai `while n >= 0`, kodemu berputar selamanya di angka 0 — dan halaman ini akan menghentikanmu.\n\nAda jalan lain lewat teks: `sum(int(d) for d in str(n))`. Itu juga benar dan lolos semua uji. Tapi versi `%`/`//` lebih layak dikuasai, karena pola \"kupas satu bagian, buang, ulangi\" muncul di mana-mana — termasuk saat mengubah bilangan ke basis lain."
     }
   ],
-  "number": 16
+  "number": 27
 }

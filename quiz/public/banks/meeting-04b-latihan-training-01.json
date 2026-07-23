@@ -1,0 +1,99 @@
+{
+  "id": "meeting-04b-latihan-training-01",
+  "group": "Pertemuan 4",
+  "title": "Pelatihan 01 — Mengukur Kesalahan Prediksi",
+  "summary": "Sebuah aplikasi cuaca membuat dua jenis prediksi. Prediksi **suhu** menghasilkan sebuah angka, sedangkan prediksi **hujan** menghasilkan peluang antara 0 dan 1. Keduanya memerlukan ukuran kesalahan yang berbeda: **galat kuadrat** untuk keluaran numerik dan **entropi silang** untuk keluaran berupa peluang. Nilai kesalahan ini disebut **loss**; semakin kecil nilainya, semakin dekat prediksi model dengan jawaban yang benar. Latihan ini membahas cara menghitung dan membandingkan kedua jenis loss tersebut.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama model**.\n\n- Untuk angka, tuliskan nilainya memakai titik desimal bila perlu, misalnya `1.25`.\n- Nilai entropi silang diambil dari **tabel acuan** dan dibulatkan sampai tiga angka desimal. Gunakan nilai pada tabel; kalkulator tidak diperlukan.\n- Untuk nama model, tuliskan `A`, `B`, atau `C` persis.",
+  "formulas": "**Galat kuadrat** untuk satu prediksi angka \\(\\hat{y}\\) terhadap nilai benar \\(y\\):\n\n\\[\n\\ell = (\\hat{y} - y)^2.\n\\]\n\n**Galat kuadrat rata-rata** (*mean squared error*, MSE) adalah rata-rata galat kuadrat untuk seluruh contoh.\n\n**Entropi silang biner** untuk prediksi peluang \\(p\\) (peluang kelas 1) dengan label benar \\(y \\in \\{0, 1\\}\\):\n\n\\[\n\\ell = \\begin{cases} -\\ln p & \\text{bila } y = 1,\\\\ -\\ln(1 - p) & \\text{bila } y = 0. \\end{cases}\n\\]\n\nJika model sangat yakin pada kelas yang keliru, entropi silang memberikan nilai loss yang sangat besar. Nilainya terus meningkat ketika peluang untuk kelas yang benar mendekati 0.\n\n### Tabel acuan \\(-\\ln p\\) (bulat tiga desimal)\n\n| \\(p\\) | 0.1 | 0.2 | 0.5 | 0.6 | 0.8 | 0.9 |\n|---|---:|---:|---:|---:|---:|---:|\n| \\(-\\ln p\\) | 2.303 | 1.609 | 0.693 | 0.511 | 0.223 | 0.105 |\n\n## Data\n\nTiga model menilai kemungkinan hujan pada hari yang sama. Nilai \\(p\\) menyatakan peluang hujan: 0 berarti \"pasti tidak hujan\" dan 1 berarti \"pasti hujan\". Pada hari tersebut **benar-benar turun hujan**, sehingga label benarnya adalah \\(y=1\\):\n\n| Model | Peluang hujan \\(p\\) |\n|---|---:|\n| A | 0.9 |\n| B | 0.6 |\n| C | 0.1 |\n\n<figure class=\"q-image\">\n<svg viewBox=\"0 0 480 360\" role=\"img\">\n  <title>Entropi silang memberi loss besar pada prediksi yakin yang keliru</title>\n  <desc>Kurva loss minus ln p untuk label benar y sama dengan 1. Ketika p mendekati 1, loss mendekati 0. Ketika p mendekati 0, loss meningkat tajam. Model A memberi p 0.9 dengan loss 0.105, model B memberi p 0.6 dengan loss 0.511, dan model C memberi p 0.1 dengan loss 2.303.</desc>\n  <g font-family=\"ui-sans-serif, system-ui, sans-serif\" font-size=\"13\">\n    <g stroke=\"currentColor\" opacity=\"0.6\" stroke-width=\"1.4\" fill=\"none\">\n      <path d=\"M 70 40 L 70 320\"/>\n      <path d=\"M 70 320 L 440 320\"/>\n    </g>\n    <g stroke=\"currentColor\" opacity=\"0.1\" stroke-width=\"1\" fill=\"none\">\n      <path d=\"M 70 208 L 440 208 M 70 96 L 440 96\"/>\n      <path d=\"M 255 40 L 255 320\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" text-anchor=\"middle\">\n      <text x=\"70\" y=\"338\">0</text><text x=\"255\" y=\"338\">0.5</text><text x=\"440\" y=\"338\">1</text>\n      <text x=\"255\" y=\"356\">p  (peluang kelas 1)</text>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" text-anchor=\"end\">\n      <text x=\"60\" y=\"324\">0</text><text x=\"60\" y=\"212\">1</text><text x=\"60\" y=\"100\">2</text>\n    </g>\n    <text x=\"26\" y=\"180\" fill=\"currentColor\" opacity=\"0.85\" text-anchor=\"middle\" transform=\"rotate(-90 26 180)\">loss = -ln p</text>\n    <path d=\"M 107.0,62.1 125.5,107.5 144.0,139.7 162.5,164.7 181.0,185.2 199.5,202.4 218.0,217.4 236.5,230.5 255.0,242.4 273.5,253.0 292.0,262.8 310.5,271.8 329.0,280.0 347.5,287.8 366.0,295.0 384.5,301.8 403.0,308.2 421.5,314.3 440.0,320.0\"\n      fill=\"none\" stroke=\"#0072B2\" stroke-width=\"2.6\"/>\n    <circle cx=\"107.0\" cy=\"62.1\" r=\"6\" fill=\"#D55E00\"/>\n    <circle cx=\"292.0\" cy=\"262.8\" r=\"6\" fill=\"#E69F00\"/>\n    <circle cx=\"403.0\" cy=\"308.2\" r=\"6\" fill=\"#009E73\"/>\n    <g font-size=\"12.5\">\n      <circle cx=\"300\" cy=\"86\" r=\"6\" fill=\"#009E73\"/><text x=\"314\" y=\"90\" fill=\"currentColor\">A (p=0.9): loss 0.105</text>\n      <circle cx=\"300\" cy=\"110\" r=\"6\" fill=\"#E69F00\"/><text x=\"314\" y=\"114\" fill=\"currentColor\">B (p=0.6): loss 0.511</text>\n      <circle cx=\"300\" cy=\"134\" r=\"6\" fill=\"#D55E00\"/><text x=\"314\" y=\"138\" fill=\"currentColor\">C (p=0.1): loss 2.303</text>\n    </g>\n  </g>\n</svg>\n</figure>",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Galat kuadrat untuk satu hari",
+      "type": "fill",
+      "prompt": "Model memprediksi suhu siang hari sebesar \\(\\hat{y}=31^\\circ\\mathrm{C}\\), sedangkan hasil pengukuran sebenarnya adalah \\(y=29^\\circ\\mathrm{C}\\). Hitung galat kuadrat \\((\\hat{y}-y)^2\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\ell = (31 - 29)^2 = 2^2 = 4.\n\\]\n\nGalat kuadrat mengkuadratkan selisih. Karena itu, selisih 2 derajat menghasilkan galat 4. Cara ini memberikan penalti yang lebih besar kepada kesalahan besar daripada kepada kesalahan kecil."
+    },
+    {
+      "id": "S2",
+      "name": "Rata-rata kesalahan selama empat hari",
+      "type": "fill",
+      "prompt": "Selama empat hari berturut-turut, suhu sebenarnya adalah \\([30,32,29,33]^\\circ\\mathrm{C}\\), sedangkan prediksi model adalah \\([31,32,31,33]^\\circ\\mathrm{C}\\). Pasangkan nilai berdasarkan urutan hari, hitung galat kuadrat setiap hari, lalu hitung **MSE** untuk keempat hari tersebut.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 1.25,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Selisih tiap hari: \\(31-30=1\\), \\(32-32=0\\), \\(31-29=2\\), \\(33-33=0\\). Kuadratnya \\(1, 0, 4, 0\\).\n\n\\[\n\\text{MSE} = \\frac{1 + 0 + 4 + 0}{4} = \\frac{5}{4} = 1.25.\n\\]"
+    },
+    {
+      "id": "S3",
+      "name": "Model yakin dan prediksinya benar",
+      "type": "fill",
+      "prompt": "Pada hari yang benar-benar hujan (\\(y=1\\)), model **A** memberikan peluang hujan \\(p=0.9\\). Gunakan tabel acuan untuk menentukan loss entropi silang \\(-\\ln p\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.105,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\ell = -\\ln(0.9) = 0.105 \\quad(\\text{dari tabel}).\n\\]\n\nPeluang yang tinggi untuk kejadian yang benar-benar terjadi menghasilkan loss yang kecil."
+    },
+    {
+      "id": "S4",
+      "name": "Model yakin tetapi prediksinya keliru",
+      "type": "fill",
+      "prompt": "Untuk hari yang sama, yang ternyata hujan (\\(y=1\\)), model **C** hanya memberikan peluang hujan \\(p=0.1\\). Artinya, model memberikan dukungan kuat pada prediksi \"tidak hujan\", padahal hujan benar-benar terjadi. Gunakan tabel untuk menghitung loss \\(-\\ln p\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2.303,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\ell = -\\ln(0.1) = 2.303 \\quad(\\text{dari tabel}).\n\\]\n\nBandingkan dengan Soal 3. Loss model C sekitar **22 kali** loss model A karena model C sangat yakin ke arah \"tidak hujan\", padahal hujan benar-benar terjadi. Inilah ciri khas entropi silang — ia melonjak tanpa batas ketika model sangat yakin pada jawaban yang salah (lihat ujung kiri kurva pada gambar)."
+    },
+    {
+      "id": "S5",
+      "name": "Ketika labelnya 0",
+      "type": "fill",
+      "prompt": "Pada hari lain, cuaca ternyata **tidak hujan**, sehingga \\(y=0\\). Model memberikan peluang hujan \\(p=0.2\\). Untuk label 0, gunakan \\(-\\ln(1-p)\\). Tentukan nilai loss dengan bantuan tabel.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.223,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Karena \\(y=0\\), gunakan bentuk \\(-\\ln(1-p)\\):\n\n\\[\n\\ell = -\\ln(1 - 0.2) = -\\ln(0.8) = 0.223 \\quad(\\text{dari tabel}).\n\\]\n\nKetika label 0, yang \"benar\" adalah peluang kelas 1 yang **rendah**. Model menebak 0.2 (cukup rendah), jadi loss-nya kecil."
+    },
+    {
+      "id": "S6",
+      "name": "Model mana terbaik?",
+      "type": "mc",
+      "prompt": "Kembali ke hari yang benar-benar hujan (\\(y=1\\)). Model A memberikan \\(p=0.9\\), model B memberikan \\(p=0.6\\), dan model C memberikan \\(p=0.1\\). Berdasarkan loss entropi silang untuk **hari ini saja**, model mana yang memiliki loss paling kecil?",
+      "choices": [
+        "Model A",
+        "Model B",
+        "Model C"
+      ],
+      "answer": 0,
+      "solution": "| Model | \\(p\\) | loss \\(-\\ln p\\) |\n|---|---:|---:|\n| A | 0.9 | 0.105 |\n| B | 0.6 | 0.511 |\n| C | 0.1 | 2.303 |\n\nLoss terkecil dimiliki **A** (0.105). Model yang memberi peluang tertinggi kepada kejadian yang benar-benar terjadi adalah yang terbaik untuk hari itu."
+    }
+  ],
+  "number": 20
+}

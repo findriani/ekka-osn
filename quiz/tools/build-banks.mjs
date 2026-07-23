@@ -40,10 +40,6 @@ const CHECK_ONLY = process.argv.includes('--check');
 /* These draft sets stay in banksoal as material to revise later,
  * but should not be published to the student-facing bank yet. */
 const UNPUBLISHED_BANKS = new Set([
-  'meeting_03b_latihan_penskalaan_01',
-  'meeting_03c_latihan_imputasi_01',
-  'meeting_03d_latihan_kmeans_01',
-  'meeting_03e_latihan_proyeksi_pca_01',
   'meeting_07_latihan_python_diagnostik_01',
   'python_01c_program_dasar_01'
 ]);
@@ -343,7 +339,11 @@ const slug = s => s.replace(/_/g, '-').toLowerCase();
 /* --- One file ----------------------------------------------------------- */
 
 function convert(file) {
-  const raw = fs.readFileSync(path.join(SRC, file), 'utf8').replace(/\r\n/g, '\n');
+  // Some editors write a UTF-8 byte-order mark before the first Markdown
+  // heading. Remove it so a valid "# Title" is parsed consistently.
+  const raw = fs.readFileSync(path.join(SRC, file), 'utf8')
+    .replace(/^\uFEFF/, '')
+    .replace(/\r\n/g, '\n');
   const stem = file.replace(/\.md$/, '');
 
   // Teacher notes never reach the browser — the bank JSON is public.

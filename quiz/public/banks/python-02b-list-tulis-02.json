@@ -95,5 +95,5 @@
       "solution": "<pre class=\"kunci\">def geser_kanan(data):\n    return data[-1:] + data[:-1]</pre>\n\nDipecah:\n\n- `data[-1:]` = isi terakhir, **sebagai list** → `[3]`\n- `data[:-1]` = semuanya kecuali yang terakhir → `[1, 2]`\n- disambung → `[3, 1, 2]`\n\nKenapa `data[-1:]` dan bukan `data[-1]`? Karena `data[-1]` memberi **angka** `3`, dan `3 + [1, 2]` adalah error. Irisan memberi list, dan list bisa disambung dengan list.\n\nSekarang bagian terbaiknya: uji `geser_kanan([])`. Cara yang \"kelihatan wajar\" —\n\n<pre class=\"code\">baru = data[:]\nakhir = baru.pop()\nbaru.insert(0, akhir)\nreturn baru</pre>\n\n— melempar `IndexError` pada list kosong, karena tidak ada yang bisa di-`pop`. Versi irisan **tidak**: `[][-1:]` adalah `[]`, `[][:-1]` adalah `[]`, dan `[] + []` adalah `[]`. Benar dengan sendirinya.\n\nIni pelajaran yang sama dengan `tiga_awal` di set mudah, dalam bentuk yang lebih besar: **indeks tunggal galak, irisan pemaaf**. Pilih alat yang benar dan kasus tepinya lenyap sendiri."
     }
   ],
-  "number": 20
+  "number": 31
 }

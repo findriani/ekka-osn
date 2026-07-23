@@ -93,5 +93,5 @@
       "solution": "<pre class=\"kunci\">def residual_terbesar(y, p):\n    terbesar = 0\n    for i in range(len(y)):\n        jarak = abs(y[i] - p[i])\n        if jarak &gt; terbesar:\n            terbesar = jarak\n    return terbesar</pre>\n\nVersi ringkasnya: `return max(abs(yi - pi) for yi, pi in zip(y, p))`.\n\n`abs`-nya **wajib**. Kalau kamu menulis `max(y[i] - p[i])` tanpa `abs`, uji pertama memberi galat 2, −3, 0 → maksimumnya **2**, bukan 3. Dan uji ketiga memberi −5, −1 → maksimumnya **−1**, sebuah \"jarak terbesar\" yang negatif. Tanpa `abs`, kodemu **lolos 2 dari 4**.\n\nSekarang bandingkan Soal 6 dengan Soal 3 pada data yang sama, `y = [10, 3, 5]` dan `p = [8, 6, 5]`:\n\n| | nilainya | artinya |\n|---|---|---|\n| `mse` | \\(13/3 \\approx 4.33\\) | rata-rata keburukan |\n| `residual_terbesar` | 3 | titik terparah |\n\nDua angka, satu data, dua pertanyaan berbeda. MSE menjawab \"rata-rata garis ini seberapa meleset\"; residual terbesar menjawab \"kasus terburuknya seberapa parah\". Sebuah garis bisa punya MSE kecil tetapi satu titik yang meleset jauh — dan kadang justru titik itulah yang penting.\n\nIngat ini. Di Tulis Kode 03 kamu akan melihat kenapa MSE **sengaja** dibuat lebih peka terhadap titik yang jauh."
     }
   ],
-  "number": 25
+  "number": 36
 }

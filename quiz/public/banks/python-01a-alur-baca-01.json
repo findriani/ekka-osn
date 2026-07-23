@@ -96,5 +96,5 @@
       "solution": "`tumpuk(n)` menjumlahkan 1 sampai `n`. Hitung menaik sampai lewat 20:\n\n| `n` | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|\n| `tumpuk(n)` | 1 | 3 | 6 | 10 | 15 | **21** |\n\n`tumpuk(5)` = 15 masih kurang; `tumpuk(6)` = 21 sudah cukup. Jadi 6.\n\nSoal seperti ini — \"berapa nilai masukan yang menghasilkan keluaran X\" — memaksamu membaca fungsinya sebagai **mesin**, bukan sekadar deretan baris. Kemampuan itu yang dipakai untuk menebak-lalu-memeriksa di soal seleksi."
     }
   ],
-  "number": 12
+  "number": 23
 }

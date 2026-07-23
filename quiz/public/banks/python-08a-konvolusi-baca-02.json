@@ -96,5 +96,5 @@
       "solution": "Kalikan tiap entri yang seposisi, lalu jumlahkan:\n\n| posisi | `patch` | `kernel` | hasil kali |\n|---|---|---|---|\n| (0,0) | 1 | 1 | 1 |\n| (0,1) | 2 | 0 | 0 |\n| (1,0) | 3 | 0 | 0 |\n| (1,1) | 4 | 1 | 4 |\n\n1 + 0 + 0 + 4 = **5**.\n\nInilah operasi konvolusi di **satu** posisi — perkalian titik antara kernel dan sepetak masukan, persis seperti perkalian titik vektor di Topik 5, hanya diatur dalam grid. Kernel ini (diagonal 1, sisanya 0) menjumlahkan diagonal petak. Menggeser kernel ini ke seluruh masukan, mengulang perhitungan yang sama di tiap posisi, menghasilkan satu peta fitur utuh — itulah yang kamu bangun di Tulis Kode 03."
     }
   ],
-  "number": 48
+  "number": 59
 }

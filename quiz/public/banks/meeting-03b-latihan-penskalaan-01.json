@@ -1,0 +1,102 @@
+{
+  "id": "meeting-03b-latihan-penskalaan-01",
+  "group": "Pertemuan 3",
+  "title": "Penskalaan 01",
+  "summary": "Sebuah sekolah menyiapkan data siswa untuk sebuah model berbasis jarak. Karena tiap ciri memiliki satuan yang berbeda, nilainya perlu **diskalakan** lebih dahulu agar bisa dibandingkan secara adil. Set ini melatih dua cara penskalaan: **standardisasi (z-score)** dan **penskalaan min-maks**.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama**.\n\n- Untuk angka, tuliskan nilainya **tanpa pembulatan**. Semua jawaban pada set ini berupa desimal berhenti, misalnya `0.9` atau `-1.5`. Gunakan titik sebagai pemisah desimal, dan tanda `-` untuk nilai negatif.\n- Untuk nama, tuliskan persis seperti pada soal, misalnya `Sena`.",
+  "formulas": "Standardisasi (z-score), memakai rata-rata latih \\(\\mu\\) dan simpangan baku latih \\(\\sigma\\):\n\n\\[\nz=\\frac{x-\\mu}{\\sigma}.\n\\]\n\nMembalik z-score menjadi nilai asli:\n\n\\[\nx=\\mu+z\\,\\sigma.\n\\]\n\nPenskalaan min-maks, memakai nilai terkecil dan terbesar dari data latih:\n\n\\[\nx'=\\frac{x-x_{\\min}}{x_{\\max}-x_{\\min}}.\n\\]\n\nKunci setiap penskalaan sama bentuknya: **kurangi sebuah acuan, lalu bagi dengan sebuah rentang.**\n\n## Data latih\n\nDua ciri diringkas dari data latih (data yang dipakai untuk melatih model).\n\n| Ciri | Rata-rata \\(\\mu\\) | Simpangan baku \\(\\sigma\\) | Terkecil | Terbesar |\n|---|---:|---:|---:|---:|\n| Skor kuis | 70 | 8 | 50 | 90 |\n| Waktu pengerjaan (menit) | 60 | 25 | 20 | 120 |\n\nSemua nilai acuan (rata-rata, simpangan baku, terkecil, terbesar) **hanya** dihitung dari data latih ini, lalu dipakai apa adanya untuk data mana pun.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Standarkan satu nilai",
+      "type": "fill",
+      "prompt": "Seorang siswa memperoleh **skor kuis 86**. Ubah skor ini menjadi z-score memakai rata-rata dan simpangan baku latih pada tabel.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz=\\frac{86-70}{8}=\\frac{16}{8}=2.\n\\]\n\nSkor 86 berjarak dua simpangan baku di atas rata-rata latih."
+    },
+    {
+      "id": "S2",
+      "name": "Skalakan ke rentang 0–1",
+      "type": "fill",
+      "prompt": "Ubah skor kuis 86 yang sama menggunakan **penskalaan min-maks** dengan nilai terkecil dan terbesar latih.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.9,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Rentang latih skor adalah \\(90-50=40\\).\n\n\\[\nx'=\\frac{86-50}{40}=\\frac{36}{40}=0.9.\n\\]\n\nNilai yang sama (86) menjadi `2` pada z-score dan `0.9` pada min-maks — dua penggaris berbeda untuk angka yang sama."
+    },
+    {
+      "id": "S3",
+      "name": "Nilai dari data uji",
+      "type": "fill",
+      "prompt": "Sebuah **skor 58** muncul pada data uji (data yang disembunyikan sampai penilaian akhir). Seorang teman mengusulkan menghitung ulang rata-rata dan simpangan baku dari data uji itu sendiri, lalu memakainya untuk menstandarkan skor 58.\n\nUsulan itu keliru: acuan harus tetap berasal dari data latih, bukan data uji. Standarkan skor 58 dengan cara yang **benar**, yaitu memakai rata-rata dan simpangan baku **latih** (70 dan 8).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": -1.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Gunakan rata-rata dan simpangan baku **latih**, bukan hasil hitung ulang dari data uji.\n\n\\[\nz=\\frac{58-70}{8}=\\frac{-12}{8}=-1.5.\n\\]\n\nSkor 58 berada 1.5 simpangan baku di bawah rata-rata latih.\n\nKalau rata-rata dan simpangan baku dihitung ulang dari data uji, angka acuan itu sudah \"mengintip\" data uji. Itulah **kebocoran (leakage)**: informasi yang seharusnya masih tersembunyi ikut menentukan penskalaan. Aturannya tetap: pas (fit) pada data latih, lalu terapkan (transform) pada data uji."
+    },
+    {
+      "id": "S4",
+      "name": "Membaca mundur",
+      "type": "fill",
+      "prompt": "Sebuah skor kuis memiliki z-score **0.25** (relatif terhadap rata-rata latih 70 dan simpangan baku latih 8). Berapa skor aslinya?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 72,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Balik rumusnya:\n\n\\[\nx=\\mu+z\\,\\sigma=70+(0.25)(8)=70+2=72.\n\\]"
+    },
+    {
+      "id": "S5",
+      "name": "Di luar rentang latih",
+      "type": "fill",
+      "prompt": "Pada data uji muncul skor **98**, lebih tinggi daripada skor terbesar yang pernah dilihat pada data latih (90). Skalakan skor 98 memakai **penskalaan min-maks** dengan nilai terkecil dan terbesar latih (50 dan 90).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 1.2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nx'=\\frac{98-50}{40}=\\frac{48}{40}=1.2.\n\\]\n\nHasil lebih dari 1 **bukan** kesalahan. Artinya nilai itu berada di atas nilai terbesar yang dilihat pada data latih. Min-maks memetakan rentang latih ke 0–1; nilai di luar rentang latih boleh keluar dari 0–1."
+    },
+    {
+      "id": "S6",
+      "name": "Penskalaan mengubah tetangga terdekat",
+      "type": "fill",
+      "prompt": "Dua siswa dibandingkan dengan seorang siswa acuan **Q** yang skornya 70 dan waktunya 60 menit (keduanya tepat di rata-rata).\n\n| Siswa | Skor kuis | Waktu (menit) |\n|---|---:|---:|\n| Q (acuan) | 70 | 60 |\n| Rani | 86 | 60 |\n| Sena | 70 | 85 |\n\nPertama, hitung kuadrat jarak Rani dan Sena ke Q memakai angka **asli** (tanpa penskalaan). Kemudian standarkan kedua ciri (skor dengan \\(\\mu=70,\\sigma=8\\); waktu dengan \\(\\mu=60,\\sigma=25\\)) dan hitung ulang kuadrat jaraknya.\n\nSetelah **kedua ciri distandarkan**, siswa mana yang lebih dekat ke Q?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "Sena"
+          ]
+        }
+      ],
+      "solution": "Pada angka asli:\n\n| Siswa | Kuadrat jarak ke Q | |\n|---|---|---:|\n| Rani | \\((86-70)^2+(60-60)^2=256+0\\) | 256 |\n| Sena | \\((70-70)^2+(85-60)^2=0+625\\) | 625 |\n\nTanpa penskalaan, **Rani** lebih dekat (256 < 625).\n\nSetelah distandarkan (skor dibagi 8, waktu dibagi 25):\n\n| Siswa | z-skor | z-waktu | Kuadrat jarak ke Q |\n|---|---:|---:|---:|\n| Q | \\((70-70)/8=0\\) | \\((60-60)/25=0\\) | — |\n| Rani | \\((86-70)/8=2\\) | \\((60-60)/25=0\\) | \\(2^2+0^2=4\\) |\n| Sena | \\((70-70)/8=0\\) | \\((85-60)/25=1\\) | \\(0^2+1^2=1\\) |\n\nSetelah penskalaan, **Sena** lebih dekat (1 < 4). Jadi jawabannya **Sena** — penskalaan membalik tetangga terdekatnya.\n\nSebabnya: pada angka asli, selisih waktu Sena 25 menit terlihat lebih besar daripada selisih skor Rani 16 poin, sehingga Sena tampak jauh. Tetapi diukur terhadap sebaran ciri masing-masing, selisih skor 16 poin itu dua simpangan baku, sedangkan selisih waktu 25 menit hanya satu simpangan baku. Penskalaan membuat kedua ciri berbicara dengan takaran yang sama."
+    }
+  ],
+  "number": 12
+}

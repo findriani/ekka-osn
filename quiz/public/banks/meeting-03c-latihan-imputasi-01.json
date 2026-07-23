@@ -1,0 +1,102 @@
+{
+  "id": "meeting-03c-latihan-imputasi-01",
+  "group": "Pertemuan 3",
+  "title": "Pembersihan Data 01",
+  "summary": "Sebuah survei sekolah mengumpulkan data siswa, tetapi beberapa sel **kosong** dan satu kolom berisi **kategori**, bukan angka. Sebelum data bisa dipakai model, sel kosong perlu diisi dengan aturan yang jujur dan kategori perlu diubah menjadi angka. Set ini melatih **imputasi** (pengisian nilai hilang) dan penyusunan vektor ciri.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama kategori**.\n\n- Untuk angka, tuliskan nilainya **tanpa pembulatan**, memakai titik desimal bila perlu, misalnya `7` atau `4`.\n- Untuk nama kategori, tuliskan persis seperti pada tabel, misalnya `jalan`.",
+  "formulas": "Rata-rata (mean) dari \\(n\\) angka:\n\n\\[\n\\text{mean}=\\frac{\\text{jumlah semua nilai}}{n}.\n\\]\n\n**Median**: urutkan nilainya, lalu ambil nilai tengah.\n\nAturan pengisian yang lazim:\n\n| Jenis ciri | Aturan pengisian | Alasan |\n|---|---|---|\n| Angka | rata-rata, atau median | nilai yang khas; median tahan terhadap satu nilai ekstrem |\n| Kategori | kategori paling sering (modus) | tetap kategori sah yang sudah dikenal |\n\n**Ingat:** *kosong* bukan berarti *nol*. Mengisi sel kosong dengan 0 justru mengarang data.\n\n## Data latih\n\nLima siswa terdata lengkap (data latih). Seorang siswa baru, **A6**, memiliki dua sel kosong.\n\n| Siswa | Jam tidur | Transport | Jarak (km) |\n|---|---:|---|---:|\n| A1 | 6 | jalan | 1 |\n| A2 | 7 | sepeda | 2 |\n| A3 | 8 | bus | 2 |\n| A4 | 8 | jalan | 3 |\n| A5 | 6 | jalan | 12 |\n| A6 | *(kosong)* | *(kosong)* | 4 |\n\nSemua aturan pengisian dihitung dari data latih A1–A5.",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Isi angka yang hilang dengan rata-rata",
+      "type": "fill",
+      "prompt": "Jam tidur siswa **A6** kosong. Isi dengan **rata-rata** jam tidur data latih (A1–A5). Berapa nilai yang mengisi sel itu?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 7,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Jam tidur latih: \\(6, 7, 8, 8, 6\\).\n\n\\[\n\\text{mean}=\\frac{6+7+8+8+6}{5}=\\frac{35}{5}=7.\n\\]\n\nSel kosong A6 diisi 7."
+    },
+    {
+      "id": "S2",
+      "name": "Median untuk kolom yang punya nilai jauh",
+      "type": "fill",
+      "prompt": "Kolom **jarak** memuat satu nilai yang jauh lebih besar dari yang lain (12 km). Untuk mengisi jarak yang hilang, aturan yang lebih aman adalah **median**. Berapa median jarak data latih (A1–A5)?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Jarak latih diurutkan: \\(1, 2, 2, 3, 12\\). Nilai tengah (ketiga dari lima) adalah **2**."
+    },
+    {
+      "id": "S3",
+      "name": "Bandingkan dengan rata-rata",
+      "type": "fill",
+      "prompt": "Berapa **rata-rata (mean)** jarak data latih (A1–A5)? Setelah menghitungnya, bandingkan dengan median dari Soal 2.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\text{mean}=\\frac{1+2+2+3+12}{5}=\\frac{20}{5}=4.\n\\]\n\nPerhatikan: rata-rata **4** lebih tinggi daripada median **2**. Satu nilai jauh (12 km) menarik rata-rata ke atas, padahal empat siswa lainnya berjarak 1–3 km. Untuk kolom seperti ini, median memberi nilai khas yang lebih jujur, itulah sebabnya median dipilih pada Soal 2."
+    },
+    {
+      "id": "S4",
+      "name": "Isi kategori yang hilang",
+      "type": "fill",
+      "prompt": "Kolom **transport** siswa **A6** kosong. Isi dengan kategori yang **paling sering** muncul pada data latih (A1–A5). Kategori apa itu?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "jalan"
+          ]
+        }
+      ],
+      "solution": "Hitung kemunculan tiap kategori transport pada A1–A5:\n\n| Kategori | Jumlah |\n|---|---:|\n| jalan | 3 |\n| sepeda | 1 |\n| bus | 1 |\n\nYang paling sering adalah **jalan** (3 kali), maka sel kosong A6 diisi `jalan`."
+    },
+    {
+      "id": "S5",
+      "name": "Nilai isian lalu distandarkan",
+      "type": "fill",
+      "prompt": "Jam tidur A6 sudah diisi dengan rata-rata latih (hasil Soal 1). Nilai isian itu kemudian **distandarkan** (z-score) memakai rata-rata latih dan simpangan baku latih yang bernilai positif.\n\nBerapa z-score dari nilai isian tersebut?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Nilai isian sama persis dengan rata-rata latih (7). Maka pembilang z-score bernilai nol:\n\n\\[\nz=\\frac{7-7}{\\sigma}=\\frac{0}{\\sigma}=0.\n\\]\n\nBerapa pun simpangan bakunya (selama positif), hasilnya tetap 0. Ini akibat yang perlu disadari: mengisi sel kosong dengan **rata-rata** membuat nilai itu jatuh tepat di pusat (z-score 0). Cara ini menutup lubang, tetapi juga menambah satu titik \"rata-rata palsu\" yang bisa mengecilkan keragaman data."
+    },
+    {
+      "id": "S6",
+      "name": "Lebar vektor ciri setelah one-hot",
+      "type": "fill",
+      "prompt": "Setiap siswa akan diubah menjadi satu vektor angka. Kolom **transport** punya tiga kategori (`jalan`, `sepeda`, `bus`), sehingga di-**one-hot** menjadi beberapa kolom 0/1. Kolom **Siswa** (pengenal) dibuang.\n\nSetiap siswa jadinya memakai: **jam tidur** (satu angka) + **transport** (one-hot) + **jarak** (satu angka).\n\nBerapa banyak kolom angka pada vektor ciri akhir setiap siswa?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Hitung kolomnya:\n\n- jam tidur: 1 kolom angka;\n- transport (one-hot 3 kategori): 3 kolom 0/1;\n- jarak: 1 kolom angka.\n\n\\[\n1+3+1=5.\n\\]\n\nKolom `Siswa` adalah pengenal (identifier) dan dibuang, jadi tidak dihitung. Perhatikan bahwa satu kolom kategori berubah menjadi **tiga** kolom, sehingga vektor ciri menjadi lebih lebar daripada tabel asalnya."
+    }
+  ],
+  "number": 13
+}

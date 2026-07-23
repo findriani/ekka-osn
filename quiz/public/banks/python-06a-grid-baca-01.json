@@ -96,5 +96,5 @@
       "solution": "Mulai dari `m = grid[0][0] = 3`, lalu telusuri:\n\n| angka | lebih besar dari `m`? | `m` |\n|---|---|---|\n| 3 | — | 3 |\n| 8 | ya | 8 |\n| 1 | tidak | 8 |\n| 6 | tidak | 8 |\n| 2 | tidak | 8 |\n| 7 | tidak | 8 |\n\nTerbesar = **8**.\n\nPola \"juara sementara\" ini sama dengan mencari pusat terdekat di Topik 5 — mulai dengan satu tebakan, perbaiki tiap kali menemukan yang lebih baik. Memulai dari `grid[0][0]` aman karena grid dijamin tidak kosong; kalau bisa kosong, mulailah dari `None` seperti di pencarian terdekat."
     }
   ],
-  "number": 37
+  "number": 48
 }

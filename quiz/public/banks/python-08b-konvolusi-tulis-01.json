@@ -87,5 +87,5 @@
       "solution": "<pre class=\"kunci\">def konvolusi_titik(patch, kernel):\n    total = 0\n    for r in range(len(patch)):\n        for c in range(len(patch[0])):\n            total += patch[r][c] * kernel[r][c]\n    return total</pre>\n\nTelusuri tiap sel, kalikan entri `patch` dengan entri `kernel` yang seposisi, jumlahkan. Ini perkalian titik dari Topik 5, hanya diatur dalam grid alih-alih list datar.\n\nInilah operasi konvolusi di satu posisi. Uji pertama memakai kernel diagonal (1 di pojok, 0 di sisanya) yang menjumlahkan diagonal petak: `1 + 4 = 5`. Menggeser operasi ini ke seluruh masukan menghasilkan satu peta fitur — pekerjaan Tulis Kode 03."
     }
   ],
-  "number": 49
+  "number": 60
 }

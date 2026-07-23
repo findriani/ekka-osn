@@ -1,0 +1,101 @@
+{
+  "id": "meeting-03e-latihan-proyeksi-pca-01",
+  "group": "Pertemuan 3",
+  "title": "Proyeksi PCA 01",
+  "summary": "Sebuah tim ingin meringkas **dua** nilai ujian menjadi **satu** angka ringkas, dengan cara memproyeksikan setiap siswa ke sebuah arah. Ini langkah inti **PCA**: pusatkan data dahulu (kurangi rata-rata), lalu proyeksikan ke sebuah arah. Set ini melatih pemusatan dan proyeksi memakai arah yang **sudah diberikan** — mencari arah terbaiknya sendiri diserahkan ke materi lanjutan.",
+  "instructions": "Semua jawaban berupa **angka**.\n\n- Tuliskan nilainya **tanpa pembulatan**, memakai titik desimal, misalnya `2.8` atau `-2.8`.\n- Pakai tanda `-` untuk nilai negatif.",
+  "formulas": "**Pemusatan (centring):** kurangi rata-rata tiap ciri.\n\n\\[\n\\text{titik terpusat}=(x-\\bar x,\\; y-\\bar y).\n\\]\n\n**Proyeksi ke arah \\(v=(v_1, v_2)\\):** kalikan koordinat yang bersesuaian, lalu jumlahkan (hasil kali titik / dot product).\n\n\\[\nz=v_1\\,x+v_2\\,y.\n\\]\n\nArah pada set ini selalu berupa **vektor satuan** (panjangnya 1), misalnya \\((0.6, 0.8)\\) karena \\(0.6^2+0.8^2=1\\).\n\n## Data\n\nTiga siswa, masing-masing dengan nilai Matematika \\((x)\\) dan Fisika \\((y)\\).\n\n| Siswa | Matematika \\(x\\) | Fisika \\(y\\) |\n|---|---:|---:|\n| S1 | 2 | 4 |\n| S2 | 4 | 6 |\n| S3 | 6 | 8 |",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Titik pusat data",
+      "type": "fill",
+      "prompt": "Untuk memusatkan data, kita perlu titik rata-ratanya lebih dahulu. Berapa **rata-rata koordinat-x** (nilai Matematika) dari ketiga siswa?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\n\\bar x=\\frac{2+4+6}{3}=\\frac{12}{3}=4.\n\\]\n\n(Untuk lengkapnya, \\(\\bar y=\\frac{4+6+8}{3}=6\\), sehingga titik pusatnya \\((4,6)\\).)"
+    },
+    {
+      "id": "S2",
+      "name": "Pusatkan satu titik",
+      "type": "fill",
+      "prompt": "Titik pusat data adalah \\((\\bar x, \\bar y) = (4, 6)\\). Kurangi titik pusat ini dari **S3** \\((6, 8)\\). Berapa **koordinat-x** S3 setelah dipusatkan?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nx-\\bar x = 6-4 = 2.\n\\]\n\n(Koordinat-y-nya \\(8-6=2\\), jadi S3 terpusat = \\((2,2)\\).)"
+    },
+    {
+      "id": "S3",
+      "name": "Proyeksikan ke sebuah arah",
+      "type": "fill",
+      "prompt": "Setelah dipusatkan, S3 menjadi titik \\((2, 2)\\). Proyeksikan titik terpusat ini ke arah \\(v = (0.6, 0.8)\\):\n\n\\[\nz = 0.6\\times 2 + 0.8\\times 2.\n\\]\n\nBerapa nilai \\(z\\)?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2.8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 0.6\\times 2 + 0.8\\times 2 = 1.2 + 1.6 = 2.8.\n\\]"
+    },
+    {
+      "id": "S4",
+      "name": "Arah yang sama, titik lain",
+      "type": "fill",
+      "prompt": "Titik terpusat **S1** adalah \\((-2, -2)\\). Proyeksikan ke arah yang sama, \\(v = (0.6, 0.8)\\). Berapa nilai \\(z\\)?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": -2.8,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 0.6\\times(-2) + 0.8\\times(-2) = -1.2 - 1.6 = -2.8.\n\\]\n\nKarena S1 terpusat adalah kebalikan arah dari S3 terpusat, hasilnya sama besar tetapi berlawanan tanda."
+    },
+    {
+      "id": "S5",
+      "name": "Seberapa lebar sebarannya",
+      "type": "fill",
+      "prompt": "Setelah dipusatkan, ketiga siswa menjadi \\((-2,-2)\\), \\((0,0)\\), dan \\((2,2)\\). Proyeksikan **ketiganya** ke arah \\(v=(0.6, 0.8)\\), lalu hitung **rentang** proyeksinya, yaitu nilai terbesar dikurangi nilai terkecil.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 5.6,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Proyeksikan ketiga titik terpusat ke \\(v=(0.6,0.8)\\):\n\n| Titik terpusat | \\(z = 0.6x + 0.8y\\) |\n|---|---:|\n| \\((-2,-2)\\) | \\(-1.2-1.6=-2.8\\) |\n| \\((0,0)\\) | \\(0\\) |\n| \\((2,2)\\) | \\(1.2+1.6=2.8\\) |\n\nRentang = \\(2.8-(-2.8)=5.6\\).\n\nBandingkan dengan arah mendatar \\(v=(1,0)\\), yang hanya membaca koordinat-x: proyeksinya \\(-2, 0, 2\\) dengan rentang \\(2-(-2)=4\\). Arah \\((0.6, 0.8)\\) mempertahankan sebaran lebih lebar (5.6) daripada arah mendatar (4). Itulah yang dicari PCA: arah yang menjaga sebaran sebesar mungkin."
+    },
+    {
+      "id": "S6",
+      "name": "Arah lain, sebaran lain",
+      "type": "fill",
+      "prompt": "Proyeksikan titik terpusat **S3** \\((2, 2)\\) ke arah **berbeda**, \\(v = (0.8, -0.6)\\):\n\n\\[\nz = 0.8\\times 2 + (-0.6)\\times 2.\n\\]\n\nBerapa nilai \\(z\\)?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0.4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 0.8\\times 2 + (-0.6)\\times 2 = 1.6 - 1.2 = 0.4.\n\\]\n\nPerhatikan: titik yang sama \\((2,2)\\) memberi \\(2.8\\) pada arah \\((0.6,0.8)\\), tetapi hanya \\(0.4\\) pada arah \\((0.8,-0.6)\\). Arah kedua hampir tegak lurus dengan sebaran data, sehingga titik-titik yang tadinya berjauhan menjadi berdempetan (rentangnya hanya \\(0.4-(-0.4)=0.8\\)). Memilih arah yang salah \"memipihkan\" data dan membuang sebarannya — persis yang **tidak** diinginkan PCA."
+    }
+  ],
+  "number": 15
+}

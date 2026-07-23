@@ -96,5 +96,5 @@
       "solution": "Tulis ulang list-nya di tiap langkah:\n\n| perintah | isi `antrean` |\n|---|---|\n| awal | `[1, 2, 3, 4]` |\n| `.append(5)` | `[1, 2, 3, 4, 5]` |\n| `.pop(0)` | `[2, 3, 4, 5]` |\n| `.pop()` | `[2, 3, 4]` |\n\n2 + 3 + 4 = **9**.\n\nBedanya: `.pop()` tanpa isi mengambil yang **terakhir**; `.pop(0)` mengambil yang di indeks 0, yaitu yang **pertama**. Keduanya mengubah list aslinya dan mengembalikan isi yang diambil."
     }
   ],
-  "number": 17
+  "number": 28
 }

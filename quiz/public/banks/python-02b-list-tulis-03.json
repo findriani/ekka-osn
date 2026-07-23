@@ -89,5 +89,5 @@
       "solution": "<pre class=\"kunci\">def transpose(grid):\n    baris = len(grid)\n    kolom = len(grid[0])\n    return [[grid[r][k] for r in range(baris)] for k in range(kolom)]</pre>\n\nBacalah dari dalam ke luar. Untuk tiap kolom `k` di grid lama, kumpulkan `grid[r][k]` dari **semua** baris `r` — itu menjadi satu baris di grid baru.\n\nPerhatikan hasilnya berganti ukuran: `transpose([[1, 2, 3]])` mengubah 1×3 menjadi 3×1. Karena itu comprehension luar berjalan atas `kolom`, bukan `baris`. Kalau kamu tertukar, `transpose([[1, 2, 3]])` akan memberi `IndexError` — dan uji kedua ada khusus untuk menangkap itu.\n\nVersi panjangnya, kalau comprehension bersarang terasa terlalu padat:\n\n<pre class=\"code\">def transpose(grid):\n    hasil = []\n    for k in range(len(grid[0])):\n        baris_baru = []\n        for r in range(len(grid)):\n            baris_baru.append(grid[r][k])\n        hasil.append(baris_baru)\n    return hasil</pre>\n\nSama benarnya. Tulis versi ini dulu kalau ragu, baru padatkan.\n\nSoal ini adalah gabungan semua yang ada di Topik 2: indeks dua lapis, membangun list baru, dan `len(grid)` lawan `len(grid[0])`."
     }
   ],
-  "number": 21
+  "number": 32
 }

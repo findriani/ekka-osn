@@ -96,5 +96,5 @@
       "solution": "Tinggi keluaran dihitung dari tinggi saja: `(28 - 5 + 0) // 1 + 1 = 23 + 1 = 24`.\n\nLebarnya, dari kernel selebar 1, adalah `(28 - 1) // 1 + 1 = 28` — tak berubah. Jadi keluaran 24×28: kernel 5×1 memangkas tinggi tetapi membiarkan lebar utuh. Inilah kenapa tinggi dan lebar **harus dihitung terpisah** saat kernel atau masukannya tidak persegi. Menukar keduanya adalah salah satu kesalahan paling sering di Soal 22–25."
     }
   ],
-  "number": 47
+  "number": 58
 }

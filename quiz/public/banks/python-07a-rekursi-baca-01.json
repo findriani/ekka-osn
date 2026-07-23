@@ -96,5 +96,5 @@
       "solution": "Isi pertama ditambah jumlah sisanya:\n\n`3 + (1 + (4 + (2 + 0)))` = **10**.\n\nSama persis dengan Soal 4, tetapi `1 +` diganti `data[0] +`: alih-alih menghitung berapa isi, ia menjumlahkan isinya. Satu kerangka rekursi, dua pekerjaan berbeda — hanya bagian yang ditambahkan yang berubah. Ini `sum` versi rekursif."
     }
   ],
-  "number": 42
+  "number": 53
 }

@@ -89,5 +89,5 @@
       "solution": "<pre class=\"kunci\">def rata_rata(data):\n    return sum(data) / len(data)</pre>\n\nSatu garis miring, bukan dua.\n\nKalau kamu menulis `//`, kodemu **lolos 2 dari 4 uji** — dan justru itu yang membuatnya berbahaya:\n\n| uji | dengan `//` | |\n|---|---|---|\n| `rata_rata([1, 2, 3]) == 2` | `6 // 3` = 2 | **lolos** |\n| `rata_rata([1, 2]) == 1.5` | `3 // 2` = 1 | gagal |\n| `rata_rata([1, 2, 2]) == 5 / 3` | `5 // 3` = 1 | gagal |\n| `rata_rata([4]) == 4` | `4 // 1` = 4 | **lolos** |\n\nDua uji yang lolos punya kesamaan: **hasilnya kebetulan bulat**. Selama datamu bagus, `//` terlihat benar seumur hidup. Uji kedua dan ketiga sengaja dipilih supaya hasilnya **tidak** bulat.\n\nPerhatikan `rata_rata([1, 2, 3]) == 2` tetap lolos walau `/` memberi `2.0`, bukan `2`. Python menganggap `2.0 == 2` benar — nilainya sama, cuma jenisnya beda. Jadi jangan pernah pakai `//` demi \"supaya bulat\"; kalau kamu memang butuh bilangan bulat, `round` di **paling akhir** yang benar."
     }
   ],
-  "number": 24
+  "number": 35
 }

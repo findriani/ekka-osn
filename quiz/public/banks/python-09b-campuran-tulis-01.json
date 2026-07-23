@@ -89,5 +89,5 @@
       "solution": "<pre class=\"kunci\">def hitung_tetangga(grid, r, k, huruf):\n    baris, kolom = len(grid), len(grid[0])\n    total = 0\n    for dr in (-1, 0, 1):\n        for dk in (-1, 0, 1):\n            if dr == 0 and dk == 0:\n                continue\n            nr, nk = r + dr, k + dk\n            if 0 &lt;= nr &lt; baris and 0 &lt;= nk &lt; kolom and grid[nr][nk] == huruf:\n                total += 1\n    return total</pre>\n\nDua perulangan bersarang atas `(-1, 0, 1)` menghasilkan sembilan pasangan; `continue` membuang satu-satunya yang bukan tetangga, yaitu selnya sendiri. Ini lebih pendek dan lebih sulit disalahtulis daripada mendaftar kedelapan arah satu per satu.\n\nPemeriksaan batas `0 &lt;= nr &lt; baris` adalah bagian yang paling sering gagal. Tanpanya, `grid[-1][k]` **tidak error** — Python membaca indeks negatif sebagai hitungan dari belakang, jadi kodemu akan diam-diam menghitung tetangga dari sisi grid yang berlawanan. Uji `[\"A\"]` dan pojok `(0, 0)` ada khusus untuk menangkap ini: keduanya lolos pada kode yang salah kalau batasnya tidak diperiksa.\n\nFungsi ini adalah setengah dari soal menghitung lintasan `IOAI` di seleksi 2025. Setengahnya lagi adalah rekursi yang memanggil fungsi ini berulang-ulang."
     }
   ],
-  "number": 52
+  "number": 63
 }

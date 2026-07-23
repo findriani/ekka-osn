@@ -96,5 +96,5 @@
       "solution": "`baris = grid[0]` tidak menyalin baris pertama; ia memberi nama kedua kepada baris yang sama. Jadi `baris[0] = 9` mengubah `grid[0][0]` juga, dan yang dicetak adalah **9**.\n\nIni aliasing dari Topik 2, muncul lagi di dalam grid. Sebuah baris grid adalah list biasa, dan `baris = grid[0]` tunduk pada aturan yang sama dengan `b = a`. Kalau kamu mau menyalin barisnya, tulis `baris = grid[0][:]`.\n\nInilah kenapa menyalin grid butuh menyalin **tiap baris**, bukan cuma list luarnya — persis yang kamu pelajari di `salin_grid` Topik 2, dan yang kamu pakai lagi saat mencoba langkah pada papan tanpa merusak aslinya."
     }
   ],
-  "number": 38
+  "number": 49
 }

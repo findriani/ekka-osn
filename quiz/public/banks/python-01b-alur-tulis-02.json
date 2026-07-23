@@ -90,5 +90,5 @@
       "solution": "<pre class=\"kunci\">def hitung_turun(data):\n    turun = 0\n    for i in range(1, len(data)):\n        if data[i] &lt; data[i - 1]:\n            turun += 1\n    return turun</pre>\n\nSoal ini beda dari yang lain: kamu butuh **dua** angka sekaligus, yang sekarang dan yang sebelumnya. Jadi `for n in data` tidak cukup — kamu perlu indeksnya.\n\nKuncinya `range(1, len(data))`, dimulai dari **1**, bukan 0. Angka pertama tidak punya \"sebelumnya\", jadi tidak ada yang bisa dibandingkan. Kalau kamu mulai dari 0, `data[-1]` **tidak error** — Python membacanya sebagai angka **terakhir**, jadi kodemu diam-diam membandingkan yang pertama dengan yang terakhir dan menambah hitungan yang tidak seharusnya ada.\n\nUji `[2, 5, 4, 4, 3]`: 2→5 naik, 5→4 **turun**, 4→4 sama (tidak dihitung), 4→3 **turun**. Dua. Kalau kamu mulai dari indeks 0, Python juga membandingkan `data[0] = 2` dengan `data[-1] = 3`, dan karena 2 < 3 hitungannya menjadi 3. Uji `[1, 2, 3]` menangkap hal yang sama: 1 < 3, jadi jawabannya menjadi 1, bukan 0.\n\nUji `[5]` dan `[]` mengerjakan tugas yang berbeda. Keduanya memastikan kamu tidak perlu `if` khusus untuk list pendek: `range(1, 1)` dan `range(1, 0)` sama-sama kosong, jadi perulangannya tidak jalan sama sekali dan `turun` tetap 0. Benar dengan sendirinya."
     }
   ],
-  "number": 15
+  "number": 26
 }

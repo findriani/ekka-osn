@@ -85,5 +85,5 @@
       "solution": "<pre class=\"kunci\">def terdekat(q, pusat):\n    def jarak2(a, b):\n        return sum((a[i] - b[i]) ** 2 for i in range(len(a)))\n    terbaik = None\n    for nama in pusat:\n        if terbaik is None or jarak2(q, pusat[nama]) &lt; jarak2(q, pusat[terbaik]):\n            terbaik = nama\n    return terbaik</pre>\n\nIni kerangka \"cari yang terdekat\" yang utuh. `terbaik = None` di awal, lalu tiap pusat dibandingkan: kalau belum ada juara, atau yang ini lebih dekat, ia menjadi juara baru. Yang dikembalikan **nama**, karena itu yang diminta — bukan jaraknya.\n\nKenapa `terbaik = None` dan bukan `terbaik = pusat[0]`? Karena dictionary tidak punya \"yang ke-0\". `None` adalah cara aman memulai \"belum ada juara\". Versi memakai `min`: `return min(pusat, key=lambda nama: jarak2(q, pusat[nama]))` — lebih pendek, tetapi versi perulangan memperlihatkan apa yang sebenarnya terjadi. Fungsi inilah yang mengklasifikasikan kata di seleksi 12–21: tiap kata dibandingkan jaraknya ke beberapa pusat, yang terdekat menang."
     }
   ],
-  "number": 35
+  "number": 46
 }

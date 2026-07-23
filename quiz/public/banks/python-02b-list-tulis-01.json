@@ -86,5 +86,5 @@
       "solution": "<pre class=\"kunci\">def banyaknya(data):\n    return len(data)</pre>\n\nUji ketiga yang menarik: `banyaknya([[1, 2], [3]]) == 2`.\n\nList itu berisi **dua** isi — dan kebetulan kedua isinya sendiri berupa list. `len` hanya menghitung lapisan **paling luar**; ia tidak mengintip ke dalam. Ada tiga angka di sana, tetapi hanya dua isi.\n\nIni persis cara kerja grid nanti: `len(grid)` memberi banyaknya **baris**, dan `len(grid[0])` memberi banyaknya **kolom** di baris pertama. Dua panggilan `len` yang berbeda, dua arti yang berbeda."
     }
   ],
-  "number": 19
+  "number": 30
 }

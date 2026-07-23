@@ -91,5 +91,5 @@
       "solution": "<pre class=\"kunci\">def jumlah_bersarang(data):\n    if data == []:\n        return 0\n    kepala = data[0]\n    if isinstance(kepala, list):\n        return jumlah_bersarang(kepala) + jumlah_bersarang(data[1:])\n    return kepala + jumlah_bersarang(data[1:])</pre>\n\nDua sumber rekursi. Kalau isi pertama sebuah **list**, selami ia (`jumlah_bersarang(kepala)`) lalu lanjutkan ke sisanya. Kalau ia sebuah **angka**, tambahkan langsung lalu lanjutkan ke sisanya. `isinstance(kepala, list)` yang memutuskan mana yang berlaku.\n\nInilah rekursi yang bercabang mengikuti **bentuk data**, bukan sekadar mengecilkan angka. Pola ini — \"kalau list, selami; kalau bukan, olah\" — adalah dasar menelusuri struktur bersarang, dan muncul lagi saat menelusuri grid atau pohon di soal seleksi."
     }
   ],
-  "number": 45
+  "number": 56
 }

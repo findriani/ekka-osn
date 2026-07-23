@@ -1,0 +1,105 @@
+{
+  "id": "meeting-04a-latihan-forward-pass-02",
+  "group": "Pertemuan 4",
+  "title": "Lintasan Maju (*Forward Pass*) 02 — Perceptron dan Gerbang Logika",
+  "summary": "Sebuah **lampu pintar** menggunakan dua sensor: sensor cahaya dan sensor keberadaan orang. Masing-masing sensor hanya menghasilkan 0 atau 1. Satu **perceptron** menggabungkan kedua masukan itu menjadi skor \\(z\\), lalu menyalakan lampu jika \\(z\\ge0\\). Karena masukannya biner, pola keluaran perceptron dapat dibaca sebagai sebuah **gerbang logika**. Latihan ini membahas gerbang AND, OR, dan NAND, kemudian menunjukkan mengapa satu perceptron tidak dapat merepresentasikan XOR secara sempurna.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama gerbang logika**.\n\n- Untuk keluaran/angka, tuliskan `0`, `1`, atau bilangan bulat lain persis.\n- Untuk nama gerbang, tuliskan salah satu dari `AND`, `OR`, atau `NAND` dengan huruf kapital.",
+  "formulas": "Perceptron dengan dua masukan:\n\n\\[\nz = w_1 x_1 + w_2 x_2 + b, \\qquad\n\\text{keluaran} = \\begin{cases} 1 & \\text{bila } z \\ge 0,\\\\ 0 & \\text{bila } z < 0. \\end{cases}\n\\]\n\nUntuk dua masukan biner \\((x_1,x_2)\\), hanya ada empat kemungkinan: \\((0,0)\\), \\((0,1)\\), \\((1,0)\\), dan \\((1,1)\\). Secara geometri, satu perceptron membentuk **satu garis lurus** sebagai batas keputusan. Karena itu, perceptron hanya dapat memisahkan pola kelas yang **dapat dipisahkan secara linear** (*linearly separable*).\n\nTiga gerbang logika yang muncul di latihan ini:\n\n| Gerbang | Keluaran 1 jika… | Pola keluaran pada \\((0,0),(0,1),(1,0),(1,1)\\) |\n|---|---|---|\n| AND | **kedua** masukan 1 | 0, 0, 0, 1 |\n| OR | **paling sedikit satu** masukan 1 | 0, 1, 1, 1 |\n| NAND | **bukan** (kedua masukan 1) | 1, 1, 1, 0 |\n\n## Data\n\nLampu memakai perceptron **A**: \\(w = (1, 1)\\), \\(b = -1.5\\), sehingga\n\n\\[\nz = x_1 + x_2 - 1.5.\n\\]\n\nArti kedua masukan adalah: \\(x_1=1\\) jika ruangan gelap dan 0 jika terang; \\(x_2=1\\) jika ada orang dan 0 jika ruangan kosong.\n\n<figure class=\"q-image\">\n<svg viewBox=\"0 0 380 400\" role=\"img\">\n  <title>XOR tidak dapat dipisahkan secara linear</title>\n  <desc>Empat pasangan masukan biner x1 dan x2. Titik (0,1) dan (1,0) berada pada kelas 1, sedangkan (0,0) dan (1,1) berada pada kelas 0. Karena kedua kelas menempati sudut yang berseberangan, tidak ada satu garis lurus yang dapat memisahkan semuanya dengan sempurna.</desc>\n  <g font-family=\"ui-sans-serif, system-ui, sans-serif\" font-size=\"13\">\n    <g stroke=\"currentColor\" opacity=\"0.6\" stroke-width=\"1.4\" fill=\"none\">\n      <path d=\"M 70 300 L 330 300\"/>\n      <path d=\"M 90 320 L 90 70\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" text-anchor=\"middle\">\n      <text x=\"90\" y=\"320\">0</text><text x=\"300\" y=\"320\">1</text>\n      <text x=\"200\" y=\"346\">x₁ (gelap)</text>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" text-anchor=\"end\">\n      <text x=\"80\" y=\"304\">0</text><text x=\"80\" y=\"94\">1</text>\n    </g>\n    <text x=\"66\" y=\"70\" fill=\"currentColor\" opacity=\"0.85\" text-anchor=\"middle\">x₂ (ada orang)</text>\n    <path d=\"M 195 78 L 195 322\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\" opacity=\"0.55\"/>\n    <text x=\"203\" y=\"150\" fill=\"currentColor\" opacity=\"0.7\" font-size=\"12\">contoh garis pemisah</text>\n    <g stroke=\"#0072B2\" stroke-width=\"2.4\" fill=\"none\">\n      <circle cx=\"90\" cy=\"300\" r=\"11\"/>\n      <circle cx=\"300\" cy=\"90\" r=\"11\"/>\n    </g>\n    <g fill=\"#E69F00\">\n      <circle cx=\"90\" cy=\"90\" r=\"11\"/>\n      <circle cx=\"300\" cy=\"300\" r=\"11\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.85\" font-size=\"12.5\">\n      <text x=\"104\" y=\"296\">(0,0) → 0</text>\n      <text x=\"200\" y=\"86\">(1,1) → 0</text>\n      <text x=\"104\" y=\"86\">(0,1) → 1</text>\n      <text x=\"200\" y=\"318\">(1,0) → 1</text>\n    </g>\n    <g font-size=\"12.5\">\n      <circle cx=\"96\" cy=\"378\" r=\"9\" fill=\"#E69F00\"/><text x=\"110\" y=\"382\" fill=\"currentColor\">kelas 1 (XOR)</text>\n      <circle cx=\"228\" cy=\"378\" r=\"9\" fill=\"none\" stroke=\"#0072B2\" stroke-width=\"2.4\"/><text x=\"242\" y=\"382\" fill=\"currentColor\">kelas 0</text>\n    </g>\n  </g>\n</svg>\n</figure>",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Menentukan keluaran perceptron",
+      "type": "fill",
+      "prompt": "Ruangan sedang **gelap**, tetapi **tidak ada orang**, sehingga \\((x_1,x_2)=(1,0)\\). Hitung skor \\(z=x_1+x_2-1.5\\), lalu tentukan keadaan lampu. Tuliskan `1` jika lampu menyala atau `0` jika lampu mati.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 1 + 0 - 1.5 = -0.5 < 0 \\;\\Rightarrow\\; \\text{keluaran } 0.\n\\]\n\nGelap saja tidak cukup: lampu A baru menyala bila gelap **dan** ada orang."
+    },
+    {
+      "id": "S2",
+      "name": "Mengenali gerbang perceptron A",
+      "type": "fill",
+      "prompt": "Hitung keluaran perceptron A untuk keempat pasangan masukan \\((0,0)\\), \\((0,1)\\), \\((1,0)\\), dan \\((1,1)\\). Cocokkan pola keluarannya dengan tabel gerbang logika. Pada kolom jawaban, tuliskan **nama gerbangnya**.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "AND"
+          ]
+        }
+      ],
+      "solution": "| \\((x_1,x_2)\\) | \\(z = x_1 + x_2 - 1.5\\) | keluaran |\n|---|---:|:--:|\n| (0,0) | \\(-1.5\\) | 0 |\n| (0,1) | \\(-0.5\\) | 0 |\n| (1,0) | \\(-0.5\\) | 0 |\n| (1,1) | \\(0.5\\) | 1 |\n\nPola keluaran \\(0,0,0,1\\) — hanya menyala saat **kedua** masukan 1. Itulah **AND**."
+    },
+    {
+      "id": "S3",
+      "name": "Mengenali gerbang perceptron B",
+      "type": "fill",
+      "prompt": "Perceptron **B** menggunakan \\(w=(1,1)\\) dan \\(b=-0.5\\), sehingga \\(z=x_1+x_2-0.5\\). Tentukan keluarannya untuk keempat pasangan masukan biner, lalu tuliskan nama gerbang logika yang memiliki pola tersebut.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "OR"
+          ]
+        }
+      ],
+      "solution": "| \\((x_1,x_2)\\) | \\(z = x_1 + x_2 - 0.5\\) | keluaran |\n|---|---:|:--:|\n| (0,0) | \\(-0.5\\) | 0 |\n| (0,1) | \\(0.5\\) | 1 |\n| (1,0) | \\(0.5\\) | 1 |\n| (1,1) | \\(1.5\\) | 1 |\n\nPola \\(0,1,1,1\\) — menyala bila **paling sedikit satu** masukan 1. Itulah **OR**. Perhatikan bobotnya sama seperti A; hanya biasnya yang berbeda."
+    },
+    {
+      "id": "S4",
+      "name": "Gerbang dengan bobot negatif",
+      "type": "fill",
+      "prompt": "Perceptron **C** menggunakan \\(w=(-1,-1)\\) dan \\(b=1.5\\), sehingga \\(z=-x_1-x_2+1.5\\). Hitung pola keluarannya untuk keempat pasangan masukan, lalu tentukan nama gerbang logikanya.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "NAND"
+          ]
+        }
+      ],
+      "solution": "| \\((x_1,x_2)\\) | \\(z = -x_1 - x_2 + 1.5\\) | keluaran |\n|---|---:|:--:|\n| (0,0) | \\(1.5\\) | 1 |\n| (0,1) | \\(0.5\\) | 1 |\n| (1,0) | \\(0.5\\) | 1 |\n| (1,1) | \\(-0.5\\) | 0 |\n\nPola \\(1,1,1,0\\) merupakan kebalikan dari AND. Itulah **NAND** (NOT-AND). Bobot negatif membalik arah pengaruh masukan: semakin banyak masukan bernilai 1, semakin kecil nilai \\(z\\)."
+    },
+    {
+      "id": "S5",
+      "name": "Bias menggeser garis",
+      "type": "fill",
+      "prompt": "Perceptron A semula menggunakan \\(z=x_1+x_2-1.5\\) dan menghasilkan gerbang AND. Bobotnya tetap \\((1,1)\\), tetapi bias diubah dari \\(-1.5\\) menjadi \\(-0.5\\). Setelah perubahan itu, gerbang apa yang dihasilkan?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "OR"
+          ]
+        }
+      ],
+      "solution": "Bandingkan dengan Soal 3. Mengubah bias dari \\(-1.5\\) menjadi \\(-0.5\\) mengubah \\(z=x_1+x_2-1.5\\) (AND) menjadi \\(z=x_1+x_2-0.5\\) (OR). Bias mengatur posisi garis pemisah. Perubahan bias tersebut menggeser garis sehingga lebih banyak titik berada pada sisi keluaran 1. Bobot menentukan **arah** garis, sedangkan bias menentukan **posisinya**."
+    },
+    {
+      "id": "S6",
+      "name": "Batas kemampuan perceptron pada XOR",
+      "type": "fill",
+      "prompt": "Gerbang **XOR** menghasilkan 1 hanya jika **tepat satu** masukan bernilai 1. Urutan keluarannya untuk \\((0,0)\\), \\((0,1)\\), \\((1,0)\\), dan \\((1,1)\\) adalah \\(0,1,1,0\\). Pada gambar, dua titik kelas 1 berada di sudut yang saling berseberangan, sehingga tidak mungkin dipisahkan sempurna oleh satu garis lurus. Dari empat titik tersebut, **paling banyak berapa titik** yang dapat diklasifikasikan dengan benar oleh satu perceptron?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Batas keputusan satu perceptron berupa **satu garis lurus**. Pada XOR, kedua kelas menempati sudut-sudut yang berseberangan secara diagonal (lihat gambar): keluaran 1 berada di \\((0,1)\\) dan \\((1,0)\\), sedangkan keluaran 0 berada di \\((0,0)\\) dan \\((1,1)\\). Tidak ada satu garis lurus yang dapat menempatkan kedua titik kelas 1 pada satu sisi dan kedua titik kelas 0 pada sisi lain. Karena itu, XOR **tidak dapat dipisahkan secara linear**.\n\nBukti singkat lewat pertidaksamaan. Misalkan sebuah perceptron benar pada keempatnya:\n\n- dari \\((0,0)\\to 0\\): \\(b < 0\\);\n- dari \\((0,1)\\to 1\\): \\(w_2+b\\ge 0\\), sehingga \\(w_2\\ge -b>0\\);\n- dari \\((1,0)\\to 1\\): \\(w_1+b\\ge 0\\), sehingga \\(w_1\\ge -b>0\\);\n- dari \\((1,1)\\to 0\\): \\(w_1 + w_2 + b < 0\\).\n\nMenjumlahkan dua baris tengah menghasilkan \\(w_1+w_2\\ge-2b\\). Karena \\(b<0\\), diperoleh \\(w_1+w_2+b\\ge-b>0\\). Hasil ini bertentangan dengan syarat terakhir, yaitu \\(w_1+w_2+b<0\\). Jadi, keempat titik tidak mungkin diklasifikasikan dengan benar secara bersamaan.\n\n**Batas tiga titik dapat dicapai.** Gunakan gerbang OR dari Soal 3, yang keluarannya \\(0,1,1,1\\). Bandingkan dengan target XOR \\(0,1,1,0\\): hasilnya benar pada \\((0,0)\\), \\((0,1)\\), dan \\((1,0)\\), tetapi salah pada \\((1,1)\\). Jadi, tiga dari empat titik dapat diklasifikasikan dengan benar. Gerbang NAND dari Soal 4 juga benar pada tiga titik. Jawaban **3** tepat: empat titik tidak mungkin semuanya benar, tetapi tiga titik dapat dicapai. Untuk merepresentasikan XOR secara sempurna, jaringan memerlukan lapisan tersembunyi, yang akan dibahas pada latihan berikutnya."
+    }
+  ],
+  "number": 18
+}

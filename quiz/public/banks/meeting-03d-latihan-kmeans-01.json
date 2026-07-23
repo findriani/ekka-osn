@@ -1,0 +1,103 @@
+{
+  "id": "meeting-03d-latihan-kmeans-01",
+  "group": "Pertemuan 3",
+  "title": "K-Means 01",
+  "summary": "Sebuah aplikasi antar-makanan mengelompokkan titik **kedai** menjadi dua wilayah layanan memakai **K-Means**. Setiap kedai punya dua koordinat, \\((x, y)\\), pada peta kota. Dua **pusat** (centroid) menandai dua kelompok. Set ini melatih satu putaran penuh K-Means: menghitung jarak, menempatkan tiap titik ke pusat terdekat, lalu memperbarui pusat.",
+  "instructions": "Jawaban dapat berupa **angka** atau **nama pusat**.\n\n- Untuk angka, tuliskan nilainya **tanpa pembulatan**, memakai titik desimal bila perlu, misalnya `4.5`.\n- Untuk nama pusat, tuliskan `P1` atau `P2` persis.",
+  "formulas": "Kuadrat jarak antara titik \\((x,y)\\) dan pusat \\((a,b)\\):\n\n\\[\nd^2=(x-a)^2+(y-b)^2.\n\\]\n\nUntuk mencari pusat **terdekat**, cukup bandingkan kuadrat jaraknya — tidak perlu mengambil akar, karena kuadrat yang lebih kecil selalu berarti jarak yang lebih kecil.\n\nMemperbarui pusat = **rata-rata koordinat** semua titik anggotanya (rata-rata x sendiri, rata-rata y sendiri).\n\n## Data\n\nEnam kedai dan dua pusat awal.\n\n| Kedai | x | y |\n|---|---:|---:|\n| A | 1 | 1 |\n| B | 3 | 1 |\n| C | 2 | 4 |\n| D | 4 | 2 |\n| E | 7 | 4 |\n| F | 9 | 5 |\n\nPusat awal: **P1** di \\((2, 2)\\) dan **P2** di \\((8, 4)\\).\n\n<figure class=\"q-image\">\n<svg viewBox=\"0 0 480 390\" role=\"img\">\n  <title>Sebaran enam kedai dan dua pusat awal</title>\n  <desc>Bidang koordinat x terhadap y. Enam kedai A sampai F sebagai titik, serta dua pusat P1 di (2,2) dan P2 di (8,4) sebagai belah ketupat. Kedua sumbu memakai skala yang sama.</desc>\n  <g font-family=\"ui-sans-serif, system-ui, sans-serif\" font-size=\"12\">\n    <g stroke=\"currentColor\" opacity=\"0.12\" stroke-width=\"1\">\n      <path d=\"M 142 340 L 142 64 M 214 340 L 214 64 M 286 340 L 286 64 M 358 340 L 358 64 M 430 340 L 430 64\"/>\n      <path d=\"M 70 248 L 430 248 M 70 156 L 430 156 M 70 64 L 430 64\"/>\n    </g>\n    <g stroke=\"currentColor\" opacity=\"0.65\" stroke-width=\"1.4\" fill=\"none\">\n      <path d=\"M 70 340 L 430 340\"/>\n      <path d=\"M 70 340 L 70 64\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.7\" text-anchor=\"middle\">\n      <text x=\"70\" y=\"358\">0</text><text x=\"142\" y=\"358\">2</text><text x=\"214\" y=\"358\">4</text>\n      <text x=\"286\" y=\"358\">6</text><text x=\"358\" y=\"358\">8</text><text x=\"430\" y=\"358\">10</text>\n      <text x=\"250\" y=\"378\" opacity=\"0.9\">koordinat x</text>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.7\" text-anchor=\"end\">\n      <text x=\"60\" y=\"344\">0</text><text x=\"60\" y=\"252\">2</text><text x=\"60\" y=\"160\">4</text><text x=\"60\" y=\"68\">6</text>\n    </g>\n    <text x=\"20\" y=\"202\" fill=\"currentColor\" opacity=\"0.9\" text-anchor=\"middle\" transform=\"rotate(-90 20 202)\">koordinat y</text>\n    <g fill=\"currentColor\">\n      <circle cx=\"106\" cy=\"294\" r=\"6\"/><circle cx=\"178\" cy=\"294\" r=\"6\"/><circle cx=\"142\" cy=\"156\" r=\"6\"/>\n      <circle cx=\"214\" cy=\"248\" r=\"6\"/><circle cx=\"322\" cy=\"156\" r=\"6\"/><circle cx=\"394\" cy=\"110\" r=\"6\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.8\" font-size=\"12.5\">\n      <text x=\"114\" y=\"290\">A</text><text x=\"186\" y=\"290\">B</text><text x=\"150\" y=\"150\">C</text>\n      <text x=\"222\" y=\"244\">D</text><text x=\"330\" y=\"150\">E</text><text x=\"402\" y=\"106\">F</text>\n    </g>\n    <path d=\"M 142 239 L 151 248 L 142 257 L 133 248 Z\" fill=\"#0072B2\"/>\n    <path d=\"M 358 147 L 367 156 L 358 165 L 349 156 Z\" fill=\"#D55E00\"/>\n    <g fill=\"currentColor\" opacity=\"0.85\" font-size=\"12.5\">\n      <text x=\"118\" y=\"244\">P1</text><text x=\"366\" y=\"152\">P2</text>\n    </g>\n    <g font-size=\"12\" fill=\"currentColor\" opacity=\"0.85\">\n      <circle cx=\"86\" cy=\"30\" r=\"5\"/><text x=\"96\" y=\"34\">kedai</text>\n      <path d=\"M 150 30 L 157 37 L 150 44 L 143 37 Z\" fill=\"#0072B2\"/><text x=\"162\" y=\"34\" fill=\"currentColor\">Pusat P1</text>\n      <path d=\"M 250 30 L 257 37 L 250 44 L 243 37 Z\" fill=\"#D55E00\"/><text x=\"262\" y=\"34\" fill=\"currentColor\">Pusat P2</text>\n    </g>\n  </g>\n</svg>\n</figure>",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Satu kuadrat jarak",
+      "type": "fill",
+      "prompt": "Hitung **kuadrat jarak** kedai **E** \\((7, 4)\\) ke pusat **P2** \\((8, 4)\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 1,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nd^2=(7-8)^2+(4-4)^2=(-1)^2+0^2=1+0=1.\n\\]"
+    },
+    {
+      "id": "S2",
+      "name": "Tempatkan kedai A",
+      "type": "fill",
+      "prompt": "Kedai **A** \\((1, 1)\\) ditempatkan ke pusat yang **terdekat**. Bandingkan kuadrat jaraknya ke P1 \\((2,2)\\) dan ke P2 \\((8,4)\\). Pusat mana yang terdekat?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "P1"
+          ]
+        }
+      ],
+      "solution": "| Ke pusat | Kuadrat jarak |\n|---|---:|\n| P1 \\((2,2)\\) | \\((1-2)^2+(1-2)^2=1+1=2\\) |\n| P2 \\((8,4)\\) | \\((1-8)^2+(1-4)^2=49+9=58\\) |\n\nKuadrat jarak ke P1 (2) jauh lebih kecil, jadi kedai A masuk **P1**."
+    },
+    {
+      "id": "S3",
+      "name": "Tempatkan kedai E",
+      "type": "fill",
+      "prompt": "Dengan cara yang sama, pusat mana yang terdekat dengan kedai **E** \\((7, 4)\\)?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "text",
+          "answer": [
+            "P2"
+          ]
+        }
+      ],
+      "solution": "| Ke pusat | Kuadrat jarak |\n|---|---:|\n| P1 \\((2,2)\\) | \\((7-2)^2+(4-2)^2=25+4=29\\) |\n| P2 \\((8,4)\\) | \\((7-8)^2+(4-4)^2=1+0=1\\) |\n\nKedai E jauh lebih dekat ke **P2** (1 < 29)."
+    },
+    {
+      "id": "S4",
+      "name": "Berapa anggota P1",
+      "type": "fill",
+      "prompt": "Tempatkan **keenam** kedai (A–F) ke pusat terdekatnya memakai P1 \\((2,2)\\) dan P2 \\((8,4)\\). Berapa banyak kedai yang masuk kelompok **P1**?\n\n*Petunjuk: kamu tidak perlu mengambil akar. Bandingkan saja kuadrat jaraknya.*",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Hitung kuadrat jarak setiap kedai ke kedua pusat, lalu pilih yang lebih kecil.\n\n| Kedai | ke P1 \\((2,2)\\) | ke P2 \\((8,4)\\) | Masuk |\n|---|---:|---:|---|\n| A \\((1,1)\\) | \\(1+1=2\\) | \\(49+9=58\\) | P1 |\n| B \\((3,1)\\) | \\(1+1=2\\) | \\(25+9=34\\) | P1 |\n| C \\((2,4)\\) | \\(0+4=4\\) | \\(36+0=36\\) | P1 |\n| D \\((4,2)\\) | \\(4+0=4\\) | \\(16+4=20\\) | P1 |\n| E \\((7,4)\\) | \\(25+4=29\\) | \\(1+0=1\\) | P2 |\n| F \\((9,5)\\) | \\(49+9=58\\) | \\(1+1=2\\) | P2 |\n\nKelompok **P1** berisi A, B, C, D → **4** kedai. (P2 berisi E, F → 2 kedai.)"
+    },
+    {
+      "id": "S5",
+      "name": "Kedai di garis tengah",
+      "type": "fill",
+      "prompt": "Sebuah kedai baru, **G** \\((5, 3)\\), ingin ditempatkan. Hitung **kuadrat jarak** G ke pusat **P1** \\((2, 2)\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 10,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nd^2=(5-2)^2+(3-2)^2=9+1=10.\n\\]\n\nBandingkan dengan jaraknya ke P2: \\((5-8)^2+(3-4)^2=9+1=10\\) — **sama persis**. Kedai G berdiri tepat di garis tengah antara kedua pusat, jadi jaraknya seri. Bila terjadi seri, K-Means memakai aturan pemutus, misalnya memilih pusat bernomor lebih kecil (P1). Yang penting kamu sadari bahwa titik seperti ini ada, dan hasilnya bisa berpindah kelompok begitu pusat bergeser sedikit."
+    },
+    {
+      "id": "S6",
+      "name": "Perbarui pusat P2",
+      "type": "fill",
+      "prompt": "Setelah penempatan pada Soal 4, kelompok **P2** berisi kedai **E** \\((7,4)\\) dan **F** \\((9,5)\\). Perbarui pusat P2 dengan mengambil rata-rata koordinat kedua kedai itu. Berapa **koordinat-y** pusat P2 yang baru?",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 4.5,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "Kelompok P2 berisi E \\((7,4)\\) dan F \\((9,5)\\). Rata-rata tiap koordinat:\n\n\\[\nx=\\frac{7+9}{2}=\\frac{16}{2}=8,\\qquad\ny=\\frac{4+5}{2}=\\frac{9}{2}=4.5.\n\\]\n\nPusat P2 baru = \\((8, 4.5)\\). Koordinat-y-nya **4.5**. Pusat bergeser dari \\((8,4)\\) ke \\((8, 4.5)\\): satu putaran K-Means memang menggeser pusat ke tengah anggotanya."
+    }
+  ],
+  "number": 14
+}

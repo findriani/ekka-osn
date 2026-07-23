@@ -86,5 +86,5 @@
       "solution": "<pre class=\"kunci\">def diagonal(grid):\n    return [grid[i][i] for i in range(len(grid))]</pre>\n\nDiagonal utama adalah sel-sel dengan baris dan kolom yang sama, jadi indeksnya `grid[i][i]`. `range(len(grid))` berjalan dari 0 sampai baris terakhir.\n\nYang perlu diperhatikan: **satu** indeks `i` dipakai di dua tempat. Kalau kamu menulis dua perulangan bersarang, kamu justru mengambil semua sel, bukan diagonalnya. Diagonal yang satunya (kanan-atas ke kiri-bawah) adalah `grid[i][len(grid) - 1 - i]` — variasi yang sering muncul di soal papan."
     }
   ],
-  "number": 39
+  "number": 50
 }

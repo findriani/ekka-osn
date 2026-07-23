@@ -96,5 +96,5 @@
       "solution": "| panggilan | selisih | kuadrat |\n|---|---|---|\n| `kuadrat_galat(10, 8)` | 2 | **4** |\n| `kuadrat_galat(3, 6)` | −3 | **9** |\n| `kuadrat_galat(5, 5)` | 0 | **0** |\n\n4 + 9 + 0 = **13**.\n\nPerhatikan yang kedua: selisihnya **negatif**, tetapi kuadratnya positif. Itu bukan efek samping — itu justru alasan kuadratnya ada. Rumus ini tidak peduli kamu meleset ke atas atau ke bawah, ia cuma peduli **seberapa jauh**.\n\nIngat baik-baik, karena kamu baru saja menghitung inti dari MSE. Bagi 13 dengan 3 dan kamu mendapatkan MSE-nya. Seluruh Tulis Kode 02 dibangun di atas satu baris ini."
     }
   ],
-  "number": 22
+  "number": 33
 }

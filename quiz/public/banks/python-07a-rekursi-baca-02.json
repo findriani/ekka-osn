@@ -96,5 +96,5 @@
       "solution": "Terapkan Euclid, tiap langkah mengganti `(a, b)` dengan `(b, a % b)`:\n\n| panggilan | `a % b` |\n|---|---|\n| `fpb(18, 12)` | 18 % 12 = 6 |\n| `fpb(12, 6)` | 12 % 6 = 0 |\n| `fpb(6, 0)` | — (kasus dasar) |\n\nSaat `b` mencapai 0, jawabannya adalah `a` yang tersisa: **6**.\n\nPerhatikan `18 % 12` memberi sisa 6, dan `12 % 6` memberi 0. Begitu sisanya 0, bilangan pertama saat itu adalah FPB-nya. Ini salah satu rekursi terpendek yang berguna: dua baris, dan ia menyusut cepat karena `a % b` selalu lebih kecil dari `b`."
     }
   ],
-  "number": 43
+  "number": 54
 }

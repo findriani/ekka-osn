@@ -97,5 +97,5 @@
       "solution": "Hitung jarak kuadrat dari `q = (6, 4)` ke tiap pusat:\n\n| nama | pusat | jarak kuadrat |\n|---|---|---|\n| kota | (0, 0) | \\(36 + 16 = 52\\) |\n| desa | (10, 0) | \\(16 + 16 = 32\\) |\n| pantai | (5, 5) | \\(1 + 1 = \\mathbf{2}\\) |\n\nYang terkecil adalah **pantai**.\n\nIni kerangka lengkap \"pusat terdekat\": simpan calon di dictionary, telusuri, pegang yang sejauh ini terbaik. Pola `if terbaik is None or ... < ...` adalah cara mencari minimum tanpa `min` — berguna saat kamu butuh **namanya**, bukan jaraknya. Kamu akan menuliskannya sendiri di Tulis Kode 02 dan 03, dan memakainya untuk mengklasifikasikan kata di seleksi."
     }
   ],
-  "number": 33
+  "number": 44
 }

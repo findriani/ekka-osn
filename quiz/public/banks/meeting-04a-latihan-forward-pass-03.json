@@ -1,0 +1,101 @@
+{
+  "id": "meeting-04a-latihan-forward-pass-03",
+  "group": "Pertemuan 4",
+  "title": "Lintasan Maju (*Forward Pass*) 03 — Batas Keputusan dan Lapisan Tersembunyi",
+  "summary": "Sebuah aplikasi melakukan penyaringan awal pengajuan beasiswa dengan satu **perceptron**. Model menggunakan dua skor yang telah dinormalisasi, lalu menghasilkan kelas 1 untuk \"lolos penyaringan awal\" dan kelas 0 untuk \"belum lolos\". Secara geometri, perceptron membentuk **batas keputusan** berupa garis lurus \\(z=0\\). Latihan ini mengajarkan cara membaca garis tersebut, menunjukkan bahwa beberapa lapisan linear tanpa aktivasi tetap setara dengan satu fungsi linear, dan memperlihatkan bagaimana lapisan tersembunyi dengan ReLU dapat membentuk batas keputusan yang tidak lagi berupa satu garis.",
+  "instructions": "Jawaban berupa **angka** (bilangan bulat, boleh negatif). Tuliskan `-` untuk nilai negatif, misalnya `-2`.",
+  "formulas": "Sebuah perceptron memberi skor \\(z = w_1 x_1 + w_2 x_2 + b\\) dan memprediksi **kelas 1** bila \\(z \\ge 0\\), **kelas 0** bila \\(z < 0\\). Batas keputusan adalah tempat \\(z = 0\\):\n\n\\[\nw_1 x_1 + w_2 x_2 + b = 0 \\;\\Longleftrightarrow\\; x_2 = -\\frac{w_1}{w_2}x_1 - \\frac{b}{w_2}.\n\\]\n\nTanda \\(z\\) memberi tahu **sisi** garis tempat titik berada. ReLU: \\(\\mathrm{ReLU}(z) = \\max(0, z)\\).\n\n**Menumpuk fungsi linear:** jika \\(h = a x + c\\) lalu \\(y = d h + e\\), maka \\(y = d(ax+c)+e = (da)x + (dc+e)\\) — tetap sebuah fungsi linear tunggal.\n\n## Data\n\nFitur \\(x_1\\) adalah **skor prestasi akademik**: semakin tinggi nilainya, semakin kuat prestasinya. Fitur \\(x_2\\) adalah **skor kemampuan ekonomi keluarga**: semakin tinggi nilainya, semakin besar kemampuan ekonominya. Keduanya menggunakan skala sederhana 0–3 untuk latihan ini. Perceptron menggunakan \\(w=(2,-1)\\) dan \\(b=-1\\), sehingga\n\n\\[\nz = 2x_1 - x_2 - 1,\n\\]\n\ndan batas keputusannya adalah garis \\(2x_1 - x_2 - 1 = 0\\), yaitu \\(x_2 = 2x_1 - 1\\).\n\n<figure class=\"q-image\">\n<svg viewBox=\"0 0 460 420\" role=\"img\">\n  <title>Batas keputusan perceptron untuk penyaringan beasiswa</title>\n  <desc>Bidang skor prestasi x1 terhadap skor kemampuan ekonomi x2, dengan batas keputusan x2 sama dengan 2 x1 dikurangi 1. Titik (2,1) berada pada sisi z positif atau kelas 1, titik (1,3) berada pada sisi z negatif atau kelas 0, dan titik (1,1) tepat pada garis karena z sama dengan nol.</desc>\n  <g font-family=\"ui-sans-serif, system-ui, sans-serif\" font-size=\"13\">\n    <g stroke=\"currentColor\" opacity=\"0.6\" stroke-width=\"1.4\" fill=\"none\">\n      <path d=\"M 70 40 L 70 380\"/>\n      <path d=\"M 70 380 L 430 380\"/>\n    </g>\n    <g stroke=\"currentColor\" opacity=\"0.1\" stroke-width=\"1\" fill=\"none\">\n      <path d=\"M 190 40 L 190 380 M 310 40 L 310 380 M 430 40 L 430 380\"/>\n      <path d=\"M 70 312 L 430 312 M 70 244 L 430 244 M 70 176 L 430 176 M 70 108 L 430 108 M 70 40 L 430 40\"/>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" text-anchor=\"middle\">\n      <text x=\"70\" y=\"398\">0</text><text x=\"190\" y=\"398\">1</text><text x=\"310\" y=\"398\">2</text><text x=\"430\" y=\"398\">3</text>\n      <text x=\"250\" y=\"416\">x₁</text>\n    </g>\n    <g fill=\"currentColor\" opacity=\"0.75\" text-anchor=\"end\">\n      <text x=\"60\" y=\"384\">-1</text><text x=\"60\" y=\"316\">0</text><text x=\"60\" y=\"248\">1</text>\n      <text x=\"60\" y=\"180\">2</text><text x=\"60\" y=\"112\">3</text><text x=\"60\" y=\"44\">4</text>\n    </g>\n    <text x=\"26\" y=\"210\" fill=\"currentColor\" opacity=\"0.85\" text-anchor=\"middle\" transform=\"rotate(-90 26 210)\">x₂</text>\n    <path d=\"M 70 380 L 370 40\" stroke=\"#009E73\" stroke-width=\"2.8\" fill=\"none\"/>\n    <text x=\"330\" y=\"70\" fill=\"#009E73\" font-size=\"14\">z = 0</text>\n    <text x=\"330\" y=\"300\" fill=\"currentColor\" opacity=\"0.55\" font-size=\"12\">sisi z &gt; 0 (kelas 1)</text>\n    <text x=\"96\" y=\"70\" fill=\"currentColor\" opacity=\"0.55\" font-size=\"12\">sisi z &lt; 0 (kelas 0)</text>\n    <circle cx=\"310\" cy=\"244\" r=\"8\" fill=\"#E69F00\"/>\n    <text x=\"322\" y=\"240\" fill=\"currentColor\" font-size=\"12.5\">(2,1): z = +2</text>\n    <circle cx=\"190\" cy=\"108\" r=\"8\" fill=\"none\" stroke=\"#0072B2\" stroke-width=\"2.4\"/>\n    <text x=\"202\" y=\"104\" fill=\"currentColor\" font-size=\"12.5\">(1,3): z = -2</text>\n    <circle cx=\"190\" cy=\"244\" r=\"8\" fill=\"currentColor\" opacity=\"0.55\"/>\n    <text x=\"120\" y=\"266\" fill=\"currentColor\" font-size=\"12.5\">(1,1): z = 0 (di garis)</text>\n  </g>\n</svg>\n</figure>",
+  "questions": [
+    {
+      "id": "S1",
+      "name": "Membaca batas keputusan",
+      "type": "fill",
+      "prompt": "Seorang calon memiliki skor prestasi \\(x_1=2\\). Pada nilai \\(x_2\\) berapa calon tersebut berada tepat pada batas keputusan \\(x_2=2x_1-1\\)? Tuliskan nilai \\(x_2\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nx_2 = 2(2) - 1 = 4 - 1 = 3.\n\\]\n\nTitik \\((2, 3)\\) terletak tepat di garis. Setiap titik yang \\(x_2\\)-nya **lebih kecil** dari \\(2x_1 - 1\\) berada di sisi \\(z>0\\) (kelas 1), karena koefisien \\(x_2\\) bertanda negatif."
+    },
+    {
+      "id": "S2",
+      "name": "Skor sebuah titik",
+      "type": "fill",
+      "prompt": "Calon A memiliki skor \\((x_1,x_2)=(2,1)\\). Hitung skor \\(z=2x_1-x_2-1\\). Nilai \\(z\\) yang tidak negatif berarti calon A masuk kelas 1.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 2(2) - 1 - 1 = 4 - 1 - 1 = 2 \\ge 0 \\;\\Rightarrow\\; \\text{kelas 1}.\n\\]\n\nDi gambar, \\((2,1)\\) memang berada di bawah garis, dan sisi bawah adalah sisi \\(z>0\\)."
+    },
+    {
+      "id": "S3",
+      "name": "Titik pada sisi yang berbeda",
+      "type": "fill",
+      "prompt": "Calon B memiliki skor \\((x_1,x_2)=(1,3)\\). Hitung \\(z=2x_1-x_2-1\\). Tanda hasilnya menunjukkan bahwa calon B berada pada sisi kelas 0 atau kelas 1.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": -2,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 2(1) - 3 - 1 = 2 - 4 = -2 < 0 \\;\\Rightarrow\\; \\text{kelas 0}.\n\\]\n\nTandanya negatif, sehingga \\((1,3)\\) berada pada sisi yang berlawanan dari \\((2,1)\\). Posisi tersebut sesuai dengan gambar: titik \\((1,3)\\) berada di atas garis."
+    },
+    {
+      "id": "S4",
+      "name": "Tepat di garis",
+      "type": "fill",
+      "prompt": "Calon C memiliki skor \\((x_1,x_2)=(1,1)\\). Hitung \\(z=2x_1-x_2-1\\). Nilai yang diperoleh menunjukkan bahwa calon C berada tepat pada batas keputusan.",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 0,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nz = 2(1) - 1 - 1 = 0.\n\\]\n\nNilai \\(z=0\\) berarti titik tersebut berada **tepat** pada batas keputusan. Berdasarkan aturan \\(z\\ge0\\), titik itu dimasukkan ke kelas 1. Namun, karena berada pada batas, perubahan bias yang sangat kecil dapat memindahkannya ke kelas lain."
+    },
+    {
+      "id": "S5",
+      "name": "Dua lapisan linear runtuh menjadi satu",
+      "type": "fill",
+      "prompt": "Sebuah jaringan sederhana menerima satu nilai \\(x\\). Lapisan pertama menghitung \\(h=2x+1\\), lalu lapisan kedua menghitung \\(y=3h-4\\). Tidak ada fungsi aktivasi di antara keduanya. Substitusikan rumus \\(h\\) ke dalam rumus \\(y\\), tulis hasilnya sebagai \\(y=wx+b\\), lalu tentukan nilai \\(w\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 6,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\ny = 3h - 4 = 3(2x + 1) - 4 = 6x + 3 - 4 = 6x - 1.\n\\]\n\nJadi, \\(w=6\\) dan \\(b=-1\\). Dua lapisan linear yang disusun berurutan tetap menghasilkan **satu** fungsi linear yang setara dengan satu lapisan. Karena itu, jaringan memerlukan fungsi aktivasi **nonlinear**, seperti ReLU, di antara lapisan. Tanpa aktivasi nonlinear, penambahan lapisan tidak meningkatkan kemampuan jaringan untuk membentuk batas keputusan yang lebih rumit."
+    },
+    {
+      "id": "S6",
+      "name": "Lapisan tersembunyi untuk XOR",
+      "type": "fill",
+      "prompt": "Untuk dua masukan biner, jaringan kecil berikut menggunakan ReLU pada lapisan tersembunyi:\n\n\\[\nh_1 = \\mathrm{ReLU}(x_1 + x_2), \\quad\nh_2 = \\mathrm{ReLU}(x_1 + x_2 - 1), \\quad\no = h_1 - 2h_2,\n\\]\n\nJaringan memprediksi kelas 1 bila \\(o\\ge0.5\\). Untuk masukan \\((x_1,x_2)=(0,1)\\), hitung \\(h_1\\), \\(h_2\\), dan akhirnya **\\(o\\)**. Tuliskan nilai \\(o\\).",
+      "blanks": [
+        {
+          "label": "Jawaban",
+          "type": "number",
+          "answer": 1,
+          "tolerance": 1e-9
+        }
+      ],
+      "solution": "\\[\nh_1 = \\mathrm{ReLU}(0 + 1) = 1, \\quad\nh_2 = \\mathrm{ReLU}(0 + 1 - 1) = \\mathrm{ReLU}(0) = 0,\n\\]\n\\[\no = 1 - 2(0) = 1 \\;(\\ge 0.5 \\Rightarrow \\text{kelas 1}).\n\\]\n\nLengkapnya, jaringan ini menghitung **XOR**:\n\n| \\((x_1,x_2)\\) | \\(h_1\\) | \\(h_2\\) | \\(o\\) | kelas |\n|---|---:|---:|---:|:--:|\n| (0,0) | 0 | 0 | 0 | 0 |\n| (0,1) | 1 | 0 | 1 | 1 |\n| (1,0) | 1 | 0 | 1 | 1 |\n| (1,1) | 2 | 1 | 0 | 0 |\n\nPola kelas \\(0,1,1,0\\) tepat sama dengan XOR, yang pada latihan sebelumnya terbukti tidak dapat direpresentasikan secara sempurna oleh satu perceptron. Lapisan tersembunyi dengan ReLU membentuk fitur perantara, sehingga jaringan dapat menghasilkan batas keputusan nonlinear dan memisahkan pola diagonal XOR."
+    }
+  ],
+  "number": 19
+}

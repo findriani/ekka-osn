@@ -96,5 +96,5 @@
       "solution": "| perintah | isi `tumpuk` |\n|---|---|\n| awal | `[5, 3, 8]` |\n| `.insert(1, 9)` | `[5, 9, 3, 8]` |\n| `.remove(8)` | `[5, 9, 3]` |\n\n`tumpuk[-1]` = **3**, `len(tumpuk)` = **3**, jadi 3 × 3 = **9**.\n\nDua hal yang sering keliru. `.insert(1, 9)` menyisipkan **9 di indeks 1** — angkanya di belakang, posisinya di depan; urutan argumennya kebalikan dari dugaan banyak orang. Dan `.remove(8)` membuang **isi yang bernilai 8**, bukan isi di indeks 8. Bandingkan dengan `.pop(0)` di Baca Kode 01, yang bekerja dengan posisi.\n\nAturan singkat: `remove` bicara soal **nilai**, `pop` dan `insert` bicara soal **posisi**."
     }
   ],
-  "number": 18
+  "number": 29
 }

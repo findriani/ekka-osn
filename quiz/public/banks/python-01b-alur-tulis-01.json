@@ -86,5 +86,5 @@
       "solution": "<pre class=\"kunci\">def jumlah_semua(data):\n    return sum(data)</pre>\n\n`sum` sudah disediakan Python, dan untuk list kosong ia mengembalikan `0` — persis yang diminta uji kedua. Tidak perlu perulangan.\n\nMenulisnya dengan tangan juga benar, dan justru itu latihan Soal 1 di set berikutnya:\n\n<pre class=\"code\">def jumlah_semua(data):\n    total = 0\n    for n in data:\n        total += n\n    return total</pre>\n\nPerhatikan `total = 0` berada **sebelum** perulangan. Kalau di dalam, ia disetel ulang tiap putaran dan hasilnya hanya angka terakhir — persis bug yang kamu temukan di Baca Kode 01 Soal 4.\n\nUji `jumlah_semua([-5, 5]) == 0` ada supaya kamu tidak bisa lolos dengan `len(data)` atau semacamnya secara kebetulan."
     }
   ],
-  "number": 14
+  "number": 25
 }

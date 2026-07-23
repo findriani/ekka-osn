@@ -87,5 +87,5 @@
       "solution": "<pre class=\"kunci\">def relu_1d(data):\n    return [x if x &gt; 0 else 0 for x in data]</pre>\n\nUntuk tiap nilai, pertahankan kalau positif, ganti dengan 0 kalau tidak. `x if x > 0 else 0` sama dengan `max(x, 0)` — keduanya benar.\n\nReLU adalah aktivasi paling umum di CNN: ia membuang respons negatif dan meneruskan yang positif. Uji list kosong memberi list kosong. Di Tulis Kode 03 kamu menerapkannya ke seluruh grid setelah konvolusi, bukan cuma ke satu list."
     }
   ],
-  "number": 50
+  "number": 61
 }
